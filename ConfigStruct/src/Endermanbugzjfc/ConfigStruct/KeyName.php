@@ -4,7 +4,7 @@
 {
 
     public function __construct(
-        string $name
+        bool|int|float|string $name
     )
     {
     }
