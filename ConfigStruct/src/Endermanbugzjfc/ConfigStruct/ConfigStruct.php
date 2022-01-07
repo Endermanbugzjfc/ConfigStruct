@@ -87,7 +87,7 @@ class ConfigStruct
             } else {
                 $name = $property->getName();
             }
-            $config->setNested($name, $property->getValue());
+            $config->setNested($name, $value);
         }
         return null;
     }
