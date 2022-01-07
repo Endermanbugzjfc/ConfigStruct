@@ -2,7 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct\attributes;
 
-use Endermanbugzjfc\ConfigStruct\Attribute;
+use Attribute;
 
 #[Attribute(Attribute::TARGET_PROPERTY)] class KeyName
 {
