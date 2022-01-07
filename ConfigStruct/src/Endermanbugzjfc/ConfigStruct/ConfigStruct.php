@@ -4,6 +4,8 @@ namespace Endermanbugzjfc\ConfigStruct;
 
 use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use pocketmine\utils\Config;
+use ReflectionClass;
+use Throwable;
 
 class ConfigStruct
 {
