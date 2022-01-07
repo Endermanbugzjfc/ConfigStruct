@@ -2,10 +2,13 @@
 
 namespace Endermanbugzjfc\ConfigStruct;
 
+use Endermanbugzjfc\ConfigStruct\attributes\CreateDefaultValue;
 use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use pocketmine\utils\Config;
 use ReflectionClass;
+use ReflectionNamedType;
 use Throwable;
+use function class_exists;
 
 class ConfigStruct
 {
@@ -54,6 +57,26 @@ class ConfigStruct
         ) {
             if (!$property->isPublic()) {
                 continue;
+            }
+            if (!$property->isInitialized()) {
+                $default = $property->getAttributes(CreateDefaultValue::class)[0] ?? null;
+                if (!isset($default)) {
+                    continue;
+                }
+                if (!isset($default->getArguments()[0])) {
+                    if ($property->getType() instanceof ReflectionNamedType) {
+                        $class = $property->getName();
+                    }
+                } else {
+                    $class = $default->getArguments()[0];
+                }
+                if (isset($class) and class_exists($class)) {
+                    $value = new $class;
+                } else {
+                    // TODO: Error: Cannot identify which class to be use for the default value, please specify the appropriate class in the attribute
+                }
+            } else {
+                $value = $property->getValue($struct);
             }
             $attribute = $property->getAttributes(KeyName::class)[0] ?? null;
             if (isset($attribute)) {
