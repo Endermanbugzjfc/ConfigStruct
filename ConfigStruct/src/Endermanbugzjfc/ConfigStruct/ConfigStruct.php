@@ -1,5 +1,7 @@
 <?php
 
+namespace Endermanbugzjfc\ConfigStruct;
+
 use pocketmine\utils\Config;
 
 class ConfigStruct
