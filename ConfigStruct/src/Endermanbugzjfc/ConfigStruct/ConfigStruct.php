@@ -27,6 +27,10 @@ class ConfigStruct
         $reflect = new ReflectionClass($struct);
         $names = [];
         foreach ($reflect->getProperties() as $property) {
+            if (!$property->isPublic()) {
+                continue;
+            }
+
             $attribute = $property->getAttributes(KeyName::class)[0] ?? null;
             $name = $property->getName();
             if (!isset($attribute)) {
@@ -34,6 +38,11 @@ class ConfigStruct
                 continue;
             }
             $names[$name] = $attribute->getArguments()[0];
+
+            $value = self::initializeChildStruct($property);
+            if (isset($value)) {
+                $struct->$name = $value;
+            }
         }
         foreach (
             (new Config($file, $type))->getAll()
