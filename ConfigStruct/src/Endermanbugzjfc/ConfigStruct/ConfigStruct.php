@@ -4,6 +4,7 @@ namespace Endermanbugzjfc\ConfigStruct;
 
 use Endermanbugzjfc\ConfigStruct\attributes\AutoInitializeChildStruct;
 use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
+use Logger;
 use pocketmine\utils\Config;
 use ReflectionClass;
 use ReflectionNamedType;
@@ -13,7 +14,9 @@ use function class_exists;
 class ConfigStruct
 {
 
-    public function __construct()
+    public function __construct(
+        protected ?Logger $logger
+    )
     {
     }
 
