@@ -4,6 +4,7 @@ namespace Endermanbugzjfc\ConfigStruct;
 
 use Endermanbugzjfc\ConfigStruct\attributes\AutoInitializeChildStruct;
 use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
+use Endermanbugzjfc\ConfigStruct\exceptions\StructureException;
 use pocketmine\utils\Config;
 use ReflectionClass;
 use ReflectionNamedType;
@@ -54,6 +55,9 @@ class ConfigStruct
         return null;
     }
 
+    /**
+     * @throws StructureException
+     */
     public static function emit(
         string $file,
         object $struct,
@@ -71,7 +75,8 @@ class ConfigStruct
             if (!$property->isInitialized()) {
                 $value = self::initializeChildStruct($property);
                 if (!isset($value)) {
-                    // TODO: Error: Cannot identify which class to be use for the default value, please specify the appropriate class in the attribute
+                    $class = $struct::class;
+                    throw new StructureException("Cannot identify which class to use in $class->{$property->getName()}, please specify the appropriate class in the attribute");
                 }
             } else {
                 $value = $property->getValue($struct);
