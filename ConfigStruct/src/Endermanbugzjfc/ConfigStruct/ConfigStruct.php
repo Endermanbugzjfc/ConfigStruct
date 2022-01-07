@@ -2,6 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct;
 
+use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use pocketmine\utils\Config;
 
 class ConfigStruct
