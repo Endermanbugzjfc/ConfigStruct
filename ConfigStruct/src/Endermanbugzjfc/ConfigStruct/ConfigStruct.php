@@ -15,11 +15,23 @@ class ConfigStruct
         int    $type = Config::DETECT
     ) : ?Throwable
     {
+        $reflect = new ReflectionClass($struct);
+        $names = [];
+        foreach ($reflect->getProperties() as $property) {
+            $attribute = $property->getAttributes(KeyName::class)[0] ?? null;
+            $name = $property->getName();
+            if (!isset($attribute)) {
+                $names[$name] = $name;
+                continue;
+            }
+            $names[$name] = $attribute->getArguments()[0];
+        }
         foreach (
             (new Config($file, $type))->getAll()
             as $k => $v
         ) {
-            $struct->$k = $v;
+            $name = $names[$k];
+            $struct->$name = $v;
         }
         return null;
     }
