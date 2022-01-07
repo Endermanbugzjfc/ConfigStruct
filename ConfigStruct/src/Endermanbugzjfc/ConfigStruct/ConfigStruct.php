@@ -7,6 +7,7 @@ use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use pocketmine\utils\Config;
 use ReflectionClass;
 use ReflectionNamedType;
+use ReflectionProperty;
 use Throwable;
 use function class_exists;
 
@@ -59,20 +60,8 @@ class ConfigStruct
                 continue;
             }
             if (!$property->isInitialized()) {
-                $default = $property->getAttributes(AutoInitializeChildStruct::class)[0] ?? null;
-                if (!isset($default)) {
-                    continue;
-                }
-                if (!isset($default->getArguments()[0])) {
-                    if ($property->getType() instanceof ReflectionNamedType) {
-                        $class = $property->getName();
-                    }
-                } else {
-                    $class = $default->getArguments()[0];
-                }
-                if (isset($class) and class_exists($class)) {
-                    $value = new $class;
-                } else {
+                $value = self::initializeChildStruct($property);
+                if (!isset($value)) {
                     // TODO: Error: Cannot identify which class to be use for the default value, please specify the appropriate class in the attribute
                 }
             } else {
@@ -87,6 +76,22 @@ class ConfigStruct
             $config->setNested($name, $property->getValue());
         }
         return null;
+    }
+
+    protected static function initializeChildStruct(ReflectionProperty $property) : ?object
+    {
+        $default = $property->getAttributes(AutoInitializeChildStruct::class)[0] ?? null;
+        if (!isset($default)) {
+            return null;
+        }
+        if (!isset($default->getArguments()[0])) {
+            if ($property->getType() instanceof ReflectionNamedType) {
+                $class = $property->getName();
+            }
+        } else {
+            $class = $default->getArguments()[0];
+        }
+        return (isset($class) and class_exists($class)) ? new $class : null;
     }
 
 }
