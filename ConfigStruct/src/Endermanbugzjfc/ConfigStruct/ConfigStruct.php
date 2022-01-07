@@ -15,6 +15,13 @@ class ConfigStruct
         int    $type = Config::DETECT
     ) : ?Throwable
     {
+        foreach (
+            (new Config($file, $type))->getAll()
+            as $k => $v
+        ) {
+            $struct->$k = $v;
+        }
+        return null;
     }
 
     public static function emit(
