@@ -9,7 +9,6 @@ use pocketmine\utils\Config;
 use ReflectionClass;
 use ReflectionNamedType;
 use ReflectionProperty;
-use Throwable;
 use function class_exists;
 
 class ConfigStruct
@@ -23,7 +22,7 @@ class ConfigStruct
         string $file,
         object $struct,
         int    $type = Config::DETECT
-    ) : ?Throwable
+    ) : void
     {
         $reflect = new ReflectionClass($struct);
         $names = [];
@@ -52,7 +51,6 @@ class ConfigStruct
             $name = $names[$k];
             $struct->$name = $v;
         }
-        return null;
     }
 
     /**
@@ -62,7 +60,7 @@ class ConfigStruct
         string $file,
         object $struct,
         int    $type = Config::DETECT
-    ) : ?Throwable
+    ) : void
     {
         $config = new Config($file, $type);
         foreach (
@@ -89,7 +87,6 @@ class ConfigStruct
             }
             $config->setNested($name, $value);
         }
-        return null;
     }
 
     protected static function initializeChildStruct(ReflectionProperty $property) : ?object
