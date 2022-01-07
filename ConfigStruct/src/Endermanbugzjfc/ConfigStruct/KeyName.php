@@ -4,7 +4,7 @@
 {
 
     public function __construct(
-        public string $name
+        string $name
     )
     {
     }
