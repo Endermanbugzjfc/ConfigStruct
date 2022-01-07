@@ -13,11 +13,11 @@ use function class_exists;
 class ConfigStruct
 {
 
-    private function __construct()
+    public function __construct()
     {
     }
 
-    public static function parse(
+    public function parse(
         string $file,
         object $struct,
         int    $type = Config::DETECT
@@ -44,7 +44,7 @@ class ConfigStruct
         return null;
     }
 
-    public static function emit(
+    public function emit(
         string $file,
         object $struct,
         int    $type = Config::DETECT
