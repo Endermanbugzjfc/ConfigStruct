@@ -1,5 +1,7 @@
 <?php
 
+namespace Endermanbugzjfc\ConfigStruct;
+
 #[Attribute(Attribute::TARGET_PROPERTY)] class KeyName
 {
 
