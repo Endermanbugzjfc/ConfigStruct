@@ -5,6 +5,6 @@ namespace Endermanbugzjfc\ConfigStruct\attributes;
 
 use Attribute;
 
-#[Attribute(Attribute::TARGET_PROPERTY)] class OmitEmpty
+#[Attribute(Attribute::TARGET_PROPERTY)] class CreateDefaultValue
 {
 }
