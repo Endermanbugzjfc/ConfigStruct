@@ -50,7 +50,13 @@ class ConfigStruct
             if (!$property->isPublic()) {
                 continue;
             }
-            $config->setNested($property->getName(), $property->getValue());
+            $attribute = $property->getAttributes(KeyName::class)[0] ?? null;
+            if (isset($attribute)) {
+                $name = $attribute->getArguments()[0];
+            } else {
+                $name = $property->getName();
+            }
+            $config->setNested($name, $property->getValue());
         }
         return null;
     }
