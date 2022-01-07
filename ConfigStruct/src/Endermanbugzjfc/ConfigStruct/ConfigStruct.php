@@ -2,7 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct;
 
-use Endermanbugzjfc\ConfigStruct\attributes\CreateDefaultValue;
+use Endermanbugzjfc\ConfigStruct\attributes\AutoInitializeChildStruct;
 use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use pocketmine\utils\Config;
 use ReflectionClass;
@@ -59,7 +59,7 @@ class ConfigStruct
                 continue;
             }
             if (!$property->isInitialized()) {
-                $default = $property->getAttributes(CreateDefaultValue::class)[0] ?? null;
+                $default = $property->getAttributes(AutoInitializeChildStruct::class)[0] ?? null;
                 if (!isset($default)) {
                     continue;
                 }
