@@ -30,6 +30,17 @@ class ConfigStruct
         int    $type = Config::DETECT
     ) : ?Throwable
     {
+        $config = new Config($file, $type);
+        foreach (
+            (new ReflectionClass($struct))->getProperties()
+            as $property
+        ) {
+            if (!$property->isPublic()) {
+                continue;
+            }
+            $config->setNested($property->getName(), $property->getValue());
+        }
+        return null;
     }
 
 }
