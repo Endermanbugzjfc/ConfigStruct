@@ -7,9 +7,6 @@ use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\exceptions\StructureException;
 use pocketmine\utils\Config;
 use ReflectionClass;
-use ReflectionNamedType;
-use ReflectionProperty;
-use function class_exists;
 
 class ConfigStruct
 {
@@ -35,14 +32,14 @@ class ConfigStruct
                 continue;
             }
 
-            self::getKeyName($name, $property);
+            KeyName::getFromProperty($name, $property);
             $value = $array[$name] ?? null;
             if (isset($value)) {
                 $struct->$name = $value;
                 continue;
             }
 
-            if (self::initializeChildStruct($value, $property)) {
+            if (AutoInitializeChildStruct::initializeProperty($value, $property)) {
                 $struct->$name = $value;
             }
         }
@@ -77,51 +74,16 @@ class ConfigStruct
             }
 
             if (!$property->isInitialized()) {
-                if (!self::initializeChildStruct($value, $property)) {
+                if (!AutoInitializeChildStruct::initializeProperty($value, $property)) {
                     $class = $struct::class;
                     throw new StructureException("Cannot identify which class to use in $class->{$property->getName()}, please specify the appropriate class in the attribute");
                 }
             } else {
                 $value = $property->getValue($struct);
             }
-            $array[self::getKeyName($name, $property)] = $value;
+            $array[KeyName::getFromProperty($name, $property)] = $value;
         }
         return $array ?? [];
-    }
-
-    public static function getKeyName(
-        &$value,
-        ReflectionProperty $property
-    ) : bool
-    {
-        $value = $property->getName();
-
-        $keyName = $property->getAttributes(KeyName::class)[0] ?? null;
-        if (!isset($keyName)) {
-            return false;
-        }
-        $value = $keyName->getArguments()[0];
-        return true;
-    }
-
-    protected static function initializeChildStruct(&$value, ReflectionProperty $property) : bool
-    {
-        $default = $property->getAttributes(AutoInitializeChildStruct::class)[0] ?? null;
-        if (!isset($default)) {
-            return false;
-        }
-        if (!isset($default->getArguments()[0])) {
-            if ($property->getType() instanceof ReflectionNamedType) {
-                $class = $property->getName();
-            }
-        } else {
-            $class = $default->getArguments()[0];
-        }
-        if (isset($class) and class_exists($class)) {
-            $value = new $class;
-            return true;
-        }
-        return false;
     }
 
 }
