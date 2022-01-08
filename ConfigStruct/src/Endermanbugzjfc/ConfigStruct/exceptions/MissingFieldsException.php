@@ -4,17 +4,25 @@ namespace Endermanbugzjfc\ConfigStruct\exceptions;
 
 use Exception;
 use ReflectionProperty;
+use function array_map;
+use function count;
+use function implode;
 
-class MissingFieldException extends Exception
+class MissingFieldsException extends Exception
 {
 
     public function __construct(
-        protected ReflectionProperty $field,
-        protected ?string            $configFile = null
+        protected array   $field,
+        protected ?string $configFile = null
     )
     {
+
+        $s = count($this->field) > 1;
+        $fields = implode(", ", array_map(function (string $field) {
+            return "\"$field\"";
+        }, $this->field));
         parent::__construct(
-            "Required field \"$field\" missing"
+            "Required field$s $fields missing"
             . (isset($this->configFile) ? " in $this->configFile" : ""),
         );
     }
