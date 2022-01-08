@@ -20,21 +20,29 @@ class ConfigStruct
     {
     }
 
+    /**
+     * @throws MissingFieldsException
+     */
     public static function parse(
         object $struct,
         string $file,
         int    $type = Config::DETECT
     ) : void
     {
-        self::parseArray($struct, (new Config($file, $type))->getAll());
+        self::parseArray(
+            $struct,
+            (new Config($file, $type))->getAll(),
+            $file
+        );
     }
 
     /**
      * @throws MissingFieldsException
      */
     public static function parseArray(
-        object $struct,
-        array  $array,
+        object  $struct,
+        array   $array,
+        ?string $file = null
     ) : void
     {
         $reflect = new ReflectionClass($struct);
@@ -66,7 +74,7 @@ class ConfigStruct
             }
         }
         if (isset($missing)) {
-            throw new MissingFieldsException($missing);
+            throw new MissingFieldsException($missing, $file);
         }
     }
 
