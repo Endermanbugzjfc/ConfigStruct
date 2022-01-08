@@ -29,40 +29,38 @@ class ConfigStruct
 
     public static function parseArray(object $struct, array $array) : void
     {
-        $names = self::getKeyNames($struct);
-        foreach ($array as $k => $v) {
-            $name = $names[$k] ?? null;
-            if (isset($name)) {
-                $struct->$name = $v;
-            }
-        }
-    }
-
-    public static function getKeyNames(
-        object $struct,
-        bool   $initializeChildStruct = true
-    ) : array
-    {
         $reflect = new ReflectionClass($struct);
-        $names = [];
         foreach ($reflect->getProperties() as $property) {
             if (!$property->isPublic()) {
                 continue;
             }
 
-            $keyName = $property->getAttributes(KeyName::class)[0] ?? null;
-            $name = $property->getName();
-            if (!isset($keyName)) {
-                $names[$name] = $name;
+            self::getKeyName($name, $property);
+            $value = $array[$name] ?? null;
+            if (isset($value)) {
+                $struct->$name = $value;
                 continue;
             }
-            $names[$name] = $keyName->getArguments()[0];
 
-            if ($initializeChildStruct and self::initializeChildStruct($value, $property)) {
+            if (self::initializeChildStruct($value, $property)) {
                 $struct->$name = $value;
             }
         }
-        return $names;
+    }
+
+    public static function getKeyName(
+        &$value,
+        ReflectionProperty $property
+    ) : bool
+    {
+        $value = $name = $property->getName();
+
+        $keyName = $property->getAttributes(KeyName::class)[0] ?? null;
+        if (!isset($keyName)) {
+            return false;
+        }
+        $value = $keyName->getArguments()[0];
+        return true;
     }
 
     /**
