@@ -6,6 +6,7 @@ use Endermanbugzjfc\ConfigStruct\attributes\AutoInitializeChildStruct;
 use Endermanbugzjfc\ConfigStruct\attributes\Group;
 use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\attributes\Required;
+use Endermanbugzjfc\ConfigStruct\exceptions\MissingFieldsException;
 use Endermanbugzjfc\ConfigStruct\exceptions\StructureException;
 use pocketmine\utils\Config;
 use ReflectionClass;
@@ -28,13 +29,14 @@ class ConfigStruct
         self::parseArray($struct, (new Config($file, $type))->getAll());
     }
 
+    /**
+     * @throws MissingFieldsException
+     */
     public static function parseArray(
         object $struct,
         array  $array,
-    ) : array
+    ) : void
     {
-        $missing = [];
-
         $reflect = new ReflectionClass($struct);
         foreach (
             $reflect->getProperties(ReflectionProperty::IS_PUBLIC)
@@ -63,7 +65,9 @@ class ConfigStruct
                 self::parseArray($child, $value);
             }
         }
-        return $missing;
+        if (isset($missing)) {
+            throw new MissingFieldsException($missing);
+        }
     }
 
     /**
