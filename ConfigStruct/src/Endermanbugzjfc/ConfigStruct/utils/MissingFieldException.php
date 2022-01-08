@@ -13,6 +13,10 @@ class MissingFieldException extends Exception
         protected ?string            $configFile = null
     )
     {
+        parent::__construct(
+            "Required field \"$field\" missing"
+            . (isset($this->configFile) ? " in $this->configFile" : ""),
+        );
     }
 
     /**
