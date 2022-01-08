@@ -7,6 +7,7 @@ use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\exceptions\StructureException;
 use pocketmine\utils\Config;
 use ReflectionClass;
+use function is_object;
 
 class ConfigStruct
 {
@@ -81,6 +82,11 @@ class ConfigStruct
             } else {
                 $value = $property->getValue($struct);
             }
+
+            if (is_object($value)) {
+                $value = self::emitArray($struct);
+            }
+
             $array[KeyName::getFromProperty($name, $property)] = $value;
         }
         return $array ?? [];
