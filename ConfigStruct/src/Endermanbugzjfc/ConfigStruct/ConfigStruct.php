@@ -48,21 +48,6 @@ class ConfigStruct
         }
     }
 
-    public static function getKeyName(
-        &$value,
-        ReflectionProperty $property
-    ) : bool
-    {
-        $value = $property->getName();
-
-        $keyName = $property->getAttributes(KeyName::class)[0] ?? null;
-        if (!isset($keyName)) {
-            return false;
-        }
-        $value = $keyName->getArguments()[0];
-        return true;
-    }
-
     /**
      * @throws StructureException
      */
@@ -97,6 +82,21 @@ class ConfigStruct
             }
             $config->setNested($name, $value);
         }
+    }
+
+    public static function getKeyName(
+        &$value,
+        ReflectionProperty $property
+    ) : bool
+    {
+        $value = $property->getName();
+
+        $keyName = $property->getAttributes(KeyName::class)[0] ?? null;
+        if (!isset($keyName)) {
+            return false;
+        }
+        $value = $keyName->getArguments()[0];
+        return true;
     }
 
     protected static function initializeChildStruct(&$value, ReflectionProperty $property) : bool
