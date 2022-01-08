@@ -2,9 +2,10 @@
 
 namespace Endermanbugzjfc\ConfigStruct\exceptions;
 
+use Exception;
 use ReflectionProperty;
 
-class MissingFieldException extends ConfigStructException
+class MissingFieldException extends Exception
 {
 
     public function __construct(
