@@ -24,11 +24,13 @@ class ConfigStruct
         int    $type = Config::DETECT
     ) : void
     {
+        self::parseArray((new Config($file, $type))->getAll(), $struct);
+    }
+
+    public static function parseArray(array $array, object $struct) : void
+    {
         $names = self::getKeyNames($struct);
-        foreach (
-            (new Config($file, $type))->getAll()
-            as $k => $v
-        ) {
+        foreach ($array as $k => $v) {
             $name = $names[$k] ?? null;
             if (isset($name)) {
                 $struct->$name = $v;
