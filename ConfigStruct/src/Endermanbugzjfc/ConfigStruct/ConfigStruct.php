@@ -19,15 +19,15 @@ class ConfigStruct
     }
 
     public static function parse(
-        string $file,
         object $struct,
+        string $file,
         int    $type = Config::DETECT
     ) : void
     {
-        self::parseArray((new Config($file, $type))->getAll(), $struct);
+        self::parseArray($struct, (new Config($file, $type))->getAll());
     }
 
-    public static function parseArray(array $array, object $struct) : void
+    public static function parseArray(object $struct, array $array) : void
     {
         $names = self::getKeyNames($struct);
         foreach ($array as $k => $v) {
@@ -69,8 +69,8 @@ class ConfigStruct
      * @throws StructureException
      */
     public static function emit(
-        string $file,
         object $struct,
+        string $file,
         int    $type = Config::DETECT
     ) : void
     {
