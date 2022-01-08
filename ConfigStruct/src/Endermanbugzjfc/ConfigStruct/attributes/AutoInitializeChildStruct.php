@@ -5,8 +5,10 @@ namespace Endermanbugzjfc\ConfigStruct\attributes;
 
 use Attribute;
 use Endermanbugzjfc\ConfigStruct\utils\AttributeUtils;
+use ReflectionAttribute;
 use ReflectionNamedType;
 use ReflectionProperty;
+use function assert;
 
 #[Attribute(Attribute::TARGET_PROPERTY)] class AutoInitializeChildStruct
 {
@@ -27,6 +29,7 @@ use ReflectionProperty;
         )) {
             return false;
         }
+        assert($attribute instanceof ReflectionAttribute);
 
         if (!isset($attribute->getArguments()[0])) {
             if ($property->getType() instanceof ReflectionNamedType) {

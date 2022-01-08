@@ -4,6 +4,7 @@ namespace Endermanbugzjfc\ConfigStruct\attributes;
 
 use Attribute;
 use Endermanbugzjfc\ConfigStruct\utils\AttributeUtils;
+use ReflectionAttribute;
 use ReflectionProperty;
 
 #[Attribute(Attribute::TARGET_PROPERTY)] class KeyName
@@ -27,6 +28,8 @@ use ReflectionProperty;
         )) {
             return false;
         }
+        assert($attribute instanceof ReflectionAttribute);
+
 
         $value = $property->getName();
         $value = $attribute->getArguments()[0];
