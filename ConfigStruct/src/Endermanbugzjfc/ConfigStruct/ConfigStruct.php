@@ -5,6 +5,7 @@ namespace Endermanbugzjfc\ConfigStruct;
 use Endermanbugzjfc\ConfigStruct\attributes\AutoInitializeChildStruct;
 use Endermanbugzjfc\ConfigStruct\attributes\Group;
 use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
+use Endermanbugzjfc\ConfigStruct\attributes\Required;
 use Endermanbugzjfc\ConfigStruct\exceptions\StructureException;
 use pocketmine\utils\Config;
 use ReflectionClass;
@@ -27,8 +28,13 @@ class ConfigStruct
         self::parseArray($struct, (new Config($file, $type))->getAll());
     }
 
-    public static function parseArray(object $struct, array $array) : void
+    public static function parseArray(
+        object $struct,
+        array  $array,
+    ) : array
     {
+        $missing = [];
+
         $reflect = new ReflectionClass($struct);
         foreach (
             $reflect->getProperties(ReflectionProperty::IS_PUBLIC)
@@ -38,6 +44,10 @@ class ConfigStruct
             $value = $array[$name] ?? null;
             if (isset($value)) {
                 $struct->$name = $value;
+            } elseif (isset($property->getAttributes(
+                    Required::class
+                )[0])) {
+                $missing[] = $property;
             } elseif (AutoInitializeChildStruct::initializeProperty(
                 $value,
                 $property
@@ -53,6 +63,7 @@ class ConfigStruct
                 self::parseArray($child, $value);
             }
         }
+        return $missing;
     }
 
     /**
