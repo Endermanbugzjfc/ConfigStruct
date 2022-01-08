@@ -26,6 +26,11 @@ class ConfigStructTest extends TestCase
 
     }
 
+    public function structRequiredProvider() : object
+    {
+
+    }
+
     public function structMixedAttributeProvider() : object
     {
 
@@ -50,10 +55,13 @@ class ConfigStructTest extends TestCase
     {
     }
 
-    public function testParseArrayMixedAttributes()
+    public function testParseArrayRequiredAttribute()
     {
     }
 
+    public function testParseArrayMixedAttributes()
+    {
+    }
 
     public function testEmit()
     {
