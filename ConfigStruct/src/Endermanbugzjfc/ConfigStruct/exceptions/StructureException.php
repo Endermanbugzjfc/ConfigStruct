@@ -2,9 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct\exceptions;
 
-use Exception;
-
-class StructureException extends Exception
+class StructureException extends ConfigStructException
 {
 
 }
