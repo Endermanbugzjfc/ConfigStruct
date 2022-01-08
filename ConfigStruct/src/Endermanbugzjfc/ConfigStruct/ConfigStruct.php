@@ -8,6 +8,7 @@ use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\exceptions\StructureException;
 use pocketmine\utils\Config;
 use ReflectionClass;
+use ReflectionProperty;
 use function is_object;
 
 class ConfigStruct
@@ -29,11 +30,10 @@ class ConfigStruct
     public static function parseArray(object $struct, array $array) : void
     {
         $reflect = new ReflectionClass($struct);
-        foreach ($reflect->getProperties() as $property) {
-            if (!$property->isPublic()) {
-                continue;
-            }
-
+        foreach (
+            $reflect->getProperties(ReflectionProperty::IS_PUBLIC)
+            as $property
+        ) {
             KeyName::getFromProperty($name, $property);
             $value = $array[$name] ?? null;
             if (isset($value)) {
@@ -76,13 +76,10 @@ class ConfigStruct
     public static function emitArray(object $struct) : ?array
     {
         foreach (
-            (new ReflectionClass($struct))->getProperties()
+            (new ReflectionClass($struct))
+                ->getProperties(ReflectionProperty::IS_PUBLIC)
             as $property
         ) {
-            if (!$property->isPublic()) {
-                continue;
-            }
-
             if (!$property->isInitialized()) {
                 if (!AutoInitializeChildStruct::initializeProperty($value, $property)) {
                     $class = $struct::class;
