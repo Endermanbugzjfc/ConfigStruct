@@ -56,7 +56,7 @@ class ConfigStruct
             }
             $names[$name] = $keyName->getArguments()[0];
 
-            if (self::initializeChildStruct($value, $property)) {
+            if ($initializeChildStruct and self::initializeChildStruct($value, $property)) {
                 $struct->$name = $value;
             }
         }
