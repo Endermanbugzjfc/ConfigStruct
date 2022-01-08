@@ -24,6 +24,23 @@ class ConfigStruct
         int    $type = Config::DETECT
     ) : void
     {
+        $names = self::mapKeyNames($struct);
+        foreach (
+            (new Config($file, $type))->getAll()
+            as $k => $v
+        ) {
+            $name = $names[$k] ?? null;
+            if (isset($name)) {
+                $struct->$name = $v;
+            }
+        }
+    }
+
+    public static function mapKeyNames(
+        object $struct,
+        bool   $initializeChildStruct = true
+    ) : array
+    {
         $reflect = new ReflectionClass($struct);
         $names = [];
         foreach ($reflect->getProperties() as $property) {
@@ -31,26 +48,19 @@ class ConfigStruct
                 continue;
             }
 
-            $attribute = $property->getAttributes(KeyName::class)[0] ?? null;
+            $keyName = $property->getAttributes(KeyName::class)[0] ?? null;
             $name = $property->getName();
-            if (!isset($attribute)) {
+            if (!isset($keyName)) {
                 $names[$name] = $name;
                 continue;
             }
-            $names[$name] = $attribute->getArguments()[0];
+            $names[$name] = $keyName->getArguments()[0];
 
-            self::initializeChildStruct($value, $property);
-            if (isset($value)) {
+            if (self::initializeChildStruct($value, $property)) {
                 $struct->$name = $value;
             }
         }
-        foreach (
-            (new Config($file, $type))->getAll()
-            as $k => $v
-        ) {
-            $name = $names[$k];
-            $struct->$name = $v;
-        }
+        return $names;
     }
 
     /**
