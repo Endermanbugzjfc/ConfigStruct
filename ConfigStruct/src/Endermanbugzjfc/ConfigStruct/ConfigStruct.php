@@ -39,7 +39,7 @@ class ConfigStruct
             }
             $names[$name] = $attribute->getArguments()[0];
 
-            $value = self::initializeChildStruct($property);
+            self::initializeChildStruct($value, $property);
             if (isset($value)) {
                 $struct->$name = $value;
             }
@@ -71,7 +71,7 @@ class ConfigStruct
                 continue;
             }
             if (!$property->isInitialized()) {
-                $value = self::initializeChildStruct($property);
+                self::initializeChildStruct($value, $property);
                 if (!isset($value)) {
                     $class = $struct::class;
                     throw new StructureException("Cannot identify which class to use in $class->{$property->getName()}, please specify the appropriate class in the attribute");
@@ -89,11 +89,11 @@ class ConfigStruct
         }
     }
 
-    protected static function initializeChildStruct(ReflectionProperty $property) : ?object
+    protected static function initializeChildStruct(&$value, ReflectionProperty $property) : bool
     {
         $default = $property->getAttributes(AutoInitializeChildStruct::class)[0] ?? null;
         if (!isset($default)) {
-            return null;
+            return false;
         }
         if (!isset($default->getArguments()[0])) {
             if ($property->getType() instanceof ReflectionNamedType) {
@@ -102,7 +102,11 @@ class ConfigStruct
         } else {
             $class = $default->getArguments()[0];
         }
-        return (isset($class) and class_exists($class)) ? new $class : null;
+        if (isset($class) and class_exists($class)) {
+            $value = new $class;
+            return true;
+        }
+        return false;
     }
 
 }
