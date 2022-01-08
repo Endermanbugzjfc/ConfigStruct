@@ -53,7 +53,7 @@ class ConfigStruct
         ReflectionProperty $property
     ) : bool
     {
-        $value = $name = $property->getName();
+        $value = $property->getName();
 
         $keyName = $property->getAttributes(KeyName::class)[0] ?? null;
         if (!isset($keyName)) {
