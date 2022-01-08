@@ -6,6 +6,7 @@ namespace Endermanbugzjfc\ConfigStruct\attributes;
 use Attribute;
 use Endermanbugzjfc\ConfigStruct\utils\AttributeUtils;
 use ReflectionAttribute;
+use ReflectionClass;
 use ReflectionNamedType;
 use ReflectionProperty;
 use function assert;
@@ -40,6 +41,14 @@ use function assert;
         }
         if (isset($class) and class_exists($class)) {
             $value = new $class;
+            foreach (
+                (new ReflectionClass($value))->getProperties()
+                as $sProperty
+            ) {
+                self::initializeProperty($sValue, $sProperty);
+                $sName = $sProperty->getName();
+                $value->$sName = $sValue;
+            }
             return true;
         }
         return false;
