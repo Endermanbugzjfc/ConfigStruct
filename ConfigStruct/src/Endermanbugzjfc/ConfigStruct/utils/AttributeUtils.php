@@ -11,7 +11,7 @@ final class AttributeUtils
     {
     }
 
-    public static function trueIfNo(
+    public static function trueIfNoInProperty(
         ReflectionProperty $property,
         string             $attribute,
                            &$value = null

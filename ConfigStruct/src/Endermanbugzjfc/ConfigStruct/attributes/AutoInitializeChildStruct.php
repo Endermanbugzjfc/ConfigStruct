@@ -22,7 +22,7 @@ use function assert;
 
     public static function initializeProperty(&$value, ReflectionProperty $property) : bool
     {
-        if (AttributeUtils::trueIfNo(
+        if (AttributeUtils::trueIfNoInProperty(
             $property,
             self::class,
             $attribute
