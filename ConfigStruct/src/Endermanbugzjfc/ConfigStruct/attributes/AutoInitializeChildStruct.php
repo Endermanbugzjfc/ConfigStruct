@@ -4,6 +4,7 @@ namespace Endermanbugzjfc\ConfigStruct\attributes;
 
 
 use Attribute;
+use Endermanbugzjfc\ConfigStruct\utils\AttributeUtils;
 use ReflectionNamedType;
 use ReflectionProperty;
 
@@ -19,16 +20,20 @@ use ReflectionProperty;
 
     public static function initializeProperty(&$value, ReflectionProperty $property) : bool
     {
-        $default = $property->getAttributes(AutoInitializeChildStruct::class)[0] ?? null;
-        if (!isset($default)) {
+        if (AttributeUtils::trueIfNo(
+            $property,
+            self::class,
+            $attribute
+        )) {
             return false;
         }
-        if (!isset($default->getArguments()[0])) {
+
+        if (!isset($attribute->getArguments()[0])) {
             if ($property->getType() instanceof ReflectionNamedType) {
                 $class = $property->getName();
             }
         } else {
-            $class = $default->getArguments()[0];
+            $class = $attribute->getArguments()[0];
         }
         if (isset($class) and class_exists($class)) {
             $value = new $class;
