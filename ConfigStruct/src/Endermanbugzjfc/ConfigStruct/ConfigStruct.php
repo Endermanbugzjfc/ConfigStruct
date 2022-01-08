@@ -3,6 +3,7 @@
 namespace Endermanbugzjfc\ConfigStruct;
 
 use Endermanbugzjfc\ConfigStruct\attributes\AutoInitializeChildStruct;
+use Endermanbugzjfc\ConfigStruct\attributes\Group;
 use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\exceptions\StructureException;
 use pocketmine\utils\Config;
@@ -37,11 +38,19 @@ class ConfigStruct
             $value = $array[$name] ?? null;
             if (isset($value)) {
                 $struct->$name = $value;
+            } elseif (AutoInitializeChildStruct::initializeProperty(
+                $value,
+                $property
+            )) {
+                $struct->$name = $value;
                 continue;
             }
 
-            if (AutoInitializeChildStruct::initializeProperty($value, $property)) {
-                $struct->$name = $value;
+            $group = $property->getAttributes(Group::class)[0] ?? null;
+            if (isset($group)) {
+                $class = $group->getArguments()[0];
+                $child = new $class;
+                self::parseArray($child, $value);
             }
         }
     }
