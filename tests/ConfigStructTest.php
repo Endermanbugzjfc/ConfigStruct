@@ -6,6 +6,31 @@ use PHPUnit\Framework\TestCase;
 class ConfigStructTest extends TestCase
 {
 
+    public function structProvider() : object
+    {
+
+    }
+
+    public function structKeyNameAttributeProvider() : object
+    {
+
+    }
+
+    public function structGroupAttributeProvider() : object
+    {
+
+    }
+
+    public function structAutoInitializeChildStructAttributeProvider() : object
+    {
+
+    }
+
+    public function structMixedAttributeProvider() : object
+    {
+
+    }
+
     public function testParseArray()
     {
 
