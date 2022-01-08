@@ -1,6 +1,6 @@
 <?php
 
-namespace Endermanbugzjfc\ConfigStruct\utils;
+namespace Endermanbugzjfc\ConfigStruct\exceptions;
 
 use Exception;
 use ReflectionProperty;
