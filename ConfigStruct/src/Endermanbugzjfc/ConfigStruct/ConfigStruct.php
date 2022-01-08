@@ -24,7 +24,7 @@ class ConfigStruct
         int    $type = Config::DETECT
     ) : void
     {
-        $names = self::mapKeyNames($struct);
+        $names = self::getKeyNames($struct);
         foreach (
             (new Config($file, $type))->getAll()
             as $k => $v
@@ -36,7 +36,7 @@ class ConfigStruct
         }
     }
 
-    public static function mapKeyNames(
+    public static function getKeyNames(
         object $struct,
         bool   $initializeChildStruct = true
     ) : array
