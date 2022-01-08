@@ -58,6 +58,16 @@ class ConfigStruct
     ) : void
     {
         $config = new Config($file, $type);
+        foreach (self::emitArray($struct) as $k => $v) {
+            $config->setNested($k, $v);
+        }
+    }
+
+    /**
+     * @throws StructureException
+     */
+    public static function emitArray(object $struct) : ?array
+    {
         foreach (
             (new ReflectionClass($struct))->getProperties()
             as $property
@@ -65,23 +75,18 @@ class ConfigStruct
             if (!$property->isPublic()) {
                 continue;
             }
+
             if (!$property->isInitialized()) {
-                self::initializeChildStruct($value, $property);
-                if (!isset($value)) {
+                if (!self::initializeChildStruct($value, $property)) {
                     $class = $struct::class;
                     throw new StructureException("Cannot identify which class to use in $class->{$property->getName()}, please specify the appropriate class in the attribute");
                 }
             } else {
                 $value = $property->getValue($struct);
             }
-            $attribute = $property->getAttributes(KeyName::class)[0] ?? null;
-            if (isset($attribute)) {
-                $name = $attribute->getArguments()[0];
-            } else {
-                $name = $property->getName();
-            }
-            $config->setNested($name, $value);
+            $array[self::getKeyName($name, $property)] = $value;
         }
+        return $array ?? [];
     }
 
     public static function getKeyName(
