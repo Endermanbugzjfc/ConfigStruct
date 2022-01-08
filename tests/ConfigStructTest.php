@@ -11,6 +11,25 @@ class ConfigStructTest extends TestCase
 
     }
 
+    public function testParseArrayKeyNameAttribute()
+    {
+
+    }
+
+    public function testParseArrayGroupAttribute()
+    {
+
+    }
+
+    public function testParseArrayAutoInitializeChildStructAttribute()
+    {
+    }
+
+    public function testParseArrayMixedAttributes()
+    {
+    }
+
+
     public function testEmit()
     {
 
