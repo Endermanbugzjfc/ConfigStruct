@@ -11,8 +11,10 @@ use Endermanbugzjfc\ConfigStruct\exceptions\StructureException;
 use pocketmine\utils\Config;
 use ReflectionClass;
 use ReflectionProperty;
+use function dirname;
 use function file_exists;
 use function is_object;
+use function mkdir;
 
 class ConfigStruct
 {
@@ -92,6 +94,7 @@ class ConfigStruct
         int    $type = Config::DETECT
     ) : void
     {
+        @mkdir(dirname($file));
         $config = new Config($file, $type);
         foreach (self::emitArray($struct) as $k => $v) {
             $config->setNested($k, $v);
