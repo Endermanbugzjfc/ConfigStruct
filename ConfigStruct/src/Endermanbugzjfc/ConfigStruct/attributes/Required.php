@@ -8,7 +8,7 @@ use Endermanbugzjfc\ConfigStruct\exceptions\MissingFieldsException;
 /**
  * When a property has this attribute, the corresponding field will be included in a {@link MissingFieldsException}. The exception will be thrown the parsing process has completed.
  *
- * This attribute has higher priority than {@link AutoInitializeChildStruct}.
+ * This attribute has higher priority than {@link AutoInitializeChildStruct}. The child struct of a missing field will NOT be initialized.
  */
 #[Attribute(Attribute::TARGET_PROPERTY)] class Required
 {
