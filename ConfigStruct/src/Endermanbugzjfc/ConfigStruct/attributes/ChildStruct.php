@@ -11,13 +11,13 @@ use ReflectionNamedType;
 use ReflectionProperty;
 use function assert;
 
-#[Attribute(Attribute::TARGET_PROPERTY)] class AutoInitializeChildStruct
+#[Attribute(Attribute::TARGET_PROPERTY)] class ChildStruct
 {
 
     /**
      * @phpstan-param class-string $class
      */
-    public function __construct(?string $class = null)
+    public function __construct(?string $class)
     {
     }
 
