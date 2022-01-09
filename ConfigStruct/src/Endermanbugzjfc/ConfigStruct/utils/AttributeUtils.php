@@ -18,7 +18,7 @@ final class AttributeUtils
     /**
      * @param ReflectionProperty $property The property to check whether it has an instance of the given attribute.
      * @param string $attribute The class string of an attribute.
-     * @phpstan-param class-string<Attribute>
+     * @phpstan-param class-string<Attribute> $attribute
      * @param $value ReflectionAttribute A variable reference, the reflection instance of the given attribute will be assigned to this reference if found.
      * @return bool True = the property doesn't have an instance of the given attribute.
      * @noinspection PhpMissingParamTypeInspection stfu phpsjorm.
