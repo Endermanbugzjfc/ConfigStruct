@@ -19,12 +19,22 @@ use function mkdir;
 class ConfigStruct
 {
 
+    /**
+     * You shouldn't create an instance of this class, just run the APIs statically.
+     * Look at README.md for usage.
+     */
     private function __construct()
     {
     }
 
     /**
-     * @throws MissingFieldsException
+     * Look at README.md for examples.
+     *
+     * @param object $struct An instance of your config struct class. After the file has been parsed, its content will be copied to this instance of on its structure. Then, if there is a missing field, but its property has an {@link AutoInitializeChildStruct} attribute, that property will be initiated with its child struct recursively.
+     * @param string $file Absolute or related path of the file that will be read and parsed.
+     * @param int $type The type (language) of the file (see the constants in {@link Config} class).
+     * @return bool False = invalid path (file or folder doesn't exists).
+     * @throws MissingFieldsException Consider handling this exception and log it onto console.
      */
     public static function parse(
         object $struct,
@@ -44,7 +54,13 @@ class ConfigStruct
     }
 
     /**
-     * @throws MissingFieldsException
+     * Look at README.md for examples.
+     *
+     * @param object $struct An instance of your config struct class. After the file has been parsed, its content will be copied to this instance of on its structure. Then, if there is a missing field, but its property has an {@link AutoInitializeChildStruct} attribute, that property will be initiated with its child struct recursively.
+     * @param array<bool|int|float|string, bool|int|float|string|array> $array Config content in the form of nested scalar keys-values array.
+     * @param string|null $file A path that may be included in exceptions when given.
+     * @return void
+     * @throws MissingFieldsException Consider handling this exception and log it onto console.
      */
     public static function parseArray(
         object  $struct,
@@ -86,7 +102,13 @@ class ConfigStruct
     }
 
     /**
-     * @throws StructureException
+     * Look at README.md for examples.
+     *
+     * @param object $struct An instance of your config struct class. Values of its initiated properties, or uninitiated struct class properties with an {@link AutoInitializeChildStruct} attribute will be encoded recursively in the given type (language) and file path.
+     * @param string $file Absolute or related path of the file that the encoded content will be saved to.
+     * @param int $type The type (language) of the file (see the constants in {@link Config} class).
+     * @return void False = invalid path (file or folder doesn't exists).
+     * @throws StructureException When the structure of the given config struct class cannot be recognized (mostly because there is a union-typed property with the {@link AutoInitializeChildStruct} attribute, but the struct class is not specified in the attribute).
      */
     public static function emit(
         object $struct,
@@ -102,10 +124,14 @@ class ConfigStruct
     }
 
     /**
-     * @throws StructureException
+     * Look at README.md for examples.
+     *
+     * @param object $struct An instance of your config struct class. Values of its initiated properties, or uninitiated struct class properties with an {@link AutoInitializeChildStruct} attribute will be encoded recursively in the given type (language) in the form of nested scalar keys-values array and be returned.
+     * @return array|null Return a nested scalar keys-values array which holds the encoded content.
+     * @throws StructureException When the structure of the given config struct class cannot be recognized (mostly because there is a union-typed property with the {@link AutoInitializeChildStruct} attribute, but the struct class is not specified in the attribute).
      */
     public static function emitArray(object $struct) : ?array
-    {
+    { // TODO: Not nullable
         foreach (
             (new ReflectionClass($struct))
                 ->getProperties(ReflectionProperty::IS_PUBLIC)
