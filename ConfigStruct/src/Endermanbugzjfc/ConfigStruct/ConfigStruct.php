@@ -11,6 +11,7 @@ use Endermanbugzjfc\ConfigStruct\exceptions\StructureException;
 use pocketmine\utils\Config;
 use ReflectionClass;
 use ReflectionProperty;
+use function file_exists;
 use function is_object;
 
 class ConfigStruct
@@ -27,13 +28,17 @@ class ConfigStruct
         object $struct,
         string $file,
         int    $type = Config::DETECT
-    ) : void
+    ) : bool
     {
+        if (!file_exists($file)) {
+            return false;
+        }
         self::parseArray(
             $struct,
             (new Config($file, $type))->getAll(),
             $file
         );
+        return true;
     }
 
     /**
