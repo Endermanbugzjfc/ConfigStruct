@@ -6,6 +6,10 @@ use Attribute;
 use ReflectionProperty;
 
 /**
+ * > TL;DR:
+ * > Set custom key name for a field (if you don't want to use the property name).
+ * > Key names behind the first one will be used for remapping during parse (useful for config updating).
+ *
  * When a property has this attribute, its corresponding field will use the key names given in the attribute arguments instead of the property name.
  *
  * You can provide as many key names as you want.
