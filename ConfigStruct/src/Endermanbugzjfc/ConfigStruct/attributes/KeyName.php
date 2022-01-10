@@ -19,7 +19,7 @@ use ReflectionProperty;
 
     /**
      * @param ReflectionProperty $property
-     * @return int|string
+     * @return int|string The property name if it doesn't have this attribute, or else the key name specified in the attribute argument.
      */
     public static function getFromProperty(
         ReflectionProperty $property
