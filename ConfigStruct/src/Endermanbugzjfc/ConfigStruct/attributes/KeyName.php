@@ -7,12 +7,17 @@ use ReflectionProperty;
 
 /**
  * When a property has this attribute, its corresponding field will use the name given in the instance of this attribute instead of the property name.
+ *
+ * You can provide as many key name as you want.
+ * During parse, Field searching runs in the order of given key names. It starts at the first key name. If no fields use that key name, it searches the next one. The field search stops once a field has been found, its value will be remapped to the first key name and apply to the corresponding property. Please aware that the property name will not be used in field search unless it was given in the attribute arguments.
+ * During emit, the property's corresponding field will use ONLY the first key name.
+ *
  */
 #[Attribute(Attribute::TARGET_PROPERTY)] class KeyName
 {
 
     public function __construct(
-        int|string $name
+        int|string ...$name
     )
     {
     }
