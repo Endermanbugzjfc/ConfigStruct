@@ -12,18 +12,18 @@ use ReflectionProperty;
 {
 
     public function __construct(
-        bool|int|float|string $name
+        int|string $name
     )
     {
     }
 
     /**
      * @param ReflectionProperty $property
-     * @return bool|int|float|string|null
+     * @return int|string
      */
     public static function getFromProperty(
         ReflectionProperty $property
-    ) : bool|int|float|string|null
+    ) : int|string
     {
         $attribute = $property->getAttributes(self::class)[0] ?? null;
         if ($attribute === null) {
