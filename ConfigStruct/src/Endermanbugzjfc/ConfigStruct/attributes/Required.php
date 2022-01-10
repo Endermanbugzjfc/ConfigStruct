@@ -11,7 +11,7 @@ use Endermanbugzjfc\ConfigStruct\exceptions\MissingFieldsException;
 #[Attribute(Attribute::TARGET_PROPERTY)] class Required
 {
 
-    public function __construct(callable $onMissing)
+    public function __construct()
     {
     }
 
