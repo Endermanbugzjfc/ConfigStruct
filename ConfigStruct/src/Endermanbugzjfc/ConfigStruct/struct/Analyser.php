@@ -48,8 +48,8 @@ class Analyser
                 ->getProperties(ReflectionProperty::IS_PUBLIC)
             as $property
         ) {
-            self::checkGroup($struct, $property);
-            self::checkKeyName($struct, $property);
+            self::doesGroupPropertyHasInvalidType($struct, $property);
+            self::wasKeyNameAlreadyUsed($struct, $property);
         }
         return $init ?? false;
     }
@@ -59,7 +59,7 @@ class Analyser
      * @param ReflectionProperty $property
      * @throws StructureException
      */
-    public static function checkGroup(
+    public static function doesGroupPropertyHasInvalidType(
         object             $struct,
         ReflectionProperty $property
     ) : void
@@ -105,7 +105,7 @@ class Analyser
     /**
      * @throws StructureException
      */
-    public static function checkKeyName(
+    public static function wasKeyNameAlreadyUsed(
         object             $struct,
         ReflectionProperty $property
     ) : void
