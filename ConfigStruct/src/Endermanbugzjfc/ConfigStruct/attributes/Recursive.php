@@ -14,8 +14,4 @@ use Endermanbugzjfc\ConfigStruct\exceptions\StructureException;
 #[Attribute(Attribute::TARGET_CLASS)] class Recursive
 {
 
-    public function __construct()
-    {
-    }
-
 }
