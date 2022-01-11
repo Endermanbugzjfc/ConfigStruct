@@ -4,6 +4,7 @@ namespace Endermanbugzjfc\ConfigStruct\struct;
 
 use ArrayAccess;
 use Endermanbugzjfc\ConfigStruct\attributes\Group;
+use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
 use Endermanbugzjfc\ConfigStruct\exceptions\StructureException;
 use Iterator;
@@ -48,6 +49,7 @@ class Analyser
             as $property
         ) {
             self::checkGroup($struct, $property);
+            self::checkKeyName($struct, $property);
         }
         return $init ?? false;
     }
@@ -95,6 +97,37 @@ class Analyser
                 $structClass = $struct::class;
                 throw new StructureException(
                     "Attribute $attributeClass cannot be applied on property $structClass->{$property->getName()}"
+                );
+            }
+        }
+    }
+
+    /**
+     * @throws StructureException
+     */
+    public static function checkKeyName(
+        object             $struct,
+        ReflectionProperty $property
+    ) : void
+    {
+        $attribute = $property->getAttributes(KeyName::class)[0] ?? null;
+        if ($attribute === null) {
+            return;
+        }
+
+        foreach (
+            (new ReflectionClass($struct))
+                ->getProperties(ReflectionProperty::IS_PUBLIC)
+            as $sProperty
+        ) {
+            $name = (
+                $sProperty->getAttributes(Group::class)[0]
+                    ?->getArguments()[0]
+                ) ?? $sProperty->getName();
+            if ($attribute->getArguments()[0] === $name) {
+                $class = $struct::class;
+                throw new StructureException(
+                    "Key name \"$name\" of property $class->{$property->getName()} was already used by property $class->{$sProperty->getName()}"
                 );
             }
         }
