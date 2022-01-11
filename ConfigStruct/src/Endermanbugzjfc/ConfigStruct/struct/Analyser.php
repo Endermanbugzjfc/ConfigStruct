@@ -2,6 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct\struct;
 
+use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
 use Endermanbugzjfc\ConfigStruct\exceptions\StructureException;
 use pocketmine\utils\Utils;
 use ReflectionClass;
@@ -27,6 +28,11 @@ class Analyser
     {
         $class = Utils::getNiceClassName($struct);
         if (($r = array_search($class, $nodeTrace, true)) !== false) {
+            if (!empty((new ReflectionClass(
+                $nodeTrace[$r]
+            ))->getAttributes(Recursive::class))) {
+                return false;
+            }
             throw new StructureException(
                 "Recursion found in struct class $nodeTrace[$r] => ... => $class"
             );
