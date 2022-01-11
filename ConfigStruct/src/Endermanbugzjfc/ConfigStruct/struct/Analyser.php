@@ -94,7 +94,7 @@ class Analyser
                 $attributeClass = Group::class;
                 $structClass = $struct::class;
                 throw new StructureException(
-                    "Attribute $attributeClass cannot be applied on property $structClass->\${$property->getName()}"
+                    "Attribute $attributeClass cannot be applied on property $structClass->{$property->getName()}"
                 );
             }
         }
