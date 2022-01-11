@@ -6,9 +6,10 @@ use Attribute;
 use Endermanbugzjfc\ConfigStruct\exceptions\StructureException;
 
 /**
- * Recursive child struct check will not be performed on classes with this attribute.
+ * This attribute should be applied on a child struct and not the root struct.
  *
- * The initialization of child struct will also stop silently without throwing a {@link StructureException}.
+ * Recursion check will not be performed on structs with this attribute.
+ * The initialization of that child struct will stop silently without throwing an {@link StructureException}.
  */
 #[Attribute(Attribute::TARGET_CLASS)] class Recursive
 {
