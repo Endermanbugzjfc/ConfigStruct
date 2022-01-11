@@ -13,6 +13,7 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
+use function array_unique;
 use function is_a;
 
 class Analyser
@@ -49,6 +50,7 @@ class Analyser
             as $property
         ) {
             self::doesGroupPropertyHasInvalidType($struct, $property);
+            self::doesKeyNameHaveDuplicatedArguments($struct, $property);
             self::wasKeyNameAlreadyUsed($struct, $property);
         }
         return $init ?? false;
@@ -99,6 +101,28 @@ class Analyser
                     "Attribute $attributeClass cannot be applied on property $structClass->{$property->getName()}"
                 );
             }
+        }
+    }
+
+    /**
+     * @throws StructureException
+     */
+    public static function doesKeyNameHaveDuplicatedArguments(
+        object             $struct,
+        ReflectionProperty $property
+    ) : void
+    {
+        $attribute = $property->getAttributes(KeyName::class)[0] ?? null;
+        if ($attribute === null) {
+            return;
+        }
+
+        $names = $attribute->getArguments();
+        if ($names !== array_unique($names)) {
+            $class = $struct::class;
+            throw new StructureException(
+                "Property $class->{$property->getName()} has duplicated key names"
+            );
         }
     }
 
