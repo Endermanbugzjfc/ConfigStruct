@@ -8,7 +8,7 @@ use ReflectionProperty;
 /**
  * Emit and parse this property with the name provided in the attribute instead of the property name.
  *
- * If multiple names are provided, only the first one is used for emitting, and the first name available in the input is used for parsing.
+ * If multiple names are provided, only the first one is used for emitting, and the first name available in the input is used for parsing. This gets useful when updating configs.
  */
 #[Attribute(Attribute::TARGET_PROPERTY)] class KeyName
 {
