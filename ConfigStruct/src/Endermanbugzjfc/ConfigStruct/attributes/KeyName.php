@@ -20,15 +20,27 @@ use ReflectionProperty;
     }
 
     /**
-     * @param ReflectionProperty $property
-     * @return array<int|string> The property name if it doesn't have this attribute, or else the key name specified in the attribute argument.
+     * @param array $array The input to be scanned.
+     * @param ReflectionProperty $property Property's {@link KeyName} attribute will be used in the search. Return null if it doesn't have.
+     * @return int|string|null Null = no first name available.
      */
-    public static function getFromProperty(
+    public static function searchFirstNameAvailable(
+        array              $array,
         ReflectionProperty $property
-    ) : array
+    ) : int|string|null
     {
-        $names = $property->getAttributes(KeyName::class)[0]?->getArguments();
-        return $names ?? [$property->getName()];
+        $attribute = $property->getAttributes(self::class)[0] ?? null;
+        if ($attribute === null) {
+            return null;
+        }
+
+        foreach ($attribute->getArguments() as $sn) {
+            if (array_key_exists($sn, $array)) {
+                $name = $sn;
+                break;
+            }
+        }
+        return $name ?? null;
     }
 
 }
