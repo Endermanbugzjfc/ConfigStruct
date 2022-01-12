@@ -19,13 +19,21 @@ use function is_a;
 class Analyser
 {
 
+    /**
+     * This class should be used statically!
+     */
     private function __construct()
     {
     }
 
     /**
-     * @throws ReflectionException
-     * @throws StructureException
+     * @param object $struct The class to be analysed.
+     * @param string[] $nodeTrace An array of class string. Class string of $struct on the top, class string of the root struct at the bottom.
+     * @phpstan-param class-string[] $nodeTrace
+     * @param bool $initializeStruct True = initialize the struct during analyse.
+     * @return bool True = This struct has default value and was initialized.
+     * @throws ReflectionException When {@link Utils::getNiceClassName()} failed.
+     * @throws StructureException The class has invalid structure, reason is included in the exception.
      */
     public static function analyseStruct(
         object $struct,
@@ -57,10 +65,10 @@ class Analyser
     }
 
     /**
-     * @param object $struct
-     * @param ReflectionProperty $property
-     * @throws StructureException
-     * @throws ReflectionException
+     * @param object $struct The class to be checked.
+     * @param ReflectionProperty $property The property to be checked from the above class.
+     * @throws StructureException If the property has the {@link Group} attribute but a conflicted type.
+     * @throws ReflectionException When {@link Utils::getNiceClassName()} failed.
      */
     public static function doesGroupPropertyHasInvalidType(
         object             $struct,
@@ -105,9 +113,13 @@ class Analyser
         }
     }
 
+
     /**
-     * @throws StructureException
-     * @throws ReflectionException
+     * @param object $struct The class to be checked.
+     * @param ReflectionProperty $property The property to be checked from the above class.
+     * @return void
+     * @throws StructureException If the property has the {@link Group} attribute but a conflicted type.
+     * @throws ReflectionException When {@link Utils::getNiceClassName()} failed.
      */
     public static function doesKeyNameHaveDuplicatedArguments(
         object             $struct,
@@ -128,9 +140,13 @@ class Analyser
         }
     }
 
+
     /**
-     * @throws StructureException
-     * @throws ReflectionException
+     * @param object $struct The class to be checked.
+     * @param ReflectionProperty $property The property to be checked from the above class.
+     * @return void
+     * @throws StructureException If the property has the {@link Group} attribute but a conflicted type.
+     * @throws ReflectionException When {@link Utils::getNiceClassName()} failed.
      */
     public static function wasKeyNameAlreadyUsed(
         object             $struct,
