@@ -8,7 +8,7 @@ use ReflectionException;
 use ReflectionProperty;
 use function is_object;
 
-class Cacher
+class CacheHolder
 {
 
     /**
