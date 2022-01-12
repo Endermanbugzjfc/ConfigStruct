@@ -7,7 +7,7 @@ class Parser
 
 
     /**
-     * You shouldn't create an instance of this class, just run the APIs statically.
+     * This class should be used statically!
      */
     private function __construct()
     {
