@@ -2,13 +2,12 @@
 
 namespace Endermanbugzjfc\ConfigStruct\exceptions;
 
-use Exception;
 use ReflectionProperty;
 use function array_map;
 use function count;
 use function implode;
 
-class MissingFieldsException extends Exception
+class MissingFieldsException extends SetupException
 {
 
     public function __construct(
