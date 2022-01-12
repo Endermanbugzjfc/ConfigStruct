@@ -60,6 +60,7 @@ class Analyser
      * @param object $struct
      * @param ReflectionProperty $property
      * @throws StructureException
+     * @throws ReflectionException
      */
     public static function doesGroupPropertyHasInvalidType(
         object             $struct,
@@ -96,7 +97,7 @@ class Analyser
                 )
             ) {
                 $attributeClass = Group::class;
-                $structClass = $struct::class;
+                $structClass = Utils::getNiceClassName($struct);
                 throw new StructureException(
                     "Attribute $attributeClass cannot be applied on property $structClass->{$property->getName()}"
                 );
@@ -106,6 +107,7 @@ class Analyser
 
     /**
      * @throws StructureException
+     * @throws ReflectionException
      */
     public static function doesKeyNameHaveDuplicatedArguments(
         object             $struct,
@@ -119,7 +121,7 @@ class Analyser
 
         $names = $attribute->getArguments();
         if ($names !== array_unique($names)) {
-            $class = $struct::class;
+            $class = Utils::getNiceClassName($struct);
             throw new StructureException(
                 "Property $class->{$property->getName()} has duplicated key names"
             );
@@ -128,6 +130,7 @@ class Analyser
 
     /**
      * @throws StructureException
+     * @throws ReflectionException
      */
     public static function wasKeyNameAlreadyUsed(
         object             $struct,
@@ -149,7 +152,7 @@ class Analyser
                     ?->getArguments()[0]
                 ) ?? $sProperty->getName();
             if ($attribute->getArguments()[0] === $name) {
-                $class = $struct::class;
+                $class = Utils::getNiceClassName($struct);
                 throw new StructureException(
                     "Key name \"$name\" of property $class->{$property->getName()} was already used by property $class->{$sProperty->getName()}"
                 );
