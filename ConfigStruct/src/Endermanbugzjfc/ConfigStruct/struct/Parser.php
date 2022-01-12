@@ -1,6 +1,6 @@
 <?php
 
-namespace Endermanbugzjfc\ConfigStruct;
+namespace Endermanbugzjfc\ConfigStruct\struct;
 
 class Parser
 {
