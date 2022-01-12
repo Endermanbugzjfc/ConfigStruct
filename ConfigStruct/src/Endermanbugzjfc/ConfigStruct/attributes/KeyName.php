@@ -21,18 +21,14 @@ use ReflectionProperty;
 
     /**
      * @param ReflectionProperty $property
-     * @return int|string The property name if it doesn't have this attribute, or else the key name specified in the attribute argument.
+     * @return array<int|string> The property name if it doesn't have this attribute, or else the key name specified in the attribute argument.
      */
     public static function getFromProperty(
         ReflectionProperty $property
-    ) : int|string
+    ) : array
     {
-        $attribute = $property->getAttributes(self::class)[0] ?? null;
-        if ($attribute === null) {
-            return $property->getName();
-        }
-
-        return $attribute->getArguments()[0];
+        $names = $property->getAttributes(KeyName::class)[0]?->getArguments();
+        return $names ?? [$property->getName()];
     }
 
 }
