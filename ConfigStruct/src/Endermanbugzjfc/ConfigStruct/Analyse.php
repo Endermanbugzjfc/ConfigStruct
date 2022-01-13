@@ -116,40 +116,4 @@ class Analyse
         return $names !== array_unique($names);
     }
 
-
-    /**
-     * @param object $struct The class to be checked.
-     * @param ReflectionProperty $property The property to be checked from the above class.
-     * @return void
-     * @throws StructureException If the property has the {@link Group} attribute but a conflicted type.
-     * @throws ReflectionException When {@link Utils::getNiceClassName()} failed.
-     */
-    public static function wasKeyNameAlreadyUsed(
-        object             $struct,
-        ReflectionProperty $property
-    ) : void
-    {
-        $attribute = $property->getAttributes(KeyName::class)[0] ?? null;
-        if ($attribute === null) {
-            return;
-        }
-
-        foreach (
-            (new ReflectionClass($struct))
-                ->getProperties(ReflectionProperty::IS_PUBLIC)
-            as $sProperty
-        ) {
-            $name = (
-                $sProperty->getAttributes(Group::class)[0]
-                    ?->getArguments()[0]
-                ) ?? $sProperty->getName();
-            if ($attribute->getArguments()[0] === $name) {
-                $class = Utils::getNiceClassName($struct);
-                throw new StructureException(
-                    "Key name \"$name\" of property $class->{$property->getName()} was already used by property $class->{$sProperty->getName()}"
-                );
-            }
-        }
-    }
-
 }
