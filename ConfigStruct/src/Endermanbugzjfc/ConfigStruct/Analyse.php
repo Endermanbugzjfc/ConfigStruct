@@ -98,7 +98,11 @@ class Analyse
         if ($types === null) {
             return true;
         } elseif ($types instanceof ReflectionNamedType) {
-            if ($types->getName() === "array") {
+            if (
+                $types->getName() === "array"
+                or
+                $types->getName() === "mixed"
+            ) {
                 return true;
             }
         } else {
