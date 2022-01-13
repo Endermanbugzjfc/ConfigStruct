@@ -1,6 +1,6 @@
 <?php
 
-namespace Endermanbugzjfc\ConfigStruct\struct;
+namespace Endermanbugzjfc\ConfigStruct;
 
 use ArrayAccess;
 use Endermanbugzjfc\ConfigStruct\attributes\Group;

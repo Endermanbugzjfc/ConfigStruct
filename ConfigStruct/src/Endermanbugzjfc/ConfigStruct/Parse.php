@@ -1,6 +1,6 @@
 <?php
 
-namespace Endermanbugzjfc\ConfigStruct\struct;
+namespace Endermanbugzjfc\ConfigStruct;
 
 use pocketmine\utils\Config;
 use ReflectionClass;
