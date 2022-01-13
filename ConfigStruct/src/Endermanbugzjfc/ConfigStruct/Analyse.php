@@ -12,6 +12,7 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
+use function array_search;
 use function array_unique;
 
 class Analyse
@@ -24,31 +25,13 @@ class Analyse
     {
     }
 
-    /**
-     * @param object $struct The class to be analysed.
-     * @param string[] $nodeTrace An array of class string. Class string of $struct on the top, class string of the root struct at the bottom.
-     * @phpstan-param class-string[] $nodeTrace
-     *
-     * @return bool True = This struct has default value and was initialized.
-     * @throws ReflectionException When {@link Utils::getNiceClassName()} failed.
-     * @throws StructureException The class has invalid structure, reason is included in the exception.
-     */
     public static function initializeStruct(
         object $struct,
         array  $nodeTrace,
     ) : bool
     {
-        $class = Utils::getNiceClassName($struct);
-        if (($r = array_search($class, $nodeTrace, true)) !== false) {
-            if (!empty((new ReflectionClass(
-                $nodeTrace[$r]
-            ))->getAttributes(Recursive::class))) {
-                return false;
-            }
-            throw new StructureException(
-                "Recursion found in struct class $nodeTrace[$r] => ... => $class"
-            );
-        }
+        $nodeTrace = self::recursion($struct, $nodeTrace);
+
         foreach (
             (new ReflectionClass($struct))
                 ->getProperties(ReflectionProperty::IS_PUBLIC)
@@ -130,6 +113,31 @@ class Analyse
     {
         $names = $attribute->getArguments();
         return $names !== array_unique($names);
+    }
+
+    /**
+     * @param object $struct The child struct to be checked.
+     * @param string[] $nodeTrace Variable reference to a stacktrace. Class name of the child struct will be appended to this.
+     * @return bool True = THe child struct is recursive but doesn't have the {@link Recursive} attribute.
+     * @throws ReflectionException
+     */
+    public static function recursion(
+        object $struct,
+        array  &$nodeTrace
+    ) : bool
+    {
+        $class = Utils::getNiceClassName($struct);
+        $nodeTrace[] = $class;
+
+        $r = array_search($class, $nodeTrace, true);
+        if ($r !== false) {
+            return empty(
+            (new ReflectionClass(
+                $nodeTrace[$r]
+            ))->getAttributes(Recursive::class));
+        }
+
+        return false;
     }
 
 }
