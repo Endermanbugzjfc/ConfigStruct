@@ -2,19 +2,16 @@
 
 namespace Endermanbugzjfc\ConfigStruct;
 
-use ArrayAccess;
 use Endermanbugzjfc\ConfigStruct\attributes\Group;
 use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
 use Endermanbugzjfc\ConfigStruct\exceptions\StructureException;
-use Iterator;
 use pocketmine\utils\Utils;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
 use function array_unique;
-use function is_a;
 
 class Analyse
 {
@@ -63,53 +60,42 @@ class Analyse
         return $init ?? false;
     }
 
-    /**
-     * @param object $struct The class to be checked.
-     * @param ReflectionProperty $property The property to be checked from the above class.
-     * @throws StructureException If the property has the {@link Group} attribute but a conflicted type.
-     * @throws ReflectionException When {@link Utils::getNiceClassName()} failed.
-     */
-    public static function doesGroupPropertyHasInvalidType(
-        object             $struct,
+    public static function property(
+        string             $class,
         ReflectionProperty $property
     ) : void
     {
+        self::doesGroupPropertyHasInvalidType($class, $property);
+        self::doesKeyNameHaveDuplicatedArguments($class, $property);
+        self::wasKeyNameAlreadyUsed($class, $property);
+    }
+
+    /**
+     * @param ReflectionProperty $property The property to be checked.
+     * @return bool True = the property has a {@link Group} attribute but doesn't use the "array" type or include it in union-types.
+     */
+    public static function doesGroupPropertyHasInvalidType(
+        ReflectionProperty $property
+    ) : bool
+    {
         $attribute = $property->getAttributes(Group::class)[0] ?? null;
         if ($attribute === null) {
-            return;
+            return false;
         }
 
         $types = $property->getType();
         if ($types instanceof ReflectionNamedType) {
-            $types = [$types];
-        } else {
-            $types = $types->getTypes();
-        }
-        foreach ($types as $type) {
-            if (
-                $type->getName() !== "array"
-                and
-                !(
-                    is_a(
-                        $type->getName(),
-                        ArrayAccess::class,
-                        true
-                    )
-                    and
-                    is_a(
-                        $type->getName(),
-                        Iterator::class,
-                        true
-                    )
-                )
-            ) {
-                $attributeClass = Group::class;
-                $structClass = Utils::getNiceClassName($struct);
-                throw new StructureException(
-                    "Attribute $attributeClass cannot be applied on property $structClass->{$property->getName()}"
-                );
+            if ($types->getName() === "array") {
+                return true;
+            }
+        } elseif (!$types === null) {
+            foreach ($types->getTypes() as $type) {
+                if ($type->getName() === "array") {
+                    return true;
+                }
             }
         }
+        return false;
     }
 
 
