@@ -81,7 +81,7 @@ class Analyse
             self::doesGroupPropertyHaveInvalidType($property)
         ) {
             throw new StructureException(
-                "$blameProperty is a group but doesn't use the \"array\" type or include it in union-types"
+                "$blameProperty is a group but its type is not compatible"
             );
         }
     }
@@ -95,11 +95,13 @@ class Analyse
     ) : bool
     {
         $types = $property->getType();
-        if ($types instanceof ReflectionNamedType) {
+        if ($types === null) {
+            return true;
+        } elseif ($types instanceof ReflectionNamedType) {
             if ($types->getName() === "array") {
                 return true;
             }
-        } elseif (!$types === null) {
+        } else {
             foreach ($types->getTypes() as $type) {
                 if ($type->getName() === "array") {
                     return true;
