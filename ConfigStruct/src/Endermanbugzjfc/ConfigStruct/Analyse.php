@@ -100,29 +100,20 @@ class Analyse
 
 
     /**
-     * @param object $struct The class to be checked.
-     * @param ReflectionProperty $property The property to be checked from the above class.
-     * @return void
-     * @throws StructureException If the property has the {@link Group} attribute but a conflicted type.
-     * @throws ReflectionException When {@link Utils::getNiceClassName()} failed.
+     * @param ReflectionProperty $property The property to be checked.
+     * @return bool True = the property has a {@link KeyName} attribute but two or more of its arguments have the same value and type.
      */
     public static function doesKeyNameHaveDuplicatedArguments(
-        object             $struct,
         ReflectionProperty $property
-    ) : void
+    ) : bool
     {
         $attribute = $property->getAttributes(KeyName::class)[0] ?? null;
         if ($attribute === null) {
-            return;
+            return false;
         }
 
         $names = $attribute->getArguments();
-        if ($names !== array_unique($names)) {
-            $class = Utils::getNiceClassName($struct);
-            throw new StructureException(
-                "Property $class->{$property->getName()} has duplicated key names"
-            );
-        }
+        return $names !== array_unique($names);
     }
 
 
