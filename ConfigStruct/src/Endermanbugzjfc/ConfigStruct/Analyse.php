@@ -96,23 +96,23 @@ class Analyse
     {
         $types = $property->getType();
         if ($types === null) {
-            return true;
+            return false;
         } elseif ($types instanceof ReflectionNamedType) {
             if (
                 $types->getName() === "array"
                 or
                 $types->getName() === "mixed"
             ) {
-                return true;
+                return false;
             }
         } else {
             foreach ($types->getTypes() as $type) {
                 if ($type->getName() === "array") {
-                    return true;
+                    return false;
                 }
             }
         }
-        return false;
+        return true;
     }
 
 
