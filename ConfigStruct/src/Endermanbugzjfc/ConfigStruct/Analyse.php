@@ -30,7 +30,7 @@ class Analyse
      * @param object $struct The class to be analysed.
      * @param string[] $nodeTrace An array of class string. Class string of $struct on the top, class string of the root struct at the bottom.
      * @phpstan-param class-string[] $nodeTrace
-     * @param bool $initializeStruct True = initialize the struct during analyse.
+     *
      * @return bool True = This struct has default value and was initialized.
      * @throws ReflectionException When {@link Utils::getNiceClassName()} failed.
      * @throws StructureException The class has invalid structure, reason is included in the exception.
