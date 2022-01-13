@@ -3,6 +3,7 @@
 namespace Endermanbugzjfc\ConfigStruct;
 
 use Endermanbugzjfc\ConfigStruct\attributes\Group;
+use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
 use Endermanbugzjfc\ConfigStruct\exceptions\StructureException;
 use pocketmine\utils\Utils;
@@ -60,14 +61,39 @@ class Analyse
         return $init ?? false;
     }
 
+    /**
+     * @param ReflectionProperty $property The property to be checked.
+     * @return void
+     * @throws StructureException The property has invalid structure.
+     */
     public static function property(
-        string             $class,
-        ReflectionProperty $property
+        ReflectionProperty $property,
     ) : void
     {
-        self::doesGroupPropertyHasInvalidType($class, $property);
-        self::doesKeyNameHaveDuplicatedArguments($class, $property);
-        self::wasKeyNameAlreadyUsed($class, $property);
+        $blameProperty = "Property {$property->getDeclaringClass()->getName()}->{$property->getName()}";
+
+        $keyName = $property->getAttributes(KeyName::class)[0] ?? null;
+        if (
+            $keyName !== null
+            and
+            self::doesKeyNameHaveDuplicatedArgument($keyName)
+        ) {
+            throw new StructureException(
+                "$blameProperty used two key names which is exactly the same"
+            );
+        }
+
+
+        $group = $property->getAttributes(Group::class)[0] ?? null;
+        if (
+            $group !== null
+            and
+            self::doesGroupPropertyHaveInvalidType($property)
+        ) {
+            throw new StructureException(
+                "$blameProperty is a group but doesn't use the \"array\" type or include it in union-types"
+            );
+        }
     }
 
     /**
