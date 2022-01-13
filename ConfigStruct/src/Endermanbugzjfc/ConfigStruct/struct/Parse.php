@@ -6,7 +6,7 @@ use pocketmine\utils\Config;
 use ReflectionClass;
 use ReflectionProperty;
 
-class Parser
+class Parse
 {
 
 
@@ -25,7 +25,7 @@ class Parser
      * @param int $type The type (language) of the file (see the constants in {@link Config} class).
      * @return bool False = invalid path (file or folder doesn't exists).
      */
-    public static function parse(
+    public static function file(
         object $struct,
         string $file,
         int    $type = Config::DETECT
@@ -34,7 +34,7 @@ class Parser
         if (!file_exists($file)) {
             return false;
         }
-        self::parseArray(
+        self::array(
             $struct,
             (new Config($file, $type))->getAll(),
         );
@@ -44,10 +44,10 @@ class Parser
     /**
      * Look at README.md for examples.
      *
-     * @param object $struct The instance should be already initialized (from {@link Analyser::analyseStruct()}, you may create cache if this struct used for more than one times). Parsed content will be copied to this instance depending on its structure.
+     * @param object $struct The instance should be already initialized (from {@link Analyse::initializeStruct()}, you may create cache if this struct used for more than one times). Parsed content will be copied to this instance depending on its structure.
      * @param array<bool|int|float|string, bool|int|float|string|array> $array Config content in the form of nested scalar keys-values array.
      */
-    public static function parseArray(
+    public static function array(
         object $struct,
         array  $array,
     ) : void

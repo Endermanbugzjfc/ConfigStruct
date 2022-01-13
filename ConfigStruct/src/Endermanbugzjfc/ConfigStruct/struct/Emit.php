@@ -6,7 +6,7 @@ use pocketmine\utils\Config;
 use ReflectionClass;
 use ReflectionProperty;
 
-class Emitter
+class Emit
 {
 
     /**
@@ -17,7 +17,7 @@ class Emitter
      * @param int $type The type (language) of the file (see the constants in {@link Config} class).
      * @return void False = invalid path (file or folder doesn't exists).
      */
-    public static function emit(
+    public static function file(
         object $struct,
         string $file,
         int    $type = Config::DETECT
@@ -25,7 +25,7 @@ class Emitter
     {
         @mkdir(dirname($file));
         $config = new Config($file, $type);
-        foreach (self::emitArray($struct) as $k => $v) {
+        foreach (self::array($struct) as $k => $v) {
             $config->setNested($k, $v);
         }
     }
@@ -36,7 +36,7 @@ class Emitter
      * @param object $struct An instance of your config struct class. Values of its initiated properties, or uninitiated struct class properties with an {@link AutoInitializeChildStruct} attribute will be encoded recursively in the given type (language) in the form of nested scalar keys-values array and be returned.
      * @return array Return a nested scalar keys-values array which holds the encoded content.
      */
-    public static function emitArray(object $struct) : array
+    public static function array(object $struct) : array
     {
         foreach (
             (new ReflectionClass($struct))

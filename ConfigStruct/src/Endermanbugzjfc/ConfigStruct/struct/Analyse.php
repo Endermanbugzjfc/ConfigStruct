@@ -16,7 +16,7 @@ use ReflectionProperty;
 use function array_unique;
 use function is_a;
 
-class Analyser
+class Analyse
 {
 
     /**
@@ -35,10 +35,9 @@ class Analyser
      * @throws ReflectionException When {@link Utils::getNiceClassName()} failed.
      * @throws StructureException The class has invalid structure, reason is included in the exception.
      */
-    public static function analyseStruct(
+    public static function initializeStruct(
         object $struct,
         array  $nodeTrace,
-        bool   $initializeStruct = true,
     ) : bool
     {
         $class = Utils::getNiceClassName($struct);
