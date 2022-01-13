@@ -34,11 +34,11 @@ class Analyse
         array  $nodeTrace,
     ) : void
     {
-        $class = Utils::getNiceClassName($struct);
-        $sClass = self::recursion($struct, $nodeTrace);
+        $sClass = self::recursion($struct::class, $nodeTrace);
         if ($sClass !== null) {
+            $niceClass = Utils::getNiceClassName($struct);
             throw new StructureException(
-                "Recursion found in struct class $sClass => ... => $class => loop"
+                "Recursion found in struct class $sClass => ... => $niceClass => loop"
             );
         }
 
@@ -129,18 +129,17 @@ class Analyse
     }
 
     /**
-     * @param object $struct The child struct to be checked.
+     * @param string $class Class name of the child struct to be checked.
      * @param string[] $nodeTrace Variable reference to a stacktrace. Class name of the child struct will be appended to this.
      * @return string|null Class name of the recursive struct. Null = no recursion.
-     * @phpstan-return class-string
      * @throws ReflectionException
+     * @phpstan-return class-string
      */
     public static function recursion(
-        object $struct,
+        string $class,
         array  &$nodeTrace
     ) : ?string
     {
-        $class = Utils::getNiceClassName($struct);
         $nodeTrace[] = $class;
 
         $r = array_search($class, $nodeTrace, true);
