@@ -25,23 +25,30 @@ class Analyse
     {
     }
 
-    public static function initializeStruct(
+    /**
+     * @throws ReflectionException
+     * @throws StructureException
+     */
+    public static function struct(
         object $struct,
         array  $nodeTrace,
-    ) : bool
+    ) : void
     {
-        $nodeTrace = self::recursion($struct, $nodeTrace);
+        $class = Utils::getNiceClassName($struct);
+        $sClass = self::recursion($struct, $nodeTrace);
+        if ($sClass !== null) {
+            throw new StructureException(
+                "Recursion found in struct class $sClass => ... => $class => loop"
+            );
+        }
 
         foreach (
             (new ReflectionClass($struct))
                 ->getProperties(ReflectionProperty::IS_PUBLIC)
             as $property
         ) {
-            self::groupPropertyType($struct, $property);
-            self::doesKeyNameHaveDuplicatedArgument($struct, $property);
-            self::wasKeyNameAlreadyUsed($struct, $property);
+            self::property($property);
         }
-        return $init ?? false;
     }
 
     /**
