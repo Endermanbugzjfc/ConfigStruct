@@ -3,10 +3,10 @@
 namespace Endermanbugzjfc\ConfigStruct;
 
 use Endermanbugzjfc\ConfigStruct\attributes\Group;
-use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
 use Endermanbugzjfc\ConfigStruct\exceptions\StructureException;
 use pocketmine\utils\Utils;
+use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
@@ -53,8 +53,8 @@ class Analyse
                 ->getProperties(ReflectionProperty::IS_PUBLIC)
             as $property
         ) {
-            self::doesGroupPropertyHasInvalidType($struct, $property);
-            self::doesKeyNameHaveDuplicatedArguments($struct, $property);
+            self::groupPropertyType($struct, $property);
+            self::doesKeyNameHaveDuplicatedArgument($struct, $property);
             self::wasKeyNameAlreadyUsed($struct, $property);
         }
         return $init ?? false;
@@ -72,17 +72,12 @@ class Analyse
 
     /**
      * @param ReflectionProperty $property The property to be checked.
-     * @return bool True = the property has a {@link Group} attribute but doesn't use the "array" type or include it in union-types.
+     * @return bool The property's type is compatible with a {@link Group} attribute.
      */
-    public static function doesGroupPropertyHasInvalidType(
+    public static function groupPropertyType(
         ReflectionProperty $property
     ) : bool
     {
-        $attribute = $property->getAttributes(Group::class)[0] ?? null;
-        if ($attribute === null) {
-            return false;
-        }
-
         $types = $property->getType();
         if ($types instanceof ReflectionNamedType) {
             if ($types->getName() === "array") {
@@ -100,18 +95,13 @@ class Analyse
 
 
     /**
-     * @param ReflectionProperty $property The property to be checked.
-     * @return bool True = the property has a {@link KeyName} attribute but two or more of its arguments have the same value and type.
+     * @param ReflectionAttribute $attribute The attribute to be checked.
+     * @return bool True = two or more arguments in the attribute have the same value and type.
      */
-    public static function doesKeyNameHaveDuplicatedArguments(
-        ReflectionProperty $property
+    public static function doesKeyNameHaveDuplicatedArgument(
+        ReflectionAttribute $attribute
     ) : bool
     {
-        $attribute = $property->getAttributes(KeyName::class)[0] ?? null;
-        if ($attribute === null) {
-            return false;
-        }
-
         $names = $attribute->getArguments();
         return $names !== array_unique($names);
     }
