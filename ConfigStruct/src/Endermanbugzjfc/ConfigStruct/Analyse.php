@@ -118,13 +118,14 @@ class Analyse
     /**
      * @param object $struct The child struct to be checked.
      * @param string[] $nodeTrace Variable reference to a stacktrace. Class name of the child struct will be appended to this.
-     * @return bool True = THe child struct is recursive but doesn't have the {@link Recursive} attribute.
+     * @return string|null Class name of the recursive struct. Null = no recursion.
+     * @phpstan-return class-string
      * @throws ReflectionException
      */
     public static function recursion(
         object $struct,
         array  &$nodeTrace
-    ) : bool
+    ) : ?string
     {
         $class = Utils::getNiceClassName($struct);
         $nodeTrace[] = $class;
@@ -133,11 +134,12 @@ class Analyse
         if ($r !== false) {
             return empty(
             (new ReflectionClass(
-                $nodeTrace[$r]
-            ))->getAttributes(Recursive::class));
+                $sClass = $nodeTrace[$r]
+            ))->getAttributes(Recursive::class))
+                ? $sClass : null;
         }
 
-        return false;
+        return null;
     }
 
 }
