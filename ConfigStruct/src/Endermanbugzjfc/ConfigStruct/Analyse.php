@@ -74,7 +74,7 @@ class Analyse
      * @param ReflectionProperty $property The property to be checked.
      * @return bool The property's type is compatible with a {@link Group} attribute.
      */
-    public static function groupPropertyType(
+    public static function doesGroupPropertyHasInvalidType(
         ReflectionProperty $property
     ) : bool
     {
