@@ -10,12 +10,12 @@ use ReflectionProperty;
  *
  * If multiple names are provided, only the first one is used for emitting, and the first name available in the input is used for parsing. This gets useful when updating configs.
  */
-#[Attribute(Attribute::TARGET_PROPERTY)] class KeyName
+#[Attribute(Attribute::TARGET_PROPERTY | Attribute::IS_REPEATABLE)]
+class KeyName
 {
 
     public function __construct(
         int|string $name,
-        int|string ...$moreNames
     )
     {
     }
