@@ -4,6 +4,7 @@ namespace Endermanbugzjfc\ConfigStruct;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionProperty;
 
 class AnalyseTest extends TestCase
@@ -43,9 +44,31 @@ class AnalyseTest extends TestCase
 
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public function testRecursion()
     {
+        $a = (new class() {
+        })::class;
+        $b = (new class() {
+        })::class;
+        $c = (new class() {
+        })::class;
 
+        $aTrace = [$a];
+        $this->assertTrue(Analyse::recursion(
+                $a,
+                $aTrace
+            ) === $a);
+        $this->assertTrue($aTrace === [$a, $a]);
+
+        $bTrace = [$a, $b, $c];
+        $this->assertTrue(Analyse::recursion(
+                $b,
+                $bTrace
+            ) === $c);
+        $this->assertTrue($bTrace === [$a, $b, $c, $b]);
     }
 
     public function testDoesKeyNameHaveDuplicatedArgument()
