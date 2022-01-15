@@ -12,7 +12,6 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
-use function array_search;
 use function array_unique;
 
 class Analyse
@@ -131,7 +130,7 @@ class Analyse
     /**
      * @param string $class Class name of the child struct to be checked.
      * @param string[] $nodeTrace Variable reference to a stacktrace. Class name of the child struct will be appended to this.
-     * @return string|null Class name of the recursive struct. Null = no recursion.
+     * @return string|null Class name of the ending-struct in this recursion. Null = no recursion.
      * @throws ReflectionException
      * @phpstan-return class-string
      */
@@ -146,9 +145,9 @@ class Analyse
         if ($r !== false) {
             return empty(
             (new ReflectionClass(
-                $sClass = $nodeTrace[$r]
+                $r
             ))->getAttributes(Recursive::class))
-                ? $sClass : null;
+                ? $class : null;
         }
 
         return null;
