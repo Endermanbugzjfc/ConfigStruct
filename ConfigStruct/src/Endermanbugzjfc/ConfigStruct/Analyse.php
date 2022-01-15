@@ -139,8 +139,6 @@ class Analyse
         array  &$nodeTrace
     ) : ?string
     {
-        $nodeTrace[] = $class;
-
         $r = array_search($class, $nodeTrace, true);
         if ($r !== false) {
             return empty(
@@ -150,6 +148,7 @@ class Analyse
                 ? $class : null;
         }
 
+        $nodeTrace[] = $class;
         return null;
     }
 
