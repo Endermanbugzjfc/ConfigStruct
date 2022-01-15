@@ -145,7 +145,7 @@ class Analyse
         if ($r !== false) {
             return empty(
             (new ReflectionClass(
-                $r
+                $nodeTrace[$r]
             ))->getAttributes(Recursive::class))
                 ? $class : null;
         }
