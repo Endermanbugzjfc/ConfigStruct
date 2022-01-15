@@ -51,14 +51,18 @@ class AnalyseTest extends TestCase
      */
     public function testRecursion()
     {
-        $a = (new class() {
-        })::class;
-        $b = (new class() {
-        })::class;
-        $c = (new class() {
-        })::class;
-        $testRecursive = (new #[Recursive] class() {
-        })::class;
+        $a = new ReflectionClass(
+            TestStructUnsafeRecursiveIndirectA::class
+        );
+        $b = new ReflectionClass(
+            TestStructUnsafeRecursiveIndirectB::class
+        );
+        $c = new ReflectionClass(
+            TestStructUnsafeRecursiveIndirectC::class
+        );
+
+        $testRecursive = new ReflectionClass(new #[Recursive] class() {
+        });
 
         $aTrace = [$a];
         $this->assertTrue(Analyse::recursion(
@@ -80,6 +84,15 @@ class AnalyseTest extends TestCase
                 $testRecursiveTrace
             ) === null);
         $this->assertTrue($testRecursiveTrace === [$testRecursive]);
+
+        $testNoRecursion = new ReflectionClass(new class() {
+        });
+        $testNoRecursionTrace = [];
+        $this->assertTrue(Analyse::recursion(
+                $testNoRecursion,
+                $testNoRecursionTrace
+            ) === null);
+        $this->assertTrue($testNoRecursionTrace === [$testNoRecursion]);
     }
 
     public function testDoesKeyNameHaveDuplicatedArgument()
