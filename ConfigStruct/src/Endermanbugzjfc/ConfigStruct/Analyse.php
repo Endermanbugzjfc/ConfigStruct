@@ -60,12 +60,14 @@ class Analyse
             $types = $property->getType() ?? [];
             if ($types !== null) {
                 $types = $types instanceof ReflectionNamedType
-                    ? [$types->getName()]
+                    ? [$types]
                     : $types->getTypes();
             }
             foreach ($types as $type) {
                 if (class_exists($type->getName())) {
-                    self::struct($type, $nodeTrace);
+                    self::struct(new ReflectionClass(
+                        $type->getName()
+                    ), $nodeTrace);
                 }
             }
         }
