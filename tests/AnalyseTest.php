@@ -117,9 +117,21 @@ class AnalyseTest extends TestCase
         ));
     }
 
+    /**
+     * @throws exceptions\StructureException
+     * @throws ReflectionException
+     */
     public function testStruct()
     {
+        $class = TestStructUnsafeRecursiveIndirectB::class;
+        $end = TestStructUnsafeRecursiveIndirectC::class;
+        $this->expectExceptionMessage(
+            "Recursion found in struct class $class => ... => $end => loop"
+        );
 
+        Analyse::struct(new ReflectionClass(
+            new TestStructUnsafeRecursiveIndirectA()
+        ), []);
     }
 
     public function testProperty()
