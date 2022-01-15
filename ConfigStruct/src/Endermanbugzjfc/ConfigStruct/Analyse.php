@@ -16,7 +16,7 @@ use function array_unique;
 use function class_exists;
 use function count;
 
-class Analyse
+final class Analyse
 {
 
     /**

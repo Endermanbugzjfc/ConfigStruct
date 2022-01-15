@@ -6,7 +6,7 @@ use pocketmine\utils\Config;
 use ReflectionClass;
 use ReflectionProperty;
 
-class Emit
+final class Emit
 {
 
     /**
