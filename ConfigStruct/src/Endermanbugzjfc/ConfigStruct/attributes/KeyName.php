@@ -14,7 +14,8 @@ use ReflectionProperty;
 {
 
     public function __construct(
-        int|string ...$name
+        int|string $name,
+        int|string ...$moreNames
     )
     {
     }
