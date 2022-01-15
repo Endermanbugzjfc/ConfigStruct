@@ -101,20 +101,20 @@ class AnalyseTest extends TestCase
         $properties = (new ReflectionClass(
             new class() {
 
-                #[KeyName("a", "b")]
+                #[KeyName("a")] #[KeyName("b")]
                 public $testKeyNameNoDuplicatedArguments;
 
-                #[KeyName("a", "a")]
+                #[KeyName("a")] #[KeyName("a")]
                 public $testKeyNameOneNameTwoDuplicatedArguments;
 
             }
         ))->getProperties(ReflectionProperty::IS_PUBLIC);
 
         $this->assertNotTrue(Analyse::doesKeyNameHaveDuplicatedArgument(
-            $properties[0]->getAttributes(KeyName::class)[0]
+            ...$properties[0]->getAttributes(KeyName::class)
         ));
         $this->assertTrue(Analyse::doesKeyNameHaveDuplicatedArgument(
-            $properties[1]->getAttributes(KeyName::class)[0]
+            ...$properties[1]->getAttributes(KeyName::class)
         ));
     }
 
@@ -143,7 +143,7 @@ class AnalyseTest extends TestCase
         $property = (new ReflectionClass(
             new class() {
 
-                #[KeyName("a", "a")]
+                #[KeyName("a")] #[KeyName("a")]
                 public $testDuplicatedKeyNameArguments;
 
             }
