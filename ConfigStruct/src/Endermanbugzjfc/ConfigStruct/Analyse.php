@@ -148,20 +148,19 @@ class Analyse
     ) : ?ReflectionClass
     {
         foreach ($nodeTrace as $sClass) {
-            if ($sClass->getName() === $class) {
+            if ($sClass->getName() === $class->getName()) {
                 $recursion = true;
             }
         }
 
         $nodeTrace[] = $class;
-        if (isset($recursion) and !empty(
-            (new ReflectionClass(
-                $class
-            ))->getAttributes(Recursive::class))) {
+        if (!isset($recursion) or !empty(
+            $class->getAttributes(Recursive::class)
+            )) {
             return null;
         }
 
-        return $nodeTrace[count($nodeTrace) - 1];
+        return $nodeTrace[count($nodeTrace) - 2];
     }
 
 }
