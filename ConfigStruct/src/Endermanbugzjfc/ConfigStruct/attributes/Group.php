@@ -16,7 +16,7 @@ use Iterator;
      *
      * @param string $class Class string of the child struct.
      * @phpstan-param class-string $class
-     * @param int $wrapping The many [] should be wrapping the child struct, count from zero. Example: 0 = Struct[], 1 = Struct[][], etc...
+     * @param int $wrapping How many [] should be wrapping the child struct, count from zero. Example: 0 = Struct[], 1 = Struct[][], etc...
      */
     public function __construct(
         string $class,
