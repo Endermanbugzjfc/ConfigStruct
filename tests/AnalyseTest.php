@@ -5,6 +5,7 @@ namespace Endermanbugzjfc\ConfigStruct;
 use Endermanbugzjfc\ConfigStruct\attributes\Group;
 use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
+use Endermanbugzjfc\ConfigStruct\exceptions\StructureException;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
@@ -149,9 +150,7 @@ class AnalyseTest extends TestCase
             }
         ))->getProperties()[0];
 
-        $this->expectExceptionMessage(
-            "Property {$property->getDeclaringClass()->getName()}->{$property->getName()} used two key names which is exactly the same"
-        );
+        $this->expectException(StructureException::class);
         Analyse::property($property);
     }
 
@@ -169,9 +168,7 @@ class AnalyseTest extends TestCase
             }
         ))->getProperties()[0];
 
-        $this->expectExceptionMessage(
-            "Property {$property->getDeclaringClass()->getName()}->{$property->getName()} is a group but its type is not compatible"
-        );
+        $this->expectException(StructureException::class);
         Analyse::property($property);
     }
 
