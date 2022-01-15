@@ -89,11 +89,11 @@ final class Analyse
         );
         $blameProperty = "Property $niceClass->{$property->getName()}";
 
-        $keyName = $property->getAttributes(KeyName::class)[0] ?? null;
         if (
-            $keyName !== null
-            and
-            self::doesKeyNameHaveDuplicatedArgument($keyName)
+            self::doesKeyNameHaveDuplicatedArgument(
+                ...$property
+                ->getAttributes(KeyName::class)
+            )
         ) {
             throw new StructureException(
                 "$blameProperty used two key names which is exactly the same"
@@ -144,14 +144,20 @@ final class Analyse
 
 
     /**
-     * @param ReflectionAttribute $attribute The attribute to be checked.
+     * @param ReflectionAttribute ...$attributes The attribute to be checked.
      * @return bool True = two or more arguments in the attribute have the same value and type.
      */
     public static function doesKeyNameHaveDuplicatedArgument(
-        ReflectionAttribute $attribute
+        ReflectionAttribute ...$attributes
     ) : bool
     {
-        $names = $attribute->getArguments();
+        foreach ($attributes as $attribute) {
+            $names[] = $attribute->getArguments()[0];
+        }
+        if (!isset($names)) {
+            return false;
+        }
+
         return $names !== array_unique($names);
     }
 
