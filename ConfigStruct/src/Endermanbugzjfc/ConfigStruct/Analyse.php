@@ -70,6 +70,14 @@ final class Analyse
                     ), $nodeTrace);
                 }
             }
+
+            $group = $property->getAttributes(Group::class)[0] ?? null;
+            if ($group !== null) {
+                self::struct(new ReflectionClass(
+                    $group->getArguments()[0]
+                ), $nodeTrace);
+            }
+
         }
     }
 
