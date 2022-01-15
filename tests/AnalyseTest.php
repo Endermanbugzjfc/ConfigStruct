@@ -2,6 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct;
 
+use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -83,7 +84,24 @@ class AnalyseTest extends TestCase
 
     public function testDoesKeyNameHaveDuplicatedArgument()
     {
+        $properties = (new ReflectionClass(
+            new class() {
 
+                #[KeyName("a", "b")]
+                public $testKeyNameNoDuplicatedArguments;
+
+                #[KeyName("a", "a")]
+                public $testKeyNameOneNameTwoDuplicatedArguments;
+
+            }
+        ))->getProperties(ReflectionProperty::IS_PUBLIC);
+
+        $this->assertNotTrue(Analyse::doesKeyNameHaveDuplicatedArgument(
+            $properties[0]->getAttributes(KeyName::class)[0]
+        ));
+        $this->assertTrue(Analyse::doesKeyNameHaveDuplicatedArgument(
+            $properties[1]->getAttributes(KeyName::class)[0]
+        ));
     }
 
     public function testStruct()
