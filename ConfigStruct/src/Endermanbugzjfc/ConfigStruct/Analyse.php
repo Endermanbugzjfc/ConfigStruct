@@ -134,28 +134,31 @@ class Analyse
     }
 
     /**
-     * @param string $class Class name of the child struct to be checked.
-     * @param string[] $nodeTrace Variable reference to a stacktrace. Class name of the child struct will be appended to this.
-     * @return string|null Class name of the ending-struct in this recursion. Null = no recursion.
+     * @param ReflectionClass $class The child struct to be checked.
+     * @param ReflectionClass[] $nodeTrace Variable reference to a stacktrace. A {@link ReflectionClass} instance of the child struct will be appended to this.
+     * @return ReflectionClass|null The ending-struct of this recursion. Null = no recursion.
      * @throws ReflectionException
-     * @phpstan-return class-string
      */
     public static function recursion(
-        string $class,
-        array  &$nodeTrace
-    ) : ?string
+        ReflectionClass $class,
+        array           &$nodeTrace
+    ) : ?ReflectionClass
     {
-        $r = in_array($class, $nodeTrace, true);
-        $nodeTrace[] = $class;
-        if ($r !== false) {
-            return empty(
-            (new ReflectionClass(
-                $class
-            ))->getAttributes(Recursive::class))
-                ? $nodeTrace[count($nodeTrace) - 2] : null;
+        foreach ($nodeTrace as $sClass) {
+            if ($sClass->getName() === $class) {
+                $recursion = true;
+            }
         }
 
-        return null;
+        $nodeTrace[] = $class;
+        if (isset($recursion) and !empty(
+            (new ReflectionClass(
+                $class
+            ))->getAttributes(Recursive::class))) {
+            return null;
+        }
+
+        return $nodeTrace[count($nodeTrace) - 1];
     }
 
 }
