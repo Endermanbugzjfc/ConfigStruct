@@ -2,6 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct;
 
+use Endermanbugzjfc\ConfigStruct\attributes\Group;
 use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
 use PHPUnit\Framework\TestCase;
@@ -137,29 +138,42 @@ class AnalyseTest extends TestCase
     /**
      * @throws exceptions\StructureException
      */
-    public function testProperty()
+    public function testPropertyDuplicatedKeyNameArguments()
     {
-        $properties = (new ReflectionClass(
+        $property = (new ReflectionClass(
             new class() {
 
                 #[KeyName("a", "a")]
                 public $testDuplicatedKeyNameArguments;
 
-                public int $testGroupWithInvalidType;
-
             }
-        ))->getProperties();
+        ))->getProperties()[0];
 
-        $property = $properties[0];
-        $this->expectExceptionMessage(
-            "Property {$property->getDeclaringClass()->getName()}->{$property->getName()} used two key names which is exactly the same"
-        );
-        Analyse::property($property);
-
-        $property = $properties[1];
         $this->expectExceptionMessage(
             "Property {$property->getDeclaringClass()->getName()}->{$property->getName()} used two key names which is exactly the same"
         );
         Analyse::property($property);
     }
+
+    /**
+     * @throws exceptions\StructureException
+     */
+    public function testPropertyGroupWithInvalidType()
+    {
+        $property = (new ReflectionClass(
+            new class() {
+
+                #[Group(0)]
+                public int $testGroupWithInvalidType;
+
+            }
+        ))->getProperties()[0];
+
+        $this->expectExceptionMessage(
+            "Property {$property->getDeclaringClass()->getName()}->{$property->getName()} is a group but its type is not compatible"
+        );
+        Analyse::property($property);
+    }
+
+
 }
