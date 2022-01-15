@@ -2,6 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct;
 
+use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
@@ -55,6 +56,8 @@ class AnalyseTest extends TestCase
         })::class;
         $c = (new class() {
         })::class;
+        $testRecursive = (new #[Recursive] class() {
+        })::class;
 
         $aTrace = [$a];
         $this->assertTrue(Analyse::recursion(
@@ -69,6 +72,13 @@ class AnalyseTest extends TestCase
                 $bTrace
             ) === $c);
         $this->assertTrue($bTrace === [$a, $b, $c, $b]);
+
+        $testRecursiveTrace = [];
+        $this->assertTrue(Analyse::recursion(
+                $testRecursive,
+                $testRecursiveTrace
+            ) === null);
+        $this->assertTrue($testRecursiveTrace === [$testRecursive]);
     }
 
     public function testDoesKeyNameHaveDuplicatedArgument()
