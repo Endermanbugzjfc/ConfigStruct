@@ -5,6 +5,6 @@ namespace Endermanbugzjfc\ConfigStruct;
 class TestStructUnsafeRecursiveIndirectC
 {
 
-    public TestStructUnsafeRecursiveIndirectD $testStructUnsafeRecursiveDirect;
+    public TestStructUnsafeRecursiveIndirectB $testStructUnsafeRecursiveDirect;
 
 }
