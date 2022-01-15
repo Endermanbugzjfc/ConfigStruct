@@ -10,7 +10,7 @@ use Exception;
  *
  * This exception shouldn't be caught. Direct change to the source code (structure of the struct class) should be made.
  */
-class StructureException extends Exception
+final class StructureException extends Exception
 {
 
 }
