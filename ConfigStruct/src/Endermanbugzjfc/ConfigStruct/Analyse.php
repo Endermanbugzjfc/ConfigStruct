@@ -30,8 +30,8 @@ class Analyse
      * @throws StructureException
      */
     public static function struct(
-        string $class,
-        array  $nodeTrace
+        ReflectionClass $class,
+        array           $nodeTrace
     ) : void
     {
         $sClass = self::recursion($class, $nodeTrace);
@@ -41,8 +41,7 @@ class Analyse
                     ->newInstanceWithoutConstructor()
             );
             $niceEnd = Utils::getNiceClassName(
-                (new ReflectionClass($class))
-                    ->newInstanceWithoutConstructor()
+                $class->newInstanceWithoutConstructor()
             );
             throw new StructureException(
                 "Recursion found in struct class $niceClass => ... => $niceEnd => loop"
@@ -50,8 +49,7 @@ class Analyse
         }
 
         foreach (
-            (new ReflectionClass($class))
-                ->getProperties(ReflectionProperty::IS_PUBLIC)
+            $class->getProperties(ReflectionProperty::IS_PUBLIC)
             as $property
         ) {
             self::property($property);
