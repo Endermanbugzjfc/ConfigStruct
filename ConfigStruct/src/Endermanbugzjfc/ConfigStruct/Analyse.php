@@ -36,9 +36,13 @@ class Analyse
     {
         $sClass = self::recursion($struct::class, $nodeTrace);
         if ($sClass !== null) {
-            $niceClass = Utils::getNiceClassName($struct);
+            $niceClass = Utils::getNiceClassName(
+                (new ReflectionClass($sClass))
+                    ->newInstanceWithoutConstructor()
+            );
+            $niceEnd = Utils::getNiceClassName($struct);
             throw new StructureException(
-                "Recursion found in struct class $sClass => ... => $niceClass => loop"
+                "Recursion found in struct class $niceClass => ... => $niceEnd => loop"
             );
         }
 
