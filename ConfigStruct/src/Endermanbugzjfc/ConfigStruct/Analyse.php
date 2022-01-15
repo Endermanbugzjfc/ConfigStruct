@@ -37,14 +37,13 @@ class Analyse
         array           $nodeTrace
     ) : void
     {
-        $sClass = self::recursion($class, $nodeTrace);
-        if ($sClass !== null) {
+        $end = self::recursion($class, $nodeTrace);
+        if ($end !== null) {
             $niceClass = Utils::getNiceClassName(
-                (new ReflectionClass($sClass))
-                    ->newInstanceWithoutConstructor()
+                $class->newInstanceWithoutConstructor()
             );
             $niceEnd = Utils::getNiceClassName(
-                $class->newInstanceWithoutConstructor()
+                $end->newInstanceWithoutConstructor()
             );
             throw new StructureException(
                 "Recursion found in struct class $niceClass => ... => $niceEnd => loop"
