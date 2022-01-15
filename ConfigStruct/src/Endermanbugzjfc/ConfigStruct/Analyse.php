@@ -26,8 +26,11 @@ class Analyse
     }
 
     /**
+     * @param ReflectionClass $class The struct to be checked.
+     * @param ReflectionClass[] $nodeTrace A stacktrace which contains {@link ReflectionClass} instances of child structs.
+     * @return void
      * @throws ReflectionException
-     * @throws StructureException
+     * @throws StructureException When {@link Analyse::recursion()} or {@link Analyse::property()} fails.
      */
     public static function struct(
         ReflectionClass $class,
