@@ -13,6 +13,7 @@ use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
 use function array_unique;
+use function count;
 
 class Analyse
 {
@@ -139,16 +140,16 @@ class Analyse
         array  &$nodeTrace
     ) : ?string
     {
-        $r = array_search($class, $nodeTrace, true);
+        $r = in_array($class, $nodeTrace, true);
+        $nodeTrace[] = $class;
         if ($r !== false) {
             return empty(
             (new ReflectionClass(
-                $nodeTrace[$r]
+                $class
             ))->getAttributes(Recursive::class))
-                ? $class : null;
+                ? $nodeTrace[count($nodeTrace) - 2] : null;
         }
 
-        $nodeTrace[] = $class;
         return null;
     }
 
