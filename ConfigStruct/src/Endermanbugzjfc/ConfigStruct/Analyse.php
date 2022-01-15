@@ -13,6 +13,7 @@ use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
 use function array_unique;
+use function class_exists;
 use function count;
 
 class Analyse
@@ -55,6 +56,18 @@ class Analyse
             as $property
         ) {
             self::property($property);
+
+            $types = $property->getType() ?? [];
+            if ($types !== null) {
+                $types = $types instanceof ReflectionNamedType
+                    ? [$types->getName()]
+                    : $types->getTypes();
+            }
+            foreach ($types as $type) {
+                if (class_exists($type->getName())) {
+                    self::struct($type, $nodeTrace);
+                }
+            }
         }
     }
 
