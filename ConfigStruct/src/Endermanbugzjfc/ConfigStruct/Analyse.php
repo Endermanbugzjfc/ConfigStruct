@@ -77,12 +77,17 @@ class Analyse
      * @param ReflectionProperty $property The property to be checked.
      * @return void
      * @throws StructureException The property has invalid structure.
+     * @throws ReflectionException
      */
     public static function property(
         ReflectionProperty $property,
     ) : void
     {
-        $blameProperty = "Property {$property->getDeclaringClass()->getName()}->{$property->getName()}";
+        $niceClass = Utils::getNiceClassName(
+            (new ReflectionClass($property->getDeclaringClass()->getName()))
+                ->newInstanceWithoutConstructor()
+        );
+        $blameProperty = "Property $niceClass->{$property->getName()}";
 
         $keyName = $property->getAttributes(KeyName::class)[0] ?? null;
         if (
