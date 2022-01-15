@@ -134,8 +134,32 @@ class AnalyseTest extends TestCase
         ), []);
     }
 
+    /**
+     * @throws exceptions\StructureException
+     */
     public function testProperty()
     {
+        $properties = (new ReflectionClass(
+            new class() {
 
+                #[KeyName("a", "a")]
+                public $testDuplicatedKeyNameArguments;
+
+                public int $testGroupWithInvalidType;
+
+            }
+        ))->getProperties();
+
+        $property = $properties[0];
+        $this->expectExceptionMessage(
+            "Property {$property->getDeclaringClass()->getName()}->{$property->getName()} used two key names which is exactly the same"
+        );
+        Analyse::property($property);
+
+        $property = $properties[1];
+        $this->expectExceptionMessage(
+            "Property {$property->getDeclaringClass()->getName()}->{$property->getName()} used two key names which is exactly the same"
+        );
+        Analyse::property($property);
     }
 }
