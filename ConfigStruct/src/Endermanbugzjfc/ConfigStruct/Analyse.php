@@ -30,24 +30,27 @@ class Analyse
      * @throws StructureException
      */
     public static function struct(
-        object $struct,
-        array  $nodeTrace,
+        string $class,
+        array  $nodeTrace
     ) : void
     {
-        $sClass = self::recursion($struct::class, $nodeTrace);
+        $sClass = self::recursion($class, $nodeTrace);
         if ($sClass !== null) {
             $niceClass = Utils::getNiceClassName(
                 (new ReflectionClass($sClass))
                     ->newInstanceWithoutConstructor()
             );
-            $niceEnd = Utils::getNiceClassName($struct);
+            $niceEnd = Utils::getNiceClassName(
+                (new ReflectionClass($class))
+                    ->newInstanceWithoutConstructor()
+            );
             throw new StructureException(
                 "Recursion found in struct class $niceClass => ... => $niceEnd => loop"
             );
         }
 
         foreach (
-            (new ReflectionClass($struct))
+            (new ReflectionClass($class))
                 ->getProperties(ReflectionProperty::IS_PUBLIC)
             as $property
         ) {
