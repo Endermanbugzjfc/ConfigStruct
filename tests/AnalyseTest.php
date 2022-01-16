@@ -179,7 +179,37 @@ class AnalyseTest extends TestCase
 
     public function testDoesStructHasValidConstructor()
     {
+        $testNormal = new class() {
 
+            public function __construct()
+            {
+            }
+
+        };
+        $testArgumentDefaultNull = new class() {
+
+            public function __construct(string $a = null)
+            {
+            }
+
+        };
+        $testArgument = new class("") {
+
+            public function __construct(string $a)
+            {
+            }
+
+        };
+
+        $this->assertTrue(Analyse::doesStructHasValidConstructor(
+            (new ReflectionClass($testNormal))->getConstructor()
+        ));
+        $this->assertTrue(Analyse::doesStructHasValidConstructor(
+            (new ReflectionClass($testArgumentDefaultNull))->getConstructor()
+        ));
+        $this->assertNotTrue(Analyse::doesStructHasValidConstructor(
+            (new ReflectionClass($testArgument))->getConstructor()
+        ));
     }
 
 }
