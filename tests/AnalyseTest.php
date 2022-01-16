@@ -205,7 +205,7 @@ class AnalyseTest extends TestCase
         Analyse::property($property);
     }
 
-    public function testDoesStructHasValidConstructor()
+    public function testDoesStructHaveValidConstructor()
     {
         $testNormal = new class() {
 
@@ -229,16 +229,16 @@ class AnalyseTest extends TestCase
 
         };
 
-        $this->assertTrue(Analyse::doesStructHasValidConstructor(
+        $this->assertTrue(Analyse::doesStructHaveValidConstructor(
             (new ReflectionClass($testNormal))->getConstructor()
         ));
-        $this->assertTrue(Analyse::doesStructHasValidConstructor(
+        $this->assertTrue(Analyse::doesStructHaveValidConstructor(
             (new ReflectionClass($testArgumentDefaultNull))->getConstructor()
         ));
-        $this->assertNotTrue(Analyse::doesStructHasValidConstructor(
+        $this->assertNotTrue(Analyse::doesStructHaveValidConstructor(
             (new ReflectionClass($testArgument))->getConstructor()
         ));
-        $this->assertNotTrue(Analyse::doesStructHasValidConstructor(
+        $this->assertNotTrue(Analyse::doesStructHaveValidConstructor(
             (new ReflectionClass(
                 TestStructPrivateConstructor::class
             ))->getConstructor()
