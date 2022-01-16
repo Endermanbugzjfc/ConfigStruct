@@ -8,6 +8,7 @@ use Endermanbugzjfc\ConfigStruct\struct\StructHolderInterface;
 use pocketmine\utils\Config;
 use ReflectionAttribute;
 use ReflectionClass;
+use ReflectionNamedType;
 use ReflectionProperty;
 use function array_key_exists;
 
@@ -96,11 +97,22 @@ final class Parse
             return self::groupField($group, $field);
         }
 
-        $recursive = $property->getAttributes(Recursive::class)[0] ?? null;
-        if ($recursive !== null) {
-            return self::recursiveField($recursive, $field);
+        if ($property->getType() instanceof ReflectionNamedType) {
+            return self::childStructField($property, $field);
         }
         return $field;
+    }
+
+    /**
+     * @param ReflectionClass $class Reflection of the child struct class.
+     * @param array<bool|int|float|string, bool|int|float|string|array> $field The input to be parsed, nested scalar keys-values array.
+     * @return object Child struct which contains the parsed data.
+     */
+    public static function childStructField(
+        ReflectionClass $class,
+        array           $field
+    ) : object
+    {
     }
 
     /**
@@ -132,7 +144,7 @@ final class Parse
      * @param array<bool|int|float|string, bool|int|float|string|array> $field The input to be converted.
      * @return object Recursive child struct.
      */
-    public static function recursiveField(
+    public static function recursiveChildStruct(
         ReflectionAttribute $recursive,
         array               $field
     ) : object
