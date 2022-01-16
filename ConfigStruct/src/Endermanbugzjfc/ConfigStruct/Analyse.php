@@ -47,7 +47,7 @@ final class Analyse
         if (
             $constructor !== null
             and
-            !self::doesStructHasValidConstructor($constructor)
+            !self::doesStructHaveValidConstructor($constructor)
         ) {
             throw new StructureException(
                 "Constructor of struct class $niceClass should be public and have 0 arguments"
@@ -212,7 +212,7 @@ final class Analyse
         return $nodeTrace[count($nodeTrace) - 2];
     }
 
-    public static function doesStructHasValidConstructor(
+    public static function doesStructHaveValidConstructor(
         ReflectionMethod $constructor
     ) : bool
     {
