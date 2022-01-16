@@ -2,15 +2,29 @@
 
 namespace Endermanbugzjfc\ConfigStruct\struct;
 
+use Endermanbugzjfc\ConfigStruct\Analyse;
+use Endermanbugzjfc\ConfigStruct\exceptions\StructureException;
+use ReflectionClass;
+use ReflectionException;
+
 final class StructHolder implements StructHolderInterface
 {
 
+    /**
+     * @throws ReflectionException
+     * @throws StructureException
+     */
     private function __construct(
         protected string $class
     )
     {
+        Analyse::struct(new ReflectionClass($this->class), []);
     }
 
+    /**
+     * @throws StructureException
+     * @throws ReflectionException
+     */
     public static function newStructHolder(object $struct) : self
     {
         return new self($struct::class);
