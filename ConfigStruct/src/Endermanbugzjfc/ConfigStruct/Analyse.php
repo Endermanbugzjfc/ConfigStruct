@@ -214,7 +214,10 @@ final class Analyse
     ) : bool
     {
         return CallbackType::createFromCallable(function () {
-        })->isSatisfiedBy($constructor->getClosure());
+        })->isSatisfiedBy([
+            $constructor->getDeclaringClass()->getName(),
+            $constructor->getName()
+        ]);
     }
 
 }
