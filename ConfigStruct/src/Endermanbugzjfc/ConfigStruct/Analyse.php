@@ -213,6 +213,9 @@ final class Analyse
         ReflectionMethod $constructor
     ) : bool
     {
+        if (!$constructor->isPublic()) {
+            return false;
+        }
         return CallbackType::createFromCallable(function () {
         })->isSatisfiedBy([
             $constructor->getDeclaringClass()->getName(),
