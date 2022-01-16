@@ -2,11 +2,14 @@
 
 namespace Endermanbugzjfc\ConfigStruct;
 
+use Endermanbugzjfc\ConfigStruct\attributes\Group;
+use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
 use Endermanbugzjfc\ConfigStruct\struct\StructHolderInterface;
 use pocketmine\utils\Config;
+use ReflectionAttribute;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionProperty;
+use function array_key_exists;
 
 final class Parse
 {
@@ -49,19 +52,92 @@ final class Parse
      * @param StructHolderInterface $holder Parsed content will be copied to the struct given by this holder.
      * @param array<bool|int|float|string, bool|int|float|string|array> $array The input to be parsed, nested scalar keys-values array.
      * @return object The struct which contains the parsed data.
-     * @throws ReflectionException
      */
     public static function array(
         StructHolderInterface $holder,
         array                 $array,
     ) : object
     {
-        $reflect = new ReflectionClass($struct);
+        $struct = $holder->newStructForParsing();
+        $array = self::mapKeyNamesToPropertyNames($struct, $array);
+
+        $class = new ReflectionClass($struct);
         foreach (
-            $reflect->getProperties(ReflectionProperty::IS_PUBLIC)
+            $class->getProperties(ReflectionProperty::IS_PUBLIC)
             as $property
         ) {
+            if (!array_key_exists($property->getName(), $array)) {
+                continue;
+            }
+            $value = self::field($property, $array[$property->getName()]);
+            if ($property->isInitialized()) {
+                $default = $property->getValue($struct);
+            }
+            if (isset($default) and $value === $default) {
+                continue;
+            }
+            $property->setValue($struct, $value);
         }
+        return $struct;
+    }
+
+    /**
+     * @param ReflectionProperty $property Property is needed to convert parsed content base on its structure.
+     * @param array<bool|int|float|string, bool|int|float|string|array> $field The input to be parsed, nested scalar keys-values array.
+     * @return mixed Field parse output.
+     */
+    public static function field(
+        ReflectionProperty $property,
+        array              $field
+    ) : mixed
+    {
+        $group = $property->getAttributes(Group::class)[0] ?? null;
+        if ($group !== null) {
+            return self::groupField($group, $field);
+        }
+
+        $recursive = $property->getAttributes(Recursive::class)[0] ?? null;
+        if ($recursive !== null) {
+            return self::recursiveField($recursive, $field);
+        }
+        return $field;
+    }
+
+    /**
+     * @param object $struct Struct is needed to know the properties it have.
+     * @param array<bool|int|float|string, bool|int|float|string|array> $array Key names will be mapped to property names. Unused fields will be filtered out.
+     * @return array<bool|int|float|string, bool|int|float|string|array> Please aware that the output could have missing fields.
+     */
+    public static function mapKeyNamesToPropertyNames(
+        object $struct,
+        array  $array
+    ) : array
+    {
+    }
+
+    /**
+     * @param ReflectionAttribute $group A {@link Group} attribute instance.
+     * @param array<bool|int|float|string, bool|int|float|string|array> $field The input to be converted.
+     * @return array object[], array dimension is based on the "wrapping" parameter in {@link Group::__construct()}.
+     */
+    public static function groupField(
+        ReflectionAttribute $group,
+        array               $field
+    ) : array
+    {
+    }
+
+    /**
+     * @param ReflectionAttribute $recursive A {@link Recursive} attribute instance.
+     * @param array<bool|int|float|string, bool|int|float|string|array> $field The input to be converted.
+     * @return object Recursive child struct.
+     */
+    public static function recursiveField(
+        ReflectionAttribute $recursive,
+        array               $field
+    ) : object
+    {
+
     }
 
 }
