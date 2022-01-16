@@ -6,24 +6,24 @@ final class StructHolder implements StructHolderInterface
 {
 
     private function __construct(
-        protected object $struct
+        protected string $class
     )
     {
     }
 
     public static function newStructHolder(object $struct) : self
     {
-        return new self($struct);
+        return new self($struct::class);
     }
 
     public function newStructForParsing() : object
     {
-        return clone $this->struct;
+        return new $this->class;
     }
 
     public function newStructForEmitting() : object
     {
-        return clone $this->struct;
+        return new $this->class;
     }
 
 }
