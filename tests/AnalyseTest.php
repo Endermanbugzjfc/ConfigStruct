@@ -136,9 +136,19 @@ class AnalyseTest extends TestCase
         ), []);
     }
 
+    /**
+     * @throws ReflectionException
+     * @throws StructureException
+     */
     public function testStructConstructor()
     {
-
+        $class = TestStructPrivateConstructor::class;
+        $this->expectExceptionMessage(
+            "Constructor of struct class $class should be public and have 0 arguments"
+        );
+        Analyse::struct(new ReflectionClass(
+            $class
+        ), []);
     }
 
     /**
