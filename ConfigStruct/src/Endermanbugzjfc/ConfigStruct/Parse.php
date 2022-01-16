@@ -2,8 +2,10 @@
 
 namespace Endermanbugzjfc\ConfigStruct;
 
+use Endermanbugzjfc\ConfigStruct\struct\StructHolderInterface;
 use pocketmine\utils\Config;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionProperty;
 
 final class Parse
@@ -44,13 +46,15 @@ final class Parse
     /**
      * Look at README.md for examples.
      *
-     * @param object $struct The instance should be already initialized (from {@link Analyse::initializeStruct()}, you may create cache if this struct used for more than one times). Parsed content will be copied to this instance depending on its structure.
-     * @param array<bool|int|float|string, bool|int|float|string|array> $array Config content in the form of nested scalar keys-values array.
+     * @param StructHolderInterface $holder Parsed content will be copied to the struct given by this holder.
+     * @param array<bool|int|float|string, bool|int|float|string|array> $array The input to be parsed, nested scalar keys-values array.
+     * @return object The struct which contains the parsed data.
+     * @throws ReflectionException
      */
     public static function array(
-        object $struct,
-        array  $array,
-    ) : void
+        StructHolderInterface $holder,
+        array                 $array,
+    ) : object
     {
         $reflect = new ReflectionClass($struct);
         foreach (
