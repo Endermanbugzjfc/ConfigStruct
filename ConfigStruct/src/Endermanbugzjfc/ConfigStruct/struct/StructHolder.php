@@ -20,4 +20,10 @@ final class StructHolder implements StructHolderInterface
     {
         return $this->struct;
     }
+
+    public function newStructForEmitting() : object
+    {
+        return $this->struct;
+    }
+
 }
