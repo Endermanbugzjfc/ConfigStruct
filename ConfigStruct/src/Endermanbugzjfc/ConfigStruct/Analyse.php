@@ -110,17 +110,14 @@ final class Analyse
 
 
         $group = $property->getAttributes(Group::class)[0] ?? null;
-        if ($group !== null) {
-            if (self::doesGroupPropertyHaveInvalidType($property)) {
-                throw new StructureException(
-                    "$blameProperty is a group but its type is not compatible"
-                );
-            }
-            if ($invalid = self::doesGroupHaveInvalidDefaultValues($group)) {
-                throw new StructureException(
-                    "$blameProperty has a invalid struct  as default values of group"
-                );
-            }
+        if (
+            $group !== null
+            and
+            self::doesGroupPropertyHaveInvalidType($property)
+        ) {
+            throw new StructureException(
+                "$blameProperty is a group but its type is not compatible"
+            );
         }
     }
 
@@ -197,12 +194,6 @@ final class Analyse
         }
 
         return $nodeTrace[count($nodeTrace) - 2];
-    }
-
-    public static function doesGroupHaveInvalidDefaultValues(
-        string $classes
-    ) : bool
-    {
     }
 
 }
