@@ -210,6 +210,11 @@ class AnalyseTest extends TestCase
         $this->assertNotTrue(Analyse::doesStructHasValidConstructor(
             (new ReflectionClass($testArgument))->getConstructor()
         ));
+        $this->assertNotTrue(Analyse::doesStructHasValidConstructor(
+            (new ReflectionClass(
+                TestStructPrivateConstructor::class
+            ))->getConstructor()
+        ));
     }
 
 }
