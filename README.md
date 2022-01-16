@@ -2,7 +2,7 @@
 
 PocketMine-MP 4 virion. Allows you to make structured config files much easier, in a struct-like class!
 
-# Aborted Features
+# Non-supported / Aborted Features
 
 **(Feel free to make a pull request if you really want them to be implemented!)**
 
