@@ -2,6 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct;
 
+use DaveRandom\CallbackValidator\CallbackType;
 use Endermanbugzjfc\ConfigStruct\attributes\Group;
 use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
@@ -10,6 +11,7 @@ use pocketmine\utils\Utils;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionProperty;
 use function array_unique;
@@ -38,11 +40,22 @@ final class Analyse
         array           $nodeTrace
     ) : void
     {
+        $niceClass = Utils::getNiceClassName(
+            $class->newInstanceWithoutConstructor()
+        );
+        $constructor = $class->getConstructor();
+        if (
+            $constructor !== null
+            and
+            !self::structHasValidConstructor($constructor)
+        ) {
+            throw new StructureException(
+                "Constructor of struct class $niceClass should have 0 arguments"
+            );
+        }
+
         $end = self::recursion($class, $nodeTrace);
         if ($end !== null) {
-            $niceClass = Utils::getNiceClassName(
-                $class->newInstanceWithoutConstructor()
-            );
             $niceEnd = Utils::getNiceClassName(
                 $end->newInstanceWithoutConstructor()
             );
@@ -194,6 +207,14 @@ final class Analyse
         }
 
         return $nodeTrace[count($nodeTrace) - 2];
+    }
+
+    public static function structHasValidConstructor(
+        ReflectionMethod $constructor
+    ) : bool
+    {
+        return CallbackType::createFromCallable(function () {
+        })->isSatisfiedBy($constructor->getClosure());
     }
 
 }
