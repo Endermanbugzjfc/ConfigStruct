@@ -123,7 +123,7 @@ class AnalyseTest extends TestCase
      * @throws exceptions\StructureException
      * @throws ReflectionException
      */
-    public function testStruct()
+    public function testStructRecursion()
     {
         $class = TestStructUnsafeRecursiveIndirectB::class;
         $end = TestStructUnsafeRecursiveIndirectC::class;
@@ -134,6 +134,11 @@ class AnalyseTest extends TestCase
         Analyse::struct(new ReflectionClass(
             new TestStructUnsafeRecursiveIndirectA()
         ), []);
+    }
+
+    public function testStructConstructor()
+    {
+
     }
 
     /**
