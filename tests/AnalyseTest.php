@@ -187,6 +187,24 @@ class AnalyseTest extends TestCase
         Analyse::property($property);
     }
 
+    /**
+     * @throws exceptions\StructureException
+     * @throws ReflectionException
+     */
+    public function testPropertyUnionTypesChildStruct()
+    {
+        $property = (new ReflectionClass(
+            new class() {
+
+                public TestStructUnsafeRecursiveIndirectA|string $testGroupWithInvalidType;
+
+            }
+        ))->getProperties()[0];
+
+        $this->expectException(StructureException::class);
+        Analyse::property($property);
+    }
+
     public function testDoesStructHasValidConstructor()
     {
         $testNormal = new class() {
