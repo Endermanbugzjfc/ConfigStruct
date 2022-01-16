@@ -247,7 +247,32 @@ class AnalyseTest extends TestCase
 
     public function testDoesPropertyHaveUnionTypesChildStruct()
     {
+        $properties = (new ReflectionClass(
+            new class() {
 
+                public $testNoType;
+
+                public TestStructUnsafeRecursiveIndirectA $testOneChildStruct;
+
+                public TestStructUnsafeRecursiveIndirectA|TestStructUnsafeRecursiveIndirectB $testTwoChildStructs;
+
+                public TestStructUnsafeRecursiveIndirectA|string $testOneChildStructAndString;
+
+            }
+        ))->getProperties(ReflectionProperty::IS_PUBLIC);
+
+        $this->assertNotTrue(
+            Analyse::doesPropertyHaveUnionTypesChildStruct($properties[0])
+        );
+        $this->assertNotTrue(
+            Analyse::doesPropertyHaveUnionTypesChildStruct($properties[1])
+        );
+        $this->assertTrue(
+            Analyse::doesPropertyHaveUnionTypesChildStruct($properties[2])
+        );
+        $this->assertTrue(
+            Analyse::doesPropertyHaveUnionTypesChildStruct($properties[3])
+        );
     }
 
 }
