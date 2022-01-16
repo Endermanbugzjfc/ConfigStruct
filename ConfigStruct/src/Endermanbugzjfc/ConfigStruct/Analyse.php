@@ -230,7 +230,16 @@ final class Analyse
         ReflectionProperty $property
     ) : bool
     {
-
+        $types = $property->getType();
+        if ($types === null or ($types instanceof ReflectionNamedType)) {
+            return false;
+        }
+        foreach ($types->getTypes() as $type) {
+            if (class_exists($type->getName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
