@@ -10,8 +10,11 @@ PocketMine-MP 4 virion. Allows you to make structured config files much easier, 
 
 ### Group
 
-It is quite useless and complicate to implement. In PHPStorm, there isn't an option for overriding properties in the
-Generate action.
+It is quite useless and complicate to use. In PHPStorm, there isn't an option for overriding properties in the Generate
+action.
+
+Therefore, when creating classes as the default values of a Group, people may need to copy and paste the properties
+manually.
 
 My opinion, it is better to initialize these kinds of special properties in a constructor rather than writing them in
 this weird way.
