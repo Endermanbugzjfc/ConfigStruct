@@ -177,7 +177,7 @@ class AnalyseTest extends TestCase
         Analyse::property($property);
     }
 
-    public function testStructHasValidConstructor()
+    public function testDoesStructHasValidConstructor()
     {
 
     }
