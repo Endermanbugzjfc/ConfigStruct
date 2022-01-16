@@ -227,4 +227,9 @@ class AnalyseTest extends TestCase
         ));
     }
 
+    public function testDoesPropertyHaveUnionTypesChildStruct()
+    {
+
+    }
+
 }
