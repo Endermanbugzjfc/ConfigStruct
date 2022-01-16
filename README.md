@@ -12,3 +12,13 @@ Generate action.
 
 My opinion, it is better to initialize these kinds of special properties in a constructor rather than writing them in
 this weird way.
+
+## The AutoInitializeChildStruct attribute
+
+This attribute was used for making a child-struct property to automatically initialize and specify one type of struct in
+a union-types property.
+
+But now there is the "Initialize" class which do all these automatically. However, union-types are ignored.
+
+
+
