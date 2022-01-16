@@ -18,12 +18,12 @@ final class StructHolder implements StructHolderInterface
 
     public function newStructForParsing() : object
     {
-        return $this->struct;
+        return clone $this->struct;
     }
 
     public function newStructForEmitting() : object
     {
-        return $this->struct;
+        return clone $this->struct;
     }
 
 }
