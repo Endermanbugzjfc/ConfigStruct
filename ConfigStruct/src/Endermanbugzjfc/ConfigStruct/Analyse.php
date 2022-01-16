@@ -50,7 +50,7 @@ final class Analyse
             !self::doesStructHasValidConstructor($constructor)
         ) {
             throw new StructureException(
-                "Constructor of struct class $niceClass should have 0 arguments"
+                "Constructor of struct class $niceClass should be public and have 0 arguments"
             );
         }
 
