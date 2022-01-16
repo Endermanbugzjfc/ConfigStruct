@@ -70,18 +70,15 @@ final class Analyse
         ) {
             self::property($property);
 
-            $types = $property->getType() ?? [];
-            if ($types !== null) {
-                $types = $types instanceof ReflectionNamedType
-                    ? [$types]
-                    : $types->getTypes();
-            }
-            foreach ($types as $type) {
-                if (class_exists($type->getName())) {
-                    self::struct(new ReflectionClass(
-                        $type->getName()
-                    ), $nodeTrace);
-                }
+            $type = $property->getType();
+            if (
+                ($type instanceof ReflectionNamedType)
+                and
+                class_exists($type->getName())
+            ) {
+                self::struct(new ReflectionClass(
+                    $type->getName()
+                ), $nodeTrace);
             }
 
             $group = $property->getAttributes(Group::class)[0] ?? null;
@@ -130,6 +127,12 @@ final class Analyse
         ) {
             throw new StructureException(
                 "$blameProperty is a group but its type is not compatible"
+            );
+        }
+
+        if (self::doesPropertyHaveUnionTypesChildStruct($property)) {
+            throw new StructureException(
+                "$blameProperty used union-types child struct which is not supported in this ConfigStruct version"
             );
         }
     }
@@ -221,6 +224,13 @@ final class Analyse
             $constructor->getDeclaringClass()->getName(),
             $constructor->getName()
         ]);
+    }
+
+    public static function doesPropertyHaveUnionTypesChildStruct(
+        ReflectionProperty $property
+    ) : bool
+    {
+
     }
 
 }
