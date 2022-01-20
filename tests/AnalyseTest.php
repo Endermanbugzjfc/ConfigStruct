@@ -165,7 +165,9 @@ class AnalyseTest extends TestCase
             }
         ))->getProperties()[0];
 
-        $this->expectError(StructureError::class);
+        $this->expectErrorMessage(
+            "Property {$property->getDeclaringClass()}->{$property->getName()} used two key names which is exactly the same"
+        );
         Analyse::property($property);
     }
 
@@ -183,7 +185,7 @@ class AnalyseTest extends TestCase
             }
         ))->getProperties()[0];
 
-        $this->expectError(StructureError::class);
+        $this->expectErrorMessage("Property {$property->getDeclaringClass()}->{$property->getName()} is a group but its type is not compatible");
         Analyse::property($property);
     }
 
@@ -201,7 +203,7 @@ class AnalyseTest extends TestCase
             }
         ))->getProperties()[0];
 
-        $this->expectError(StructureError::class);
+        $this->expectErrorMessage("Property {$property->getDeclaringClass()}->{$property->getName()} used union-types child struct which is not supported in this ConfigStruct version");
         Analyse::property($property);
     }
 
