@@ -7,6 +7,7 @@ use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
 use Endermanbugzjfc\ConfigStruct\struct\StructHolderInterface;
 use ReflectionAttribute;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
 use function array_key_exists;
@@ -61,6 +62,7 @@ final class Parse
      * @param ReflectionProperty $property Property is needed to convert parsed content base on its structure.
      * @param array<bool|int|float|string, bool|int|float|string|array> $field The input to be parsed, nested scalar keys-values array.
      * @return mixed Field parse output.
+     * @throws ReflectionException
      */
     public static function field(
         ReflectionProperty $property,
@@ -73,7 +75,10 @@ final class Parse
         }
 
         if ($property->getType() instanceof ReflectionNamedType) {
-            return self::childStructField($property, $field);
+            return self::childStructField(
+                new ReflectionClass($property->getType()->getName()),
+                $field
+            );
         }
         return $field;
     }
