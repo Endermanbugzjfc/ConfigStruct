@@ -11,6 +11,7 @@ use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
 use function array_key_exists;
+use function class_exists;
 
 final class Parse
 {
@@ -74,9 +75,13 @@ final class Parse
             return self::groupField($group, $field);
         }
 
-        if ($property->getType() instanceof ReflectionNamedType) {
+        if (
+            $property->getType() instanceof ReflectionNamedType
+            and
+            class_exists($child = $property->getType()->getName())
+        ) {
             return self::childStructField(
-                new ReflectionClass($property->getType()->getName()),
+                new ReflectionClass($child),
                 $field
             );
         }
