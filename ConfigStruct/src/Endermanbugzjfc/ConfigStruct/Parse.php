@@ -5,7 +5,6 @@ namespace Endermanbugzjfc\ConfigStruct;
 use Endermanbugzjfc\ConfigStruct\attributes\Group;
 use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
 use Endermanbugzjfc\ConfigStruct\struct\StructHolderInterface;
-use pocketmine\utils\Config;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionNamedType;
@@ -21,30 +20,6 @@ final class Parse
      */
     private function __construct()
     {
-    }
-
-    /**
-     * Look at README.md for examples.
-     *
-     * @param object $struct An instance of your config struct class. After the file has been parsed, its content will be copied to this instance of on its structure. Then, if there is a missing field, but its property has an {@link AutoInitializeChildStruct} attribute, that property will be initiated with its child struct recursively.
-     * @param string $file Absolute or related path of the file that will be read and parsed.
-     * @param int $type The type (language) of the file (see the constants in {@link Config} class).
-     * @return bool False = invalid path (file or folder doesn't exists).
-     */
-    public static function file(
-        object $struct,
-        string $file,
-        int    $type = Config::DETECT
-    ) : bool
-    {
-        if (!file_exists($file)) {
-            return false;
-        }
-        self::array(
-            $struct,
-            (new Config($file, $type))->getAll(),
-        );
-        return true;
     }
 
     /**
