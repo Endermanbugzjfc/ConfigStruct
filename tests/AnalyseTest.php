@@ -1,14 +1,15 @@
-<?php
+<?php /** @noinspection PhpUnhandledExceptionInspection */
+/** @noinspection PhpMissingFieldTypeInspection */
+
+/** @noinspection PhpUnused */
 
 namespace Endermanbugzjfc\ConfigStruct;
 
 use Endermanbugzjfc\ConfigStruct\attributes\Group;
 use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
-use Endermanbugzjfc\ConfigStruct\exceptions\StructureError;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionProperty;
 
 class AnalyseTest extends TestCase
@@ -48,9 +49,6 @@ class AnalyseTest extends TestCase
 
     }
 
-    /**
-     * @throws ReflectionException
-     */
     public function testRecursion()
     {
         $a = new ReflectionClass(
@@ -119,10 +117,6 @@ class AnalyseTest extends TestCase
         ));
     }
 
-    /**
-     * @throws exceptions\StructureError
-     * @throws ReflectionException
-     */
     public function testStructRecursion()
     {
         $class = TestStructUnsafeRecursiveIndirectB::class;
@@ -136,10 +130,6 @@ class AnalyseTest extends TestCase
         ), []);
     }
 
-    /**
-     * @throws ReflectionException
-     * @throws StructureError
-     */
     public function testStructConstructor()
     {
         $class = TestStructPrivateConstructor::class;
@@ -151,9 +141,6 @@ class AnalyseTest extends TestCase
         ), []);
     }
 
-    /**
-     * @throws exceptions\StructureError
-     */
     public function testPropertyDuplicatedKeyNameArguments()
     {
         $property = (new ReflectionClass(
@@ -171,9 +158,6 @@ class AnalyseTest extends TestCase
         Analyse::property($property);
     }
 
-    /**
-     * @throws exceptions\StructureError
-     */
     public function testPropertyGroupWithInvalidType()
     {
         $property = (new ReflectionClass(
@@ -189,10 +173,6 @@ class AnalyseTest extends TestCase
         Analyse::property($property);
     }
 
-    /**
-     * @throws exceptions\StructureError
-     * @throws ReflectionException
-     */
     public function testPropertyUnionTypesChildStruct()
     {
         $property = (new ReflectionClass(
