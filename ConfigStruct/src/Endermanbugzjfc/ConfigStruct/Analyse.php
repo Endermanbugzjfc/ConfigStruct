@@ -6,7 +6,7 @@ use DaveRandom\CallbackValidator\CallbackType;
 use Endermanbugzjfc\ConfigStruct\attributes\Group;
 use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
-use Endermanbugzjfc\ConfigStruct\exceptions\StructureException;
+use Endermanbugzjfc\ConfigStruct\exceptions\StructureError;
 use pocketmine\utils\Utils;
 use ReflectionAttribute;
 use ReflectionClass;
@@ -33,7 +33,7 @@ final class Analyse
      * @param ReflectionClass[] $nodeTrace A stacktrace which contains {@link ReflectionClass} instances of child structs.
      * @return void
      * @throws ReflectionException
-     * @throws StructureException When {@link Analyse::recursion()} or {@link Analyse::property()} fails.
+     * @throws StructureError When {@link Analyse::recursion()} or {@link Analyse::property()} fails.
      */
     public static function struct(
         ReflectionClass $class,
@@ -49,7 +49,7 @@ final class Analyse
             and
             !self::doesStructHaveValidConstructor($constructor)
         ) {
-            throw new StructureException(
+            throw new StructureError(
                 "Constructor of struct class $niceClass should be public and have 0 arguments"
             );
         }
@@ -59,7 +59,7 @@ final class Analyse
             $niceEnd = Utils::getNiceClassName(
                 $end->newInstanceWithoutConstructor()
             );
-            throw new StructureException(
+            throw new StructureError(
                 "Recursion found in struct class $niceClass => ... => $niceEnd => loop"
             );
         }
@@ -94,7 +94,7 @@ final class Analyse
     /**
      * @param ReflectionProperty $property The property to be checked.
      * @return void
-     * @throws StructureException The property has invalid structure.
+     * @throws StructureError The property has invalid structure.
      * @throws ReflectionException
      */
     public static function property(
@@ -113,7 +113,7 @@ final class Analyse
                 ->getAttributes(KeyName::class)
             )
         ) {
-            throw new StructureException(
+            throw new StructureError(
                 "$blameProperty used two key names which is exactly the same"
             );
         }
@@ -125,13 +125,13 @@ final class Analyse
             and
             self::doesGroupPropertyHaveInvalidType($property)
         ) {
-            throw new StructureException(
+            throw new StructureError(
                 "$blameProperty is a group but its type is not compatible"
             );
         }
 
         if (self::doesPropertyHaveUnionTypesChildStruct($property)) {
-            throw new StructureException(
+            throw new StructureError(
                 "$blameProperty used union-types child struct which is not supported in this ConfigStruct version"
             );
         }

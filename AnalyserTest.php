@@ -3,7 +3,7 @@
 namespace Endermanbugzjfc\ConfigStruct\struct;
 
 use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
-use Endermanbugzjfc\ConfigStruct\exceptions\StructureException;
+use Endermanbugzjfc\ConfigStruct\exceptions\StructureError;
 use PHPUnit\Framework\TestCase;
 use ReflectionException;
 use ReflectionProperty;
@@ -17,7 +17,7 @@ class AnalyserTest extends TestCase
     }
 
     /**
-     * @throws StructureException
+     * @throws StructureError
      * @throws ReflectionException
      */
     public function testDoesKeyNameHaveDuplicatedArguments()
@@ -31,7 +31,7 @@ class AnalyserTest extends TestCase
             public string $testKeyNameDuplicatedArguments;
 
         };
-        $this->expectException(StructureException::class);
+        $this->expectException(StructureError::class);
         Analyser::doesKeyNameHaveDuplicatedArguments(
             $struct,
             new ReflectionProperty(

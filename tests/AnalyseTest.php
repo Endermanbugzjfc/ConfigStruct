@@ -5,7 +5,7 @@ namespace Endermanbugzjfc\ConfigStruct;
 use Endermanbugzjfc\ConfigStruct\attributes\Group;
 use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
-use Endermanbugzjfc\ConfigStruct\exceptions\StructureException;
+use Endermanbugzjfc\ConfigStruct\exceptions\StructureError;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
@@ -120,7 +120,7 @@ class AnalyseTest extends TestCase
     }
 
     /**
-     * @throws exceptions\StructureException
+     * @throws exceptions\StructureError
      * @throws ReflectionException
      */
     public function testStructRecursion()
@@ -138,7 +138,7 @@ class AnalyseTest extends TestCase
 
     /**
      * @throws ReflectionException
-     * @throws StructureException
+     * @throws StructureError
      */
     public function testStructConstructor()
     {
@@ -152,7 +152,7 @@ class AnalyseTest extends TestCase
     }
 
     /**
-     * @throws exceptions\StructureException
+     * @throws exceptions\StructureError
      */
     public function testPropertyDuplicatedKeyNameArguments()
     {
@@ -165,12 +165,12 @@ class AnalyseTest extends TestCase
             }
         ))->getProperties()[0];
 
-        $this->expectException(StructureException::class);
+        $this->expectException(StructureError::class);
         Analyse::property($property);
     }
 
     /**
-     * @throws exceptions\StructureException
+     * @throws exceptions\StructureError
      */
     public function testPropertyGroupWithInvalidType()
     {
@@ -183,12 +183,12 @@ class AnalyseTest extends TestCase
             }
         ))->getProperties()[0];
 
-        $this->expectException(StructureException::class);
+        $this->expectException(StructureError::class);
         Analyse::property($property);
     }
 
     /**
-     * @throws exceptions\StructureException
+     * @throws exceptions\StructureError
      * @throws ReflectionException
      */
     public function testPropertyUnionTypesChildStruct()
@@ -201,7 +201,7 @@ class AnalyseTest extends TestCase
             }
         ))->getProperties()[0];
 
-        $this->expectException(StructureException::class);
+        $this->expectException(StructureError::class);
         Analyse::property($property);
     }
 

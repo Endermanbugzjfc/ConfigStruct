@@ -3,7 +3,7 @@
 namespace Endermanbugzjfc\ConfigStruct\struct;
 
 use Endermanbugzjfc\ConfigStruct\Analyse;
-use Endermanbugzjfc\ConfigStruct\exceptions\StructureException;
+use Endermanbugzjfc\ConfigStruct\exceptions\StructureError;
 use ReflectionClass;
 use ReflectionException;
 
@@ -12,7 +12,7 @@ final class StructHolder implements StructHolderInterface
 
     /**
      * @throws ReflectionException
-     * @throws StructureException
+     * @throws StructureError
      */
     private function __construct(
         protected string $class
@@ -22,7 +22,7 @@ final class StructHolder implements StructHolderInterface
     }
 
     /**
-     * @throws StructureException
+     * @throws StructureError
      * @throws ReflectionException
      */
     public static function newStructHolder(object $struct) : self
