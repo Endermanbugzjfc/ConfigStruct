@@ -88,7 +88,6 @@ final class Analyse
      * @param ReflectionProperty $property The property to be checked.
      * @return void
      * @throws StructureError The property has invalid structure.
-     * @throws ReflectionException
      */
     public static function property(
         ReflectionProperty $property,
@@ -178,7 +177,6 @@ final class Analyse
      * @param ReflectionClass $class The child struct to be checked.
      * @param ReflectionClass[] $nodeTrace Variable reference to a stacktrace. A {@link ReflectionClass} instance of the child struct will be appended to this.
      * @return ReflectionClass|null The ending-struct of this recursion. Null = no recursion.
-     * @throws ReflectionException
      */
     public static function recursion(
         ReflectionClass $class,
