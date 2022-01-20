@@ -7,7 +7,6 @@ use Endermanbugzjfc\ConfigStruct\attributes\Group;
 use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
 use Endermanbugzjfc\ConfigStruct\exceptions\StructureError;
-use pocketmine\utils\Utils;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionException;
@@ -40,9 +39,6 @@ final class Analyse
         array           $nodeTrace
     ) : void
     {
-        $niceClass = Utils::getNiceClassName(
-            $class->newInstanceWithoutConstructor()
-        );
         $constructor = $class->getConstructor();
         if (
             $constructor !== null
@@ -50,17 +46,14 @@ final class Analyse
             !self::doesStructHaveValidConstructor($constructor)
         ) {
             throw new StructureError(
-                "Constructor of struct class $niceClass should be public and have 0 arguments"
+                "Constructor of struct class {$class->getName()} should be public and have 0 arguments"
             );
         }
 
         $end = self::recursion($class, $nodeTrace);
         if ($end !== null) {
-            $niceEnd = Utils::getNiceClassName(
-                $end->newInstanceWithoutConstructor()
-            );
             throw new StructureError(
-                "Recursion found in struct class $niceClass => ... => $niceEnd => loop"
+                "Recursion found in struct class {$class->getName()} => ... => {$end->getName()} => loop"
             );
         }
 
@@ -101,11 +94,7 @@ final class Analyse
         ReflectionProperty $property,
     ) : void
     {
-        $niceClass = Utils::getNiceClassName(
-            (new ReflectionClass($property->getDeclaringClass()->getName()))
-                ->newInstanceWithoutConstructor()
-        );
-        $blameProperty = "Property $niceClass->{$property->getName()}";
+        $blameProperty = "Property {$property->getDeclaringClass()}->{$property->getName()}";
 
         if (
             self::doesKeyNameHaveDuplicatedArgument(
