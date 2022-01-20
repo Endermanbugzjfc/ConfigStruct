@@ -127,7 +127,7 @@ class AnalyseTest extends TestCase
     {
         $class = TestStructUnsafeRecursiveIndirectB::class;
         $end = TestStructUnsafeRecursiveIndirectC::class;
-        $this->expectExceptionMessage(
+        $this->expectErrorMessage(
             "Recursion found in struct class $class => ... => $end => loop"
         );
 
@@ -143,7 +143,7 @@ class AnalyseTest extends TestCase
     public function testStructConstructor()
     {
         $class = TestStructPrivateConstructor::class;
-        $this->expectExceptionMessage(
+        $this->expectErrorMessage(
             "Constructor of struct class $class should be public and have 0 arguments"
         );
         Analyse::struct(new ReflectionClass(
@@ -165,7 +165,7 @@ class AnalyseTest extends TestCase
             }
         ))->getProperties()[0];
 
-        $this->expectException(StructureError::class);
+        $this->expectError(StructureError::class);
         Analyse::property($property);
     }
 
@@ -183,7 +183,7 @@ class AnalyseTest extends TestCase
             }
         ))->getProperties()[0];
 
-        $this->expectException(StructureError::class);
+        $this->expectError(StructureError::class);
         Analyse::property($property);
     }
 
@@ -201,7 +201,7 @@ class AnalyseTest extends TestCase
             }
         ))->getProperties()[0];
 
-        $this->expectException(StructureError::class);
+        $this->expectError(StructureError::class);
         Analyse::property($property);
     }
 
