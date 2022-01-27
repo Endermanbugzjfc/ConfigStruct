@@ -27,9 +27,9 @@ final class Parse
     /**
      * Look at README.md for examples.
      *
-     * @param StructHolderInterface $holder Parsed content will be copied to the struct given by this holder.
-     * @param array<bool|int|float|string, bool|int|float|string|array> $array The input to be parsed, nested scalar keys-values array.
-     * @return object The struct which contains the parsed data.
+     * @param object $struct Parsed content will be copied to this struct.
+     * @param array $array The input to be parsed. The array should only hold scalar values or sub-arrays.
+     * @return object $struct.
      */
     public static function array(
         StructHolderInterface $holder,
