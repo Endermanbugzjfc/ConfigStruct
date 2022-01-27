@@ -17,6 +17,10 @@ use function array_unique;
 use function class_exists;
 use function count;
 
+/**
+ * Struct analysing is not forced to be used.
+ * You may want to disable it on production code for performance purpose.
+ */
 final class Analyse
 {
 
