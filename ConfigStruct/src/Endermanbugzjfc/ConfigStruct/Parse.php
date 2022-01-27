@@ -3,7 +3,6 @@
 namespace Endermanbugzjfc\ConfigStruct;
 
 use Endermanbugzjfc\ConfigStruct\attributes\Group;
-use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
 use Endermanbugzjfc\ConfigStruct\struct\StructHolderInterface;
 use ReflectionAttribute;
 use ReflectionClass;
@@ -11,7 +10,6 @@ use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
 use function array_key_exists;
-use function class_exists;
 
 final class Parse
 {
@@ -30,13 +28,21 @@ final class Parse
      * @param object $struct Parsed content will be copied to this struct.
      * @param array $array The input to be parsed. The array should only hold scalar values or sub-arrays.
      * @return object $struct.
+     * @throws ReflectionException
      */
     public static function array(
-        StructHolderInterface $holder,
-        array                 $array,
+        object $struct,
+        array  $array,
     ) : object
     {
-        $struct = $holder->newStructForParsing();
+        return self::struct($struct, $array);
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    protected static function struct(object $struct, array $array) : object
+    {
         $array = self::mapKeyNamesToPropertyNames($struct, $array);
 
         $class = new ReflectionClass($struct);
@@ -92,12 +98,14 @@ final class Parse
      * @param ReflectionClass $class Reflection of the child struct class.
      * @param array<bool|int|float|string, bool|int|float|string|array> $field The input to be parsed, nested scalar keys-values array.
      * @return object Child struct which contains the parsed data.
+     * @throws ReflectionException
      */
     public static function childStructField(
         ReflectionClass $class,
         array           $field
     ) : object
     {
+        return self::struct($class, $field);
     }
 
     /**
@@ -122,19 +130,6 @@ final class Parse
         array               $field
     ) : array
     {
-    }
-
-    /**
-     * @param ReflectionAttribute $recursive A {@link Recursive} attribute instance.
-     * @param array<bool|int|float|string, bool|int|float|string|array> $field The input to be converted.
-     * @return object Recursive child struct.
-     */
-    public static function recursiveChildStruct(
-        ReflectionAttribute $recursive,
-        array               $field
-    ) : object
-    {
-
     }
 
 }
