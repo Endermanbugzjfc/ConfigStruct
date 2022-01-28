@@ -7,6 +7,7 @@ use Endermanbugzjfc\ConfigStruct\attributes\Group;
 use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
 use Endermanbugzjfc\ConfigStruct\exceptions\StructureError;
+use Error;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionException;
@@ -16,6 +17,7 @@ use ReflectionProperty;
 use function array_unique;
 use function class_exists;
 use function count;
+use const E_RECOVERABLE_ERROR;
 
 /**
  * Struct analysing is not forced to be used.
@@ -35,8 +37,6 @@ final class Analyse
      * @param ReflectionClass $class The struct to be checked.
      * @param ReflectionClass[] $nodeTrace A stacktrace which contains {@link ReflectionClass} instances of child structs.
      * @return void
-     * @throws ReflectionException
-     * @throws StructureError When {@link Analyse::recursion()} or {@link Analyse::property()} fails.
      */
     public static function struct(
         ReflectionClass $class,
@@ -73,16 +73,28 @@ final class Analyse
                 and
                 class_exists($type->getName())
             ) {
-                self::struct(new ReflectionClass(
-                    $type->getName()
-                ), $nodeTrace);
+                try {
+                    self::struct(new ReflectionClass(
+                        $type->getName()
+                    ), $nodeTrace);
+                } catch (ReflectionException $err) {
+                    throw new Error($err);
+                }
             }
 
             $group = $property->getAttributes(Group::class)[0] ?? null;
             if ($group !== null) {
-                self::struct(new ReflectionClass(
-                    $group->getArguments()[0]
-                ), $nodeTrace);
+                try {
+                    self::struct(new ReflectionClass(
+                        $group->getArguments()[0]
+                    ), $nodeTrace);
+                } catch (ReflectionException $err1) {
+                    throw new StructureError(
+                        "",
+                        E_RECOVERABLE_ERROR,
+                        $err1
+                    );
+                }
             }
 
         }
