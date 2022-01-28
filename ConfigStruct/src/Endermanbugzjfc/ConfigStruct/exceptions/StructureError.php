@@ -7,7 +7,7 @@ use Throwable;
 use const E_RECOVERABLE_ERROR;
 
 /**
- * This error shouldn't be caught. Direct change to the source code (structure of the struct class) should be made.
+ * This error can be but shouldn't be recovered, neither be caught. Direct change to the source code (structure of the struct class) should be made.
  */
 final class StructureError extends Error
 {
