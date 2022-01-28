@@ -4,6 +4,8 @@ namespace Endermanbugzjfc\ConfigStruct\exceptions;
 
 use Endermanbugzjfc\ConfigStruct\Analyse;
 use Error;
+use Throwable;
+use const E_ERROR;
 
 /**
  * This error is thrown by {@link Analyse} when the structure of a struct class is invalid.
@@ -12,5 +14,14 @@ use Error;
  */
 final class StructureError extends Error
 {
+
+    public function __construct(
+        string     $message = "",
+        ?Throwable $previous = null,
+        int        $code = E_ERROR
+    )
+    {
+        parent::__construct($message, $code, $previous);
+    }
 
 }

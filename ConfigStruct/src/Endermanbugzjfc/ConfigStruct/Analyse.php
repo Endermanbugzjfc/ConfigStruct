@@ -17,7 +17,6 @@ use ReflectionProperty;
 use function array_unique;
 use function class_exists;
 use function count;
-use const E_RECOVERABLE_ERROR;
 
 /**
  * Struct analysing is not forced to be used.
@@ -91,7 +90,6 @@ final class Analyse
                 } catch (ReflectionException $err1) {
                     throw new StructureError(
                         "",
-                        E_RECOVERABLE_ERROR,
                         $err1
                     );
                 }
