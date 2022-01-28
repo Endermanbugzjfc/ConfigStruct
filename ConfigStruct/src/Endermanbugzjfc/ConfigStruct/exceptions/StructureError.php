@@ -5,7 +5,7 @@ namespace Endermanbugzjfc\ConfigStruct\exceptions;
 use Endermanbugzjfc\ConfigStruct\Analyse;
 use Error;
 use Throwable;
-use const E_ERROR;
+use const E_RECOVERABLE_ERROR;
 
 /**
  * This error is thrown by {@link Analyse} when the structure of a struct class is invalid.
@@ -18,7 +18,7 @@ final class StructureError extends Error
     public function __construct(
         string     $message = "",
         ?Throwable $previous = null,
-        int        $code = E_ERROR
+        int $code = E_RECOVERABLE_ERROR
     )
     {
         parent::__construct($message, $code, $previous);
