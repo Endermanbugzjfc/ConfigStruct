@@ -8,9 +8,11 @@ namespace Endermanbugzjfc\ConfigStruct;
 use Endermanbugzjfc\ConfigStruct\attributes\Group;
 use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
+use Endermanbugzjfc\ConfigStruct\exceptions\StructureError;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionProperty;
+use const E_RECOVERABLE_ERROR;
 
 class AnalyseTest extends TestCase
 {
@@ -139,6 +141,20 @@ class AnalyseTest extends TestCase
         Analyse::struct(new ReflectionClass(
             $class
         ), []);
+    }
+
+    public function testStructCatchingStructureError()
+    {
+        $class = TestStructPrivateConstructor::class;
+        try {
+            Analyse::struct(new ReflectionClass(
+                $class
+            ), []);
+        } catch (StructureError $error) {
+            $this->assertTrue(
+                $error->getCode() === E_RECOVERABLE_ERROR
+            );
+        }
     }
 
     public function testPropertyDuplicatedKeyNameArguments()
