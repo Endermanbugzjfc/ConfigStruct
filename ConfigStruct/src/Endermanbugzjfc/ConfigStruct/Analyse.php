@@ -88,10 +88,7 @@ final class Analyse
                         $group->getArguments()[0]
                     ), $nodeTrace);
                 } catch (ReflectionException $err1) {
-                    throw new StructureError(
-                        "",
-                        $err1
-                    );
+                    throw new Error($err1);
                 }
             }
 
@@ -122,14 +119,17 @@ final class Analyse
 
 
         $group = $property->getAttributes(Group::class)[0] ?? null;
-        if (
-            $group !== null
-            and
-            self::doesGroupPropertyHaveInvalidType($property)
-        ) {
-            throw new StructureError(
-                "$blameProperty is a group but its type is not compatible"
-            );
+        if ($group !== null) {
+            if (self::doesGroupPropertyHaveInvalidType($property)) {
+                throw new StructureError(
+                    "$blameProperty is a group but its type is not compatible"
+                );
+            }
+            if (self::doesGroupAttributeHaveInvalidClassArgument($group)) {
+                throw new StructureError(
+                    "$blameProperty has a group attribute with invalid class string"
+                );
+            }
         }
 
         if (self::doesPropertyHaveUnionTypesChildStruct($property)) {
@@ -241,6 +241,13 @@ final class Analyse
             }
         }
         return false;
+    }
+
+    public static function doesGroupAttributeHaveInvalidClassArgument(
+        ReflectionAttribute $group
+    ) : bool
+    {
+        return class_exists($group->getArguments()[0]);
     }
 
 }
