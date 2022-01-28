@@ -5,9 +5,9 @@
 
 namespace Endermanbugzjfc\ConfigStruct;
 
-use Endermanbugzjfc\ConfigStruct\attributes\Group;
 use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
+use Endermanbugzjfc\ConfigStruct\attributes\TypedArray;
 use Endermanbugzjfc\ConfigStruct\exceptions\StructureError;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -179,7 +179,7 @@ class AnalyseTest extends TestCase
         $property = (new ReflectionClass(
             new class() {
 
-                #[Group(0)]
+                #[TypedArray(0)]
                 public int $testGroupWithInvalidType;
 
             }

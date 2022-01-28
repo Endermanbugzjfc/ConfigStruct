@@ -2,7 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct;
 
-use Endermanbugzjfc\ConfigStruct\attributes\Group;
+use Endermanbugzjfc\ConfigStruct\attributes\TypedArray;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionException;
@@ -75,7 +75,7 @@ final class Parse
         array              $field
     ) : mixed
     {
-        $group = $property->getAttributes(Group::class)[0] ?? null;
+        $group = $property->getAttributes(TypedArray::class)[0] ?? null;
         if ($group !== null) {
             return self::groupField($group, $field);
         }
@@ -120,9 +120,9 @@ final class Parse
     }
 
     /**
-     * @param ReflectionAttribute $group A {@link Group} attribute instance.
+     * @param ReflectionAttribute $group A {@link TypedArray} attribute instance.
      * @param array<bool|int|float|string, bool|int|float|string|array> $field The input to be converted.
-     * @return array object[], array dimension is based on the "wrapping" parameter in {@link Group::__construct()}.
+     * @return array object[], array dimension is based on the "wrapping" parameter in {@link TypedArray::__construct()}.
      */
     public static function groupField(
         ReflectionAttribute $group,

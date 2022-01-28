@@ -3,9 +3,9 @@
 namespace Endermanbugzjfc\ConfigStruct;
 
 use DaveRandom\CallbackValidator\CallbackType;
-use Endermanbugzjfc\ConfigStruct\attributes\Group;
 use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
+use Endermanbugzjfc\ConfigStruct\attributes\TypedArray;
 use Endermanbugzjfc\ConfigStruct\exceptions\StructureError;
 use Error;
 use ReflectionAttribute;
@@ -81,7 +81,7 @@ final class Analyse
                 }
             }
 
-            $group = $property->getAttributes(Group::class)[0] ?? null;
+            $group = $property->getAttributes(TypedArray::class)[0] ?? null;
             if ($group !== null) {
                 try {
                     self::struct(new ReflectionClass(
@@ -118,7 +118,7 @@ final class Analyse
         }
 
 
-        $group = $property->getAttributes(Group::class)[0] ?? null;
+        $group = $property->getAttributes(TypedArray::class)[0] ?? null;
         if ($group !== null) {
             if (self::doesGroupPropertyHaveInvalidType($property)) {
                 throw new StructureError(
@@ -141,7 +141,7 @@ final class Analyse
 
     /**
      * @param ReflectionProperty $property The property to be checked.
-     * @return bool The property's type is compatible with a {@link Group} attribute.
+     * @return bool The property's type is compatible with a {@link TypedArray} attribute.
      */
     public static function doesGroupPropertyHaveInvalidType(
         ReflectionProperty $property

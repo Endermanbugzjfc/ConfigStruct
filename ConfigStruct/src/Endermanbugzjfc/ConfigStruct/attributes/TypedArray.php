@@ -6,11 +6,11 @@ use ArrayAccess;
 use Attribute;
 use Iterator;
 
-#[Attribute(Attribute::TARGET_PROPERTY)] class Group
+#[Attribute(Attribute::TARGET_PROPERTY)] class TypedArray
 {
 
     /**
-     * A {@link Group} refer to an array of child structs.
+     * A {@link TypedArray} refer to an array of child structs.
      *
      * Property that uses this attribute should has the type array or classes which implement the {@link ArrayAccess} and {@link Iterator} interface.
      *
