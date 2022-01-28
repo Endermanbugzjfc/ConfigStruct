@@ -3,7 +3,6 @@
 namespace Endermanbugzjfc\ConfigStruct;
 
 use Endermanbugzjfc\ConfigStruct\attributes\Group;
-use Endermanbugzjfc\ConfigStruct\struct\StructHolderInterface;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionException;
