@@ -57,4 +57,9 @@ abstract class PropertyParseOutput
         return $this->keyName;
     }
 
+    public function isIndicator() : bool
+    {
+        return false;
+    }
+
 }
