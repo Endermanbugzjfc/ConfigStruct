@@ -9,20 +9,22 @@ final class ChildStructParseOutput extends PropertyParseOutput
 
     /**
      * @param ReflectionProperty $reflection
-     * @param string $keyName
+     * @param string|null $keyName
      * @param mixed $output
      */
     protected function __construct(
         ReflectionProperty $reflection,
-        string             $keyName,
-        StructParseOutput  $output
+        string             $keyName = null,
+        StructParseOutput  $output = null
     )
     {
-        parent::__construct(
-            $reflection,
-            $keyName,
-            $output
-        );
+        if ($keyName !== null) {
+            parent::__construct(
+                $reflection,
+                $keyName,
+                $output
+            );
+        }
     }
 
     public static function create(
@@ -49,6 +51,11 @@ final class ChildStructParseOutput extends PropertyParseOutput
     protected function getFlattenedValue() : object
     {
         return $this->getChildStruct()->copyValuesToNewObject();
+    }
+
+    public function isIndicator() : bool
+    {
+        return !isset($this->keyName);
     }
 
 }
