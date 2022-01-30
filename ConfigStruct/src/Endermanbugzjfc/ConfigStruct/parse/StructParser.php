@@ -2,7 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
-class ChildStructParser
+class StructParser
 {
 
 }
