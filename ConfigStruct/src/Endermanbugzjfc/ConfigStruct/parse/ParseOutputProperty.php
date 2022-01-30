@@ -3,6 +3,7 @@
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
 use Endermanbugzjfc\ConfigStruct\parse\special\SpecialParserInterface;
+use ReflectionException;
 
 final class ParseOutputProperty
 {
@@ -53,6 +54,17 @@ final class ParseOutputProperty
     public function getProperty() : ParseTimeProperty
     {
         return $this->property;
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function getStructurizedOutput() : mixed
+    {
+        if ($this->output instanceof ParseOutputStruct) {
+            return $this->output->copyValuesToNewObject();
+        } // TODO: Typed array
+        return $this->output;
     }
 
 }
