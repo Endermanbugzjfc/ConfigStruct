@@ -3,7 +3,6 @@
 namespace Endermanbugzjfc\ConfigStruct;
 
 use DaveRandom\CallbackValidator\CallbackType;
-use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
 use Endermanbugzjfc\ConfigStruct\attributes\TypedArray;
 use Error;

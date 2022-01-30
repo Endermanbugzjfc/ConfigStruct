@@ -1,6 +1,6 @@
 <?php
 
-namespace Endermanbugzjfc\ConfigStruct\attributes;
+namespace Endermanbugzjfc\ConfigStruct;
 
 use Attribute;
 
