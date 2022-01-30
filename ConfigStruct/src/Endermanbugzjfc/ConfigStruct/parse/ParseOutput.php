@@ -2,7 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
-abstract class ValueParseOutput
+abstract class ParseOutput
 {
 
     abstract protected function getFlattenedValue() : mixed;
