@@ -83,10 +83,10 @@ final class StructParseOutput
     {
         foreach ($this->getPropertiesOutput() as $property) {
             $property->copyToObject(
-                $object,
-                $property->getReflection()
+                $object
             );
         }
+        return $object;
     }
 
     /**
