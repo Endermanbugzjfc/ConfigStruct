@@ -56,13 +56,21 @@ final class ParseOutputProperty
         return $this->property;
     }
 
+    public function getChildStructOutput() : ?ParseOutputStruct
+    {
+        return $this->output instanceof ParseOutputStruct
+            ? $this->output
+            : null;
+    }
+
     /**
      * @throws ReflectionException
      */
     public function getFinalizedOutput() : mixed
     {
-        if ($this->output instanceof ParseOutputStruct) {
-            return $this->output->copyValuesToNewObject();
+        $childStruct = $this->getChildStructOutput();
+        if ($childStruct !== null) {
+            return $childStruct->copyValuesToNewObject();
         } // TODO: Typed array
         return $this->output;
     }
