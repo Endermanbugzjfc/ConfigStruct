@@ -4,7 +4,7 @@ namespace Endermanbugzjfc\ConfigStruct\parse;
 
 use ReflectionException;
 
-final class StructParseOutput
+final class StructParseOutput extends ParseOutput
 {
 
     /**
@@ -76,14 +76,14 @@ final class StructParseOutput
         return $this->struct;
     }
 
-    protected function getFinalizedOutput() : array
+    protected function getFlattenedValue() : array
     {
         foreach ($this->getPropertiesOutput() as $property) {
             $return[$property
                 ->getProperty()
                 ->getReflection()
                 ->getName()]
-                = $property->getFinalizedOutput();
+                = $property->getFlattenedValue();
         }
         return $return ?? [];
     }
@@ -92,7 +92,7 @@ final class StructParseOutput
         object $object
     ) : object
     {
-        foreach ($this->getFinalizedOutput() as $name => $value) {
+        foreach ($this->getFlattenedValue() as $name => $value) {
             $object->$name = $value;
         }
         return $object;
@@ -107,5 +107,4 @@ final class StructParseOutput
             $this->getStruct()->getReflection()->newInstance()
         );
     }
-
 }

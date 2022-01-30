@@ -3,9 +3,8 @@
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
 use Endermanbugzjfc\ConfigStruct\parse\special\SpecialParserInterface;
-use ReflectionException;
 
-final class PropertyParseOutput
+final class PropertyParseOutput extends ParseOutput
 {
 
     /**
@@ -68,10 +67,7 @@ final class PropertyParseOutput
             : null;
     }
 
-    /**
-     * @throws ReflectionException
-     */
-    public function getFinalizedOutput() : mixed
+    protected function getFlattenedValue() : mixed
     {
         $childStruct = $this->getChildStructOutput();
         if ($childStruct !== null) {
@@ -79,5 +75,4 @@ final class PropertyParseOutput
         } // TODO: Typed array
         return $this->output;
     }
-
 }
