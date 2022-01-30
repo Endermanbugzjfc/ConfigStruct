@@ -5,7 +5,7 @@ namespace Endermanbugzjfc\ConfigStruct\parse;
 use ReflectionClass;
 use ReflectionProperty;
 
-final class ParseTimeStruct
+final class ParseStruct
 {
 
     private function __construct(

@@ -8,32 +8,32 @@ final class ParseOutputStruct
 {
 
     /**
-     * @param ParseTimeStruct $struct
+     * @param ParseStruct $struct
      * @param ParseOutputProperty[] $propertiesOutput
      * @param ParseOutputProperty[] $unusedElements
      * @param ParseProperty[] $missingElements
      */
     private function __construct(
-        protected ParseTimeStruct $struct,
-        protected array           $propertiesOutput,
-        protected array           $unusedElements,
-        protected array           $missingElements
+        protected ParseStruct $struct,
+        protected array       $propertiesOutput,
+        protected array       $unusedElements,
+        protected array       $missingElements
     )
     {
     }
 
     /**
-     * @param ParseTimeStruct $struct
+     * @param ParseStruct $struct
      * @param ParseOutputProperty[] $propertiesOutput
      * @param ParseOutputProperty[] $unusedElements
      * @param ParseProperty[] $missingElements
      * @return static
      */
     public static function create(
-        ParseTimeStruct $struct,
-        array           $propertiesOutput,
-        array           $unusedElements,
-        array           $missingElements
+        ParseStruct $struct,
+        array       $propertiesOutput,
+        array       $unusedElements,
+        array       $missingElements
     ) : self
     {
         return new self(
@@ -69,9 +69,9 @@ final class ParseOutputStruct
     }
 
     /**
-     * @return ParseTimeStruct
+     * @return ParseStruct
      */
-    public function getStruct() : ParseTimeStruct
+    public function getStruct() : ParseStruct
     {
         return $this->struct;
     }

@@ -12,7 +12,7 @@ final class ParseProperty
     protected int|string $boundKeyName;
 
     private function __construct(
-        protected ParseTimeStruct    $owner,
+        protected ParseStruct        $owner,
         protected ReflectionProperty $reflection
     )
     {
@@ -20,7 +20,7 @@ final class ParseProperty
     }
 
     public static function fromReflection(
-        ParseTimeStruct    $owner,
+        ParseStruct        $owner,
         ReflectionProperty $reflection
     ) : self
     {
@@ -36,9 +36,9 @@ final class ParseProperty
     }
 
     /**
-     * @return ParseTimeStruct
+     * @return ParseStruct
      */
-    public function getOwner() : ParseTimeStruct
+    public function getOwner() : ParseStruct
     {
         return $this->owner;
     }
