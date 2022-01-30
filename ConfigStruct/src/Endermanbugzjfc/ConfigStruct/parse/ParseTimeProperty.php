@@ -9,7 +9,7 @@ use function array_key_exists;
 final class ParseTimeProperty
 {
 
-    protected mixed $boundKeyName;
+    protected int|string $boundKeyName;
 
     private function __construct(
         protected ParseTimeStruct    $owner,
