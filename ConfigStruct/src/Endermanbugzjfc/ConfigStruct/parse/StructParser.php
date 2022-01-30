@@ -2,7 +2,14 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
-class StructParser
+final class StructParser
 {
+
+    /**
+     * This class should be used statically!
+     */
+    private function __construct()
+    {
+    }
 
 }
