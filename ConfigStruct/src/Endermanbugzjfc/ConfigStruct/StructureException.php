@@ -2,20 +2,20 @@
 
 namespace Endermanbugzjfc\ConfigStruct;
 
-use Error;
+use PHPUnit\Framework\Exception;
 use Throwable;
 use const E_RECOVERABLE_ERROR;
 
 /**
- * This error can be but shouldn't be recovered, neither be caught. Direct change to the source code (structure of the struct class) should be made.
+ * This exception should neither be recovered nor be caught. Direct change to the source code (structure of the struct class) should be made.
  */
-final class StructureError extends Error
+final class StructureException extends Exception
 {
 
     public function __construct(
         string     $message = "",
         ?Throwable $previous = null,
-        int $code = E_RECOVERABLE_ERROR
+        int        $code = E_RECOVERABLE_ERROR
     )
     {
         parent::__construct($message, $code, $previous);

@@ -47,14 +47,14 @@ final class Analyse
             and
             !self::doesStructHaveValidConstructor($constructor)
         ) {
-            throw new StructureError(
+            throw new StructureException(
                 "Constructor of struct class {$class->getName()} should be public and have 0 arguments"
             );
         }
 
         $end = self::recursion($class, $nodeTrace);
         if ($end !== null) {
-            throw new StructureError(
+            throw new StructureException(
                 "Recursion found in struct class {$class->getName()} => ... => {$end->getName()} => loop"
             );
         }
@@ -97,7 +97,7 @@ final class Analyse
     /**
      * @param ReflectionProperty $property The property to be checked.
      * @return void
-     * @throws StructureError The property has invalid structure.
+     * @throws StructureException The property has invalid structure.
      */
     public static function property(
         ReflectionProperty $property,
@@ -111,7 +111,7 @@ final class Analyse
                 ->getAttributes(KeyName::class)
             )
         ) {
-            throw new StructureError(
+            throw new StructureException(
                 "$blameProperty used two key names which is exactly the same"
             );
         }
@@ -120,19 +120,19 @@ final class Analyse
         $group = $property->getAttributes(TypedArray::class)[0] ?? null;
         if ($group !== null) {
             if (self::doesGroupPropertyHaveInvalidType($property)) {
-                throw new StructureError(
+                throw new StructureException(
                     "$blameProperty is a group but its type is not compatible"
                 );
             }
             if (self::doesGroupAttributeHaveInvalidClassArgument($group)) {
-                throw new StructureError(
+                throw new StructureException(
                     "$blameProperty has a group attribute with invalid class string"
                 );
             }
         }
 
         if (self::doesPropertyHaveUnionTypesChildStruct($property)) {
-            throw new StructureError(
+            throw new StructureException(
                 "$blameProperty used union-types child struct which is not supported in this ConfigStruct version"
             );
         }

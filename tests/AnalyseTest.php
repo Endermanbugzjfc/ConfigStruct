@@ -149,7 +149,7 @@ class AnalyseTest extends TestCase
             Analyse::struct(new ReflectionClass(
                 $class
             ), []);
-        } catch (StructureError $error) {
+        } catch (StructureException $error) {
             $this->assertTrue(
                 $error->getCode() === E_RECOVERABLE_ERROR
             );
