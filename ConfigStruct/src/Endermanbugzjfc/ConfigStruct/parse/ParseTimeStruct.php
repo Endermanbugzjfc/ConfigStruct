@@ -3,6 +3,7 @@
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
 use ReflectionClass;
+use ReflectionProperty;
 
 final class ParseTimeStruct
 {
@@ -27,6 +28,19 @@ final class ParseTimeStruct
     public function getReflection() : ReflectionClass
     {
         return $this->reflection;
+    }
+
+    public function scanProperties() : array
+    {
+        foreach ($this->getReflection()->getProperties(
+            ReflectionProperty::IS_PUBLIC
+        ) as $property) {
+            $return[] = ParseTimeProperty::fromReflection(
+                $this,
+                $property
+            );
+        }
+        return $return ?? [];
     }
 
 }
