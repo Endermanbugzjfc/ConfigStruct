@@ -9,8 +9,8 @@ final class ParseOutputStruct
 
     /**
      * @param ParseStruct $struct
-     * @param ParseOutputProperty[] $propertiesOutput
-     * @param ParseOutputProperty[] $unusedElements
+     * @param PropertyParseOutput[] $propertiesOutput
+     * @param PropertyParseOutput[] $unusedElements
      * @param ParseProperty[] $missingElements
      */
     private function __construct(
@@ -24,8 +24,8 @@ final class ParseOutputStruct
 
     /**
      * @param ParseStruct $struct
-     * @param ParseOutputProperty[] $propertiesOutput
-     * @param ParseOutputProperty[] $unusedElements
+     * @param PropertyParseOutput[] $propertiesOutput
+     * @param PropertyParseOutput[] $unusedElements
      * @param ParseProperty[] $missingElements
      * @return static
      */
@@ -45,7 +45,7 @@ final class ParseOutputStruct
     }
 
     /**
-     * @return ParseOutputProperty[]
+     * @return PropertyParseOutput[]
      */
     public function getUnusedElements() : array
     {
@@ -61,7 +61,7 @@ final class ParseOutputStruct
     }
 
     /**
-     * @return ParseOutputProperty[]
+     * @return PropertyParseOutput[]
      */
     public function getPropertiesOutput() : array
     {

@@ -5,7 +5,7 @@ namespace Endermanbugzjfc\ConfigStruct\parse;
 use Endermanbugzjfc\ConfigStruct\parse\special\SpecialParserInterface;
 use ReflectionException;
 
-final class ParseOutputProperty
+final class PropertyParseOutput
 {
 
     /**
@@ -28,7 +28,7 @@ final class ParseOutputProperty
      * @param string $keyName
      * @param mixed $output
      * @param SpecialParserInterface|null $specialParser
-     * @return ParseOutputProperty
+     * @return PropertyParseOutput
      */
     public static function create(
         ParseProperty           $property,
