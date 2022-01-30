@@ -43,4 +43,11 @@ final class ParseTimeStruct
         return $return ?? [];
     }
 
+    public function parseValue(
+        array $value
+    ) : array
+    {
+
+    }
+
 }
