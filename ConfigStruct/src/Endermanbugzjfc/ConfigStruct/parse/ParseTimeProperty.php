@@ -8,6 +8,7 @@ final class ParseTimeProperty
 {
 
     private function __construct(
+        protected ParseTimeStruct    $owner,
         protected ReflectionProperty $reflection
     )
     {
@@ -15,10 +16,11 @@ final class ParseTimeProperty
     }
 
     public static function fromReflection(
+        ParseTimeStruct    $owner,
         ReflectionProperty $reflection
     ) : self
     {
-        return new self($reflection);
+        return new self($owner, $reflection);
     }
 
     /**
@@ -27,6 +29,14 @@ final class ParseTimeProperty
     public function getReflection() : ReflectionProperty
     {
         return $this->reflection;
+    }
+
+    /**
+     * @return ParseTimeStruct
+     */
+    public function getOwner() : ParseTimeStruct
+    {
+        return $this->owner;
     }
 
 }
