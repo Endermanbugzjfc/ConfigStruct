@@ -8,6 +8,8 @@ use ReflectionProperty;
 final class ParseTimeStruct
 {
 
+    protected object $boundObject;
+
     private function __construct(
         protected ReflectionClass $reflection
     )
@@ -20,6 +22,15 @@ final class ParseTimeStruct
     ) : self
     {
         return new self($reflection);
+    }
+
+    public static function fromObject(
+        object $object
+    ) : self
+    {
+        $self = self::fromReflection(new ReflectionClass($object));
+        $self->boundObject = $object;
+        return $self;
     }
 
     /**
