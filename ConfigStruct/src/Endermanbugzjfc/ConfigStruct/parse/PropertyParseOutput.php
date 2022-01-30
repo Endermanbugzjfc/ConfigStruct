@@ -2,69 +2,39 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
-use Endermanbugzjfc\ConfigStruct\parse\special\SpecialParserInterface;
-
 final class PropertyParseOutput extends ParseOutput
 {
 
     /**
-     * @param ParseProperty $property
+     * @param string $propertyName
      * @param string $keyName
      * @param mixed $output
-     * @param SpecialParserInterface|null $specialParser
      */
     private function __construct(
-        protected ParseProperty           $property,
-        protected string                  $keyName,
-        protected mixed                   $output,
-        protected ?SpecialParserInterface $specialParser
+        protected string $propertyName,
+        protected string $keyName,
+        protected mixed  $output
     )
     {
     }
 
     /**
-     * @param ParseProperty $property
+     * @param string $propertyName
      * @param string $keyName
      * @param mixed $output
-     * @param SpecialParserInterface|null $specialParser
      * @return PropertyParseOutput
      */
     public static function create(
-        ParseProperty           $property,
-        string                  $keyName,
-        mixed                   $output,
-        ?SpecialParserInterface $specialParser
+        string $propertyName,
+        string $keyName,
+        mixed  $output
     ) : self
     {
         return new self(
-            $property,
+            $propertyName,
             $keyName,
-            $output,
-            $specialParser
+            $output
         );
-    }
-
-    /**
-     * @return SpecialParserInterface|null
-     */
-    public function getSpecialParser() : ?SpecialParserInterface
-    {
-        return $this->specialParser;
-    }
-
-    /**
-     * @return ParseProperty
-     */
-    public function getProperty() : ParseProperty
-    {
-        return $this->property;
-    }
-
-    public function getChildStructOutput() : ?StructParseOutput
-    {
-        return $this->output instanceof StructParseOutput
-            ? $this->output
-            : null;
     }
 
     protected function getFlattenedValue() : mixed
@@ -75,4 +45,5 @@ final class PropertyParseOutput extends ParseOutput
         } // TODO: Typed array
         return $this->output;
     }
+
 }
