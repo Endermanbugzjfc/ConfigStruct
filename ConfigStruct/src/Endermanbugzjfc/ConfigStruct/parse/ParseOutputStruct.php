@@ -80,7 +80,7 @@ final class ParseOutputStruct
         object $object
     ) : object
     {
-        foreach ($this->getProperties() as $property) {
+        foreach ($this->getPropertiesOutput() as $property) {
             $property->copyValuesToObject($object);
         }
         return $object;
