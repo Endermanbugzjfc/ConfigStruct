@@ -33,7 +33,7 @@ final class StructParser
         );
 
         foreach ($properties as $property) {
-            $key = $map[$property->getName()]:
+            $key = $map[$property->getName()];
             if (!array_key_exists(
                 $key,
                 $input
