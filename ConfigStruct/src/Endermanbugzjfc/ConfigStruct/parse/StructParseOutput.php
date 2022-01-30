@@ -2,6 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
+use Endermanbugzjfc\ConfigStruct\StructureException;
 use ReflectionClass;
 use ReflectionException;
 
@@ -89,13 +90,14 @@ final class StructParseOutput
         return $object;
     }
 
-    /**
-     * @throws ReflectionException
-     */
     public function copyValuesToNewObject() : object
     {
-        return $this->copyValuesToObject(
-            $this->getReflection()->newInstance()
-        );
+        try {
+            return $this->copyValuesToObject(
+                $this->getReflection()->newInstance()
+            );
+        } catch (ReflectionException $err) {
+            throw new StructureException($err);
+        }
     }
 }
