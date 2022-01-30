@@ -30,6 +30,9 @@ final class ParseTimeStruct
         return $this->reflection;
     }
 
+    /**
+     * @return ParseTimeProperty[]
+     */
     public function scanProperties() : array
     {
         foreach ($this->getReflection()->getProperties(
