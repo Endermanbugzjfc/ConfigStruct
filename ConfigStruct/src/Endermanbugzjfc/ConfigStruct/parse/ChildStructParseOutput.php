@@ -2,8 +2,6 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
-use ReflectionException;
-
 final class ChildStructParseOutput extends ParseOutput
 {
 
@@ -30,9 +28,6 @@ final class ChildStructParseOutput extends ParseOutput
         return $this->childStruct;
     }
 
-    /**
-     * @throws ReflectionException
-     */
     protected function getFlattenedValue() : object
     {
         return $this->getChildStruct()->copyValuesToNewObject();
