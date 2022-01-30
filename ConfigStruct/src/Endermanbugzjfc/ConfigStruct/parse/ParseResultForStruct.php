@@ -5,6 +5,10 @@ namespace Endermanbugzjfc\ConfigStruct\parse;
 final class ParseResultForStruct
 {
 
+    /**
+     * @param array $unusedElements
+     * @param ParseTimeProperty[] $missingElements
+     */
     private function __construct(
         protected array $unusedElements,
         protected array $missingElements
@@ -37,7 +41,7 @@ final class ParseResultForStruct
     }
 
     /**
-     * @return array
+     * @return ParseTimeProperty[]
      */
     public function getMissingElements() : array
     {
