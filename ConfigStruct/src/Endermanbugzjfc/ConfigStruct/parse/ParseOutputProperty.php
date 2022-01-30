@@ -4,12 +4,12 @@ namespace Endermanbugzjfc\ConfigStruct\parse;
 
 use Endermanbugzjfc\ConfigStruct\parse\special\SpecialParserInterface;
 
-final class ParseResultForProperty
+final class ParseOutputProperty
 {
 
     /**
      * @param array $rawOutput
-     * @param ParseResultForStruct[] $childStructs
+     * @param ParseOutputStruct[] $childStructs
      * @param SpecialParserInterface|null $specialParser
      */
     private function __construct(
@@ -22,9 +22,9 @@ final class ParseResultForProperty
 
     /**
      * @param array $rawOutput
-     * @param ParseResultForStruct[] $childStructs
+     * @param ParseOutputStruct[] $childStructs
      * @param SpecialParserInterface|null $specialParser
-     * @return ParseResultForProperty
+     * @return ParseOutputProperty
      */
     public static function create(
         array                   $rawOutput,
@@ -48,7 +48,7 @@ final class ParseResultForProperty
     }
 
     /**
-     * @return ParseResultForStruct[]
+     * @return ParseOutputStruct[]
      */
     public function getChildStructs() : array
     {

@@ -2,11 +2,11 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
-final class ParseResultForStruct
+final class ParseOutputStruct
 {
 
     /**
-     * @param ParseResultForProperty[] $properties
+     * @param ParseOutputProperty[] $properties
      * @param array $unusedElements
      * @param ParseTimeProperty[] $missingElements
      */
@@ -19,7 +19,7 @@ final class ParseResultForStruct
     }
 
     /**
-     * @param ParseResultForProperty[] $properties
+     * @param ParseOutputProperty[] $properties
      * @param array $unusedElements
      * @param ParseTimeProperty[] $missingElements
      * @return static
@@ -54,7 +54,7 @@ final class ParseResultForStruct
     }
 
     /**
-     * @return ParseResultForProperty[]
+     * @return ParseOutputProperty[]
      */
     public function getProperties() : array
     {
