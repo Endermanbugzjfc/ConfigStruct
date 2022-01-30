@@ -2,22 +2,40 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
-final class ChildStructParseOutput implements ValueOutputInterface
+use ReflectionException;
+
+final class ChildStructParseOutput extends ParseOutput
 {
 
     private function __construct(
-        protected ParseOutputStruct $childStruct
+        protected StructParseOutput $childStruct
     )
     {
     }
 
     public static function create(
-        ParseOutputStruct $childStruct
+        StructParseOutput $childStruct
     ) : self
     {
         return new self(
             $childStruct
         );
+    }
+
+    /**
+     * @return StructParseOutput
+     */
+    public function getChildStruct() : StructParseOutput
+    {
+        return $this->childStruct;
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    protected function getFlattenedValue() : object
+    {
+        return $this->getChildStruct()->copyValuesToNewObject();
     }
 
 }
