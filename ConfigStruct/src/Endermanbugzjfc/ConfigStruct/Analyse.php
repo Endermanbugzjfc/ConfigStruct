@@ -6,7 +6,6 @@ use DaveRandom\CallbackValidator\CallbackType;
 use Endermanbugzjfc\ConfigStruct\attributes\KeyName;
 use Endermanbugzjfc\ConfigStruct\attributes\Recursive;
 use Endermanbugzjfc\ConfigStruct\attributes\TypedArray;
-use Endermanbugzjfc\ConfigStruct\exceptions\StructureError;
 use Error;
 use ReflectionAttribute;
 use ReflectionClass;

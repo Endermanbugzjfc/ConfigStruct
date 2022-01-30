@@ -1,6 +1,6 @@
 <?php
 
-namespace Endermanbugzjfc\ConfigStruct\exceptions;
+namespace Endermanbugzjfc\ConfigStruct;
 
 use Error;
 use Throwable;

@@ -3,7 +3,7 @@
 namespace Endermanbugzjfc\ConfigStruct\attributes;
 
 use Attribute;
-use Endermanbugzjfc\ConfigStruct\exceptions\StructureError;
+use Endermanbugzjfc\ConfigStruct\StructureError;
 
 /**
  * This attribute should be applied on a child struct and not the root struct.
