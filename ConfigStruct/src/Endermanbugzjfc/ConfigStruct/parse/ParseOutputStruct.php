@@ -2,6 +2,8 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
+use ReflectionException;
+
 final class ParseOutputStruct
 {
 
@@ -72,6 +74,26 @@ final class ParseOutputStruct
     public function getStruct() : ParseTimeStruct
     {
         return $this->struct;
+    }
+
+    public function copyValuesToObject(
+        object $object
+    ) : object
+    {
+        foreach ($this->getProperties() as $property) {
+            $property->copyValuesToObject($object);
+        }
+        return $object;
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function copyValuesToNewObject() : object
+    {
+        return $this->copyValuesToObject(
+            $this->getStruct()->getReflection()->newInstance()
+        );
     }
 
 }
