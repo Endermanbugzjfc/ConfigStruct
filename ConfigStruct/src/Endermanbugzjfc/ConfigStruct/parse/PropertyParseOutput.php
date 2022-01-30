@@ -2,47 +2,49 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
+use ReflectionProperty;
+
 final class PropertyParseOutput extends ParseOutput
 {
 
     /**
-     * @param string $propertyName
+     * @param ReflectionProperty $reflection
      * @param string $keyName
      * @param mixed $output
      */
     private function __construct(
-        protected string $propertyName,
-        protected string $keyName,
-        protected mixed  $output
+        protected ReflectionProperty $reflection,
+        protected string             $keyName,
+        protected mixed              $output
     )
     {
     }
 
     /**
-     * @param string $propertyName
+     * @param ReflectionProperty $reflection
      * @param string $keyName
      * @param mixed $output
      * @return PropertyParseOutput
      */
     public static function create(
-        string $propertyName,
-        string $keyName,
-        mixed  $output
+        ReflectionProperty $reflection,
+        string             $keyName,
+        mixed              $output
     ) : self
     {
         return new self(
-            $propertyName,
+            $reflection,
             $keyName,
             $output
         );
     }
 
     /**
-     * @return string
+     * @return ReflectionProperty
      */
-    public function getPropertyName() : string
+    public function getReflection() : ReflectionProperty
     {
-        return $this->propertyName;
+        return $this->reflection;
     }
 
     /**
