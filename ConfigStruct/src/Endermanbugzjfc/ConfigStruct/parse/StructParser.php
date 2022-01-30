@@ -4,11 +4,13 @@ namespace Endermanbugzjfc\ConfigStruct\parse;
 
 use Endermanbugzjfc\ConfigStruct\KeyName;
 use ReflectionClass;
+use ReflectionNamedType;
 use ReflectionProperty;
 use function array_diff;
 use function array_key_exists;
 use function array_keys;
 use function array_values;
+use function class_exists;
 
 final class StructParser
 {
@@ -42,7 +44,7 @@ final class StructParser
                 $missing[$property->getName()] = $property;
                 continue;
             }
-            self::parseProperty($property, $key);
+            self::parseProperty($property, $key, $input[$key]);
         }
 
         return StructParseOutput::create(
@@ -84,10 +86,28 @@ final class StructParser
 
     public static function parseProperty(
         ReflectionProperty $property,
-        mixed              $key
+        string             $keyName,
+        mixed              $value
     ) : PropertyParseOutput
     {
+        $type = $property->getType();
+        if (
+            $type instanceof ReflectionNamedType
+            and
+            class_exists($type->getName())
+        ) {
+            return ChildStructParseOutput::indicator(
+                $property
+            );
+        }
 
+        // TODO: array
+
+        return MixedParseOutput::create(
+            $property,
+            $keyName,
+            $value
+        );
     }
 
 }
