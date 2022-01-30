@@ -50,9 +50,4 @@ final class ParseTimeStruct
 
     }
 
-    public function getOrConstructObject() : object
-    {
-
-    }
-
 }
