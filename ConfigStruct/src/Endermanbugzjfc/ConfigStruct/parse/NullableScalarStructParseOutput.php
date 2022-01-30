@@ -4,7 +4,7 @@ namespace Endermanbugzjfc\ConfigStruct\parse;
 
 use ReflectionProperty;
 
-final class ScalarStructParseOutput extends PropertyParseOutput
+final class NullableScalarStructParseOutput extends PropertyParseOutput
 {
 
     public static function create(
@@ -20,7 +20,7 @@ final class ScalarStructParseOutput extends PropertyParseOutput
         );
     }
 
-    protected function getFlattenedValue() : bool|int|float|string
+    protected function getFlattenedValue() : bool|int|float|string|null
     {
         return $this->output;
     }
