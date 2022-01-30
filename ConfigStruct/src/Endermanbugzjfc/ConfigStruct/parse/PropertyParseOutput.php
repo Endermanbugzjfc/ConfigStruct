@@ -22,7 +22,7 @@ abstract class PropertyParseOutput
      * @param string $keyName
      * @param mixed $output
      */
-    private function __construct(
+    protected function __construct(
         protected ReflectionProperty $reflection,
         protected string             $keyName,
         protected mixed              $output
