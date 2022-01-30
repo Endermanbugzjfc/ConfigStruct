@@ -11,6 +11,11 @@ interface SpecialParserInterface
         ParseTimeProperty $property
     ) : bool;
 
+    public function isParserForValue(
+        ParseTimeProperty $property,
+        array             $value
+    ) : bool;
+
     public function parseValue(
         array $value
     ) : mixed;
