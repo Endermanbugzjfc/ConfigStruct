@@ -4,7 +4,7 @@ namespace Endermanbugzjfc\ConfigStruct\parse;
 
 use ReflectionException;
 
-final class ParseOutputStruct
+final class StructParseOutput
 {
 
     /**

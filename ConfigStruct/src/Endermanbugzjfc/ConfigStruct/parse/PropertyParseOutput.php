@@ -61,9 +61,9 @@ final class PropertyParseOutput
         return $this->property;
     }
 
-    public function getChildStructOutput() : ?ParseOutputStruct
+    public function getChildStructOutput() : ?StructParseOutput
     {
-        return $this->output instanceof ParseOutputStruct
+        return $this->output instanceof StructParseOutput
             ? $this->output
             : null;
     }
