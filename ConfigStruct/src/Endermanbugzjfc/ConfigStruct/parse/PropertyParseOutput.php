@@ -31,6 +31,17 @@ abstract class PropertyParseOutput
     }
 
     /**
+     * @param ReflectionProperty $reflection
+     * @param string $keyName
+     * @param mixed $output
+     */
+    abstract public static function create(
+        ReflectionProperty $reflection,
+        string             $keyName,
+        mixed              $output
+    ) : self;
+
+    /**
      * @return ReflectionProperty
      */
     public function getReflection() : ReflectionProperty
