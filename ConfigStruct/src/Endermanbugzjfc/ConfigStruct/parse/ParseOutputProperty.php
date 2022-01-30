@@ -9,12 +9,12 @@ final class ParseOutputProperty
 {
 
     /**
-     * @param ParseTimeProperty $property
+     * @param ParseProperty $property
      * @param mixed $output
      * @param SpecialParserInterface|null $specialParser
      */
     private function __construct(
-        protected ParseTimeProperty       $property,
+        protected ParseProperty           $property,
         protected mixed                   $output,
         protected ?SpecialParserInterface $specialParser
     )
@@ -22,13 +22,13 @@ final class ParseOutputProperty
     }
 
     /**
-     * @param ParseTimeProperty $property
+     * @param ParseProperty $property
      * @param mixed $output
      * @param SpecialParserInterface|null $specialParser
      * @return ParseOutputProperty
      */
     public static function create(
-        ParseTimeProperty       $property,
+        ParseProperty           $property,
         mixed                   $output,
         ?SpecialParserInterface $specialParser
     ) : self
@@ -49,9 +49,9 @@ final class ParseOutputProperty
     }
 
     /**
-     * @return ParseTimeProperty
+     * @return ParseProperty
      */
-    public function getProperty() : ParseTimeProperty
+    public function getProperty() : ParseProperty
     {
         return $this->property;
     }

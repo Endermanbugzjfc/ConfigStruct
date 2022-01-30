@@ -6,7 +6,7 @@ use Endermanbugzjfc\ConfigStruct\KeyName;
 use ReflectionProperty;
 use function array_key_exists;
 
-final class ParseTimeProperty
+final class ParseProperty
 {
 
     protected int|string $boundKeyName;

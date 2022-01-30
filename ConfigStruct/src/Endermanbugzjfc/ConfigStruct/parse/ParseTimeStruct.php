@@ -31,14 +31,14 @@ final class ParseTimeStruct
     }
 
     /**
-     * @return ParseTimeProperty[]
+     * @return ParseProperty[]
      */
     public function scanProperties() : array
     {
         foreach ($this->getReflection()->getProperties(
             ReflectionProperty::IS_PUBLIC
         ) as $property) {
-            $return[] = ParseTimeProperty::fromReflection(
+            $return[] = ParseProperty::fromReflection(
                 $this,
                 $property
             );

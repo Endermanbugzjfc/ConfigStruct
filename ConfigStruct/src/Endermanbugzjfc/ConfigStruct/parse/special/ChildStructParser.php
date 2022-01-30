@@ -2,7 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse\special;
 
-use Endermanbugzjfc\ConfigStruct\parse\ParseTimeProperty;
+use Endermanbugzjfc\ConfigStruct\parse\ParseProperty;
 use ReflectionNamedType;
 use function class_exists;
 
@@ -10,7 +10,7 @@ class ChildStructParser implements SpecialParserInterface
 {
 
     public function isParserForProperty(
-        ParseTimeProperty $property
+        ParseProperty $property
     ) : bool
     {
         $type = $property->getReflection()->getType();
@@ -26,16 +26,16 @@ class ChildStructParser implements SpecialParserInterface
     }
 
     public function isParserForValue(
-        ParseTimeProperty $property,
-        array             $value
+        ParseProperty $property,
+        array         $value
     ) : bool
     {
         return $this->isParserForProperty($property);
     }
 
     public function parseValue(
-        ParseTimeProperty $property,
-        array             $value
+        ParseProperty $property,
+        array         $value
     ) : mixed
     {
         // TODO: Implement parseValue() method.

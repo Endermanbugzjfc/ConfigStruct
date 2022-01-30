@@ -11,7 +11,7 @@ final class ParseOutputStruct
      * @param ParseTimeStruct $struct
      * @param ParseOutputProperty[] $propertiesOutput
      * @param ParseOutputProperty[] $unusedElements
-     * @param ParseTimeProperty[] $missingElements
+     * @param ParseProperty[] $missingElements
      */
     private function __construct(
         protected ParseTimeStruct $struct,
@@ -26,7 +26,7 @@ final class ParseOutputStruct
      * @param ParseTimeStruct $struct
      * @param ParseOutputProperty[] $propertiesOutput
      * @param ParseOutputProperty[] $unusedElements
-     * @param ParseTimeProperty[] $missingElements
+     * @param ParseProperty[] $missingElements
      * @return static
      */
     public static function create(
@@ -53,7 +53,7 @@ final class ParseOutputStruct
     }
 
     /**
-     * @return ParseTimeProperty[]
+     * @return ParseProperty[]
      */
     public function getMissingElements() : array
     {

@@ -2,23 +2,23 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse\special;
 
-use Endermanbugzjfc\ConfigStruct\parse\ParseTimeProperty;
+use Endermanbugzjfc\ConfigStruct\parse\ParseProperty;
 
 interface SpecialParserInterface
 {
 
     public function isParserForProperty(
-        ParseTimeProperty $property
+        ParseProperty $property
     ) : bool;
 
     public function isParserForValue(
-        ParseTimeProperty $property,
-        array             $value
+        ParseProperty $property,
+        array         $value
     ) : bool;
 
     public function parseValue(
-        ParseTimeProperty $property,
-        array             $value
+        ParseProperty $property,
+        array         $value
     ) : mixed;
 
 }
