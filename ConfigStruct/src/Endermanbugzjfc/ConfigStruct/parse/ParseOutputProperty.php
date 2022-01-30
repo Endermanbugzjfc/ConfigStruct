@@ -59,7 +59,7 @@ final class ParseOutputProperty
     /**
      * @throws ReflectionException
      */
-    public function getStructuredOutput() : mixed
+    public function getFinalizedOutput() : mixed
     {
         if ($this->output instanceof ParseOutputStruct) {
             return $this->output->copyValuesToNewObject();
