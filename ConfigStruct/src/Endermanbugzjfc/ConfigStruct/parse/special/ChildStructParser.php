@@ -9,7 +9,9 @@ use function class_exists;
 class ChildStructParser implements SpecialParserInterface
 {
 
-    public function isParserForProperty(ParseTimeProperty $property) : bool
+    public function isParserForProperty(
+        ParseTimeProperty $property
+    ) : bool
     {
         $type = $property->getReflection()->getType();
         if (!$type instanceof ReflectionNamedType) {
