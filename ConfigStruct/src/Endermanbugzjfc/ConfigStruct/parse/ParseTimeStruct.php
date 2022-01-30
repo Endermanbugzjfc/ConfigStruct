@@ -50,4 +50,13 @@ final class ParseTimeStruct
 
     }
 
+    public function copyToBoundOrNewObject(
+        array $childValue
+    ) : object
+    {
+
+    }
+
+}
+
 }
