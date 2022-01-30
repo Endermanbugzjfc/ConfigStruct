@@ -8,12 +8,12 @@ final class ParseOutputProperty
 {
 
     /**
-     * @param array $rawOutput
+     * @param array $finalizedValues
      * @param ParseOutputStruct[] $childStructs
      * @param SpecialParserInterface|null $specialParser
      */
     private function __construct(
-        protected array                   $rawOutput,
+        protected array                   $finalizedValues,
         protected array                   $childStructs,
         protected ?SpecialParserInterface $specialParser
     )
@@ -21,30 +21,22 @@ final class ParseOutputProperty
     }
 
     /**
-     * @param array $rawOutput
+     * @param array $finalizedValues
      * @param ParseOutputStruct[] $childStructs
      * @param SpecialParserInterface|null $specialParser
      * @return ParseOutputProperty
      */
     public static function create(
-        array                   $rawOutput,
+        array                   $finalizedValues,
         array                   $childStructs,
         ?SpecialParserInterface $specialParser
     ) : self
     {
         return new self(
-            $rawOutput,
+            $finalizedValues,
             $childStructs,
             $specialParser
         );
-    }
-
-    /**
-     * @return array
-     */
-    public function getRawOutput() : array
-    {
-        return $this->rawOutput;
     }
 
     /**
