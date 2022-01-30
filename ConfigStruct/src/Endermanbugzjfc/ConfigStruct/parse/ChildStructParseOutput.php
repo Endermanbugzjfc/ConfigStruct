@@ -2,21 +2,39 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
-final class ChildStructParseOutput extends ParseOutput
+use ReflectionProperty;
+
+final class ChildStructParseOutput extends PropertyParseOutput
 {
 
-    private function __construct(
-        protected StructParseOutput $childStruct
+    /**
+     * @param ReflectionProperty $reflection
+     * @param string $keyName
+     * @param mixed $output
+     */
+    protected function __construct(
+        ReflectionProperty $reflection,
+        string             $keyName,
+        StructParseOutput  $output
     )
     {
+        parent::__construct(
+            $reflection,
+            $keyName,
+            $output
+        );
     }
 
     public static function create(
-        StructParseOutput $childStruct
-    ) : self
+        ReflectionProperty $reflection,
+        string             $keyName,
+        mixed              $output
+    ) : PropertyParseOutput
     {
         return new self(
-            $childStruct
+            $reflection,
+            $keyName,
+            $output
         );
     }
 
@@ -25,7 +43,7 @@ final class ChildStructParseOutput extends ParseOutput
      */
     public function getChildStruct() : StructParseOutput
     {
-        return $this->childStruct;
+        return $this->output;
     }
 
     protected function getFlattenedValue() : object
