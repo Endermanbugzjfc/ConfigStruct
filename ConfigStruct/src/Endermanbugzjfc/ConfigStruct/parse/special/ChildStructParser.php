@@ -2,11 +2,10 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse\special;
 
-use Endermanbugzjfc\ConfigStruct\parse\ParseProperty;
 use ReflectionNamedType;
 use function class_exists;
 
-class ChildStructParser implements SpecialParserInterface
+class ChildStructParser
 {
 
     public function isParserForProperty(
