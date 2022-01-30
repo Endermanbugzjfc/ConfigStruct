@@ -1,6 +1,6 @@
 <?php
 
-namespace Endermanbugzjfc\ConfigStruct;
+namespace Endermanbugzjfc\ConfigStruct\emit;
 
 use ReflectionClass;
 use ReflectionProperty;

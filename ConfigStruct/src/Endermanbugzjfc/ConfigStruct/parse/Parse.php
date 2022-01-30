@@ -1,6 +1,6 @@
 <?php
 
-namespace Endermanbugzjfc\ConfigStruct;
+namespace Endermanbugzjfc\ConfigStruct\parse;
 
 use Endermanbugzjfc\ConfigStruct\attributes\TypedArray;
 use ReflectionAttribute;
