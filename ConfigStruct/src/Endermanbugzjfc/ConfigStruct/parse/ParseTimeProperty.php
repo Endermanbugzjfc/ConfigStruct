@@ -81,4 +81,11 @@ final class ParseTimeProperty
         return $return ?? [];
     }
 
+    public function existsInData(
+        array $data
+    ) : bool
+    {
+        return array_key_exists($this->getBoundKeyName(), $data);
+    }
+
 }
