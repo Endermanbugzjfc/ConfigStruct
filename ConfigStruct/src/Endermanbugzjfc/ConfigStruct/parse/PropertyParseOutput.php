@@ -4,8 +4,18 @@ namespace Endermanbugzjfc\ConfigStruct\parse;
 
 use ReflectionProperty;
 
-final class PropertyParseOutput extends ParseOutput
+abstract class PropertyParseOutput
 {
+
+    abstract protected function getFlattenedValue() : mixed;
+
+    public function copyToObject(
+        object $object,
+    ) : object
+    {
+        $this->getReflection()->setValue($object, $this->getFlattenedValue());
+        return $object;
+    }
 
     /**
      * @param ReflectionProperty $reflection
@@ -18,25 +28,6 @@ final class PropertyParseOutput extends ParseOutput
         protected mixed              $output
     )
     {
-    }
-
-    /**
-     * @param ReflectionProperty $reflection
-     * @param string $keyName
-     * @param mixed $output
-     * @return PropertyParseOutput
-     */
-    public static function create(
-        ReflectionProperty $reflection,
-        string             $keyName,
-        mixed              $output
-    ) : self
-    {
-        return new self(
-            $reflection,
-            $keyName,
-            $output
-        );
     }
 
     /**
@@ -53,21 +44,6 @@ final class PropertyParseOutput extends ParseOutput
     public function getKeyName() : string
     {
         return $this->keyName;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getOutput() : mixed
-    {
-        return $this->output;
-    }
-
-    protected function getFlattenedValue() : mixed
-    {
-        return $this->output instanceof ParseOutput
-            ? $this->output->getFlattenedValue()
-            : $this->output;
     }
 
 }
