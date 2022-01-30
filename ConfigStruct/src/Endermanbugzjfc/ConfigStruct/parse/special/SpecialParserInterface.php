@@ -17,7 +17,8 @@ interface SpecialParserInterface
     ) : bool;
 
     public function parseValue(
-        array $value
+        ParseTimeProperty $property,
+        array             $value
     ) : mixed;
 
 }

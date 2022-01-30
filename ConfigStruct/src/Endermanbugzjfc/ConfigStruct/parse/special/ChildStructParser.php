@@ -31,7 +31,10 @@ class ChildStructParser implements SpecialParserInterface
         return $this->isParserForProperty($property);
     }
 
-    public function parseValue(array $value) : mixed
+    public function parseValue(
+        ParseTimeProperty $property,
+        array             $value
+    ) : mixed
     {
         // TODO: Implement parseValue() method.
     }
