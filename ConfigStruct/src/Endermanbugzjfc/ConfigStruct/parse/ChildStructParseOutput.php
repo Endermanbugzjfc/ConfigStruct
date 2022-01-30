@@ -2,7 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
-final class ChildStructParseOutput
+final class ChildStructParseOutput implements ValueOutputInterface
 {
 
 }
