@@ -76,12 +76,24 @@ final class ParseOutputStruct
         return $this->struct;
     }
 
+    protected function getFinalizedOutput() : array
+    {
+        foreach ($this->getPropertiesOutput() as $property) {
+            $return[$property
+                ->getProperty()
+                ->getReflection()
+                ->getName()]
+                = $property->getFinalizedOutput();
+        }
+        return $return ?? [];
+    }
+
     public function copyValuesToObject(
         object $object
     ) : object
     {
-        foreach ($this->getPropertiesOutput() as $property) {
-            $property->copyValuesToObject($object);
+        foreach ($this->getFinalizedOutput() as $name => $value) {
+            $object->$name = $value;
         }
         return $object;
     }
