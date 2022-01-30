@@ -88,4 +88,12 @@ final class ParseTimeProperty
         return array_key_exists($this->getBoundKeyName(), $data);
     }
 
+    public function parseValue(
+        mixed $value
+    ) : mixed
+    {
+        return $value;
+        // TODO: Child struct
+    }
+
 }
