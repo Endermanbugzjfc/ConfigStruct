@@ -1,6 +1,6 @@
 <?php
 
-namespace Endermanbugzjfc\ConfigStruct\parse\special;
+namespace Endermanbugzjfc\ConfigStruct\parse;
 
 use ReflectionNamedType;
 use function class_exists;
