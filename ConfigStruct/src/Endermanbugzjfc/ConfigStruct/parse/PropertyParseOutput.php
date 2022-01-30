@@ -63,11 +63,9 @@ final class PropertyParseOutput extends ParseOutput
 
     protected function getFlattenedValue() : mixed
     {
-        $childStruct = $this->getChildStructOutput();
-        if ($childStruct !== null) {
-            return $childStruct->copyValuesToNewObject();
-        } // TODO: Typed array
-        return $this->output;
+        return $this->output instanceof ParseOutput
+            ? $this->output->getFlattenedValue()
+            : $this->output;
     }
 
 }
