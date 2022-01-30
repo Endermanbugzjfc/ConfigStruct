@@ -53,6 +53,14 @@ final class PropertyParseOutput extends ParseOutput
         return $this->keyName;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getOutput() : mixed
+    {
+        return $this->output;
+    }
+
     protected function getFlattenedValue() : mixed
     {
         $childStruct = $this->getChildStructOutput();
