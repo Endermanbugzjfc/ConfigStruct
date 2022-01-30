@@ -10,11 +10,13 @@ final class ParseOutputProperty
 
     /**
      * @param ParseProperty $property
+     * @param string $keyName
      * @param mixed $output
      * @param SpecialParserInterface|null $specialParser
      */
     private function __construct(
         protected ParseProperty           $property,
+        protected string                  $keyName,
         protected mixed                   $output,
         protected ?SpecialParserInterface $specialParser
     )
@@ -23,18 +25,21 @@ final class ParseOutputProperty
 
     /**
      * @param ParseProperty $property
+     * @param string $keyName
      * @param mixed $output
      * @param SpecialParserInterface|null $specialParser
      * @return ParseOutputProperty
      */
     public static function create(
         ParseProperty           $property,
+        string                  $keyName,
         mixed                   $output,
         ?SpecialParserInterface $specialParser
     ) : self
     {
         return new self(
             $property,
+            $keyName,
             $output,
             $specialParser
         );
