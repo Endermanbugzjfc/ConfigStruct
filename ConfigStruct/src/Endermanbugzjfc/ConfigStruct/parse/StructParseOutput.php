@@ -81,10 +81,12 @@ final class StructParseOutput
         object $object
     ) : object
     {
-        foreach ($this->getFlattenedValue() as $name => $value) {
-            $object->$name = $value;
+        foreach ($this->getPropertiesOutput() as $property) {
+            $property->copyToObject(
+                $object,
+                $property->getReflection()
+            );
         }
-        return $object;
     }
 
     /**
@@ -93,7 +95,7 @@ final class StructParseOutput
     public function copyValuesToNewObject() : object
     {
         return $this->copyValuesToObject(
-            $this->getStruct()->getReflection()->newInstance()
+            $this->getReflection()->newInstance()
         );
     }
 }
