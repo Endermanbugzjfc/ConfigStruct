@@ -2,6 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
+use Endermanbugzjfc\ConfigStruct\KeyName;
 use ReflectionClass;
 use ReflectionProperty;
 use function array_diff;
@@ -55,12 +56,30 @@ final class StructParser
         );
     }
 
+    /**
+     * @param ReflectionProperty[] $properties
+     * @param array $input
+     * @return array
+     */
     public static function getPropertyNameToKeyNameMap(
         array $properties,
         array $input
     ) : array
     {
-
+        foreach ($properties as $property) {
+            foreach (
+                $property->getAttributes(KeyName::class)
+                as $keyName
+            ) {
+                $name = $keyName->getArguments()[0];
+                if (!array_key_exists($name, $input)) {
+                    continue;
+                }
+                $names[$property->getName()] = $name;
+                break;
+            }
+        }
+        return $names ?? [];
     }
 
     public static function parseProperty(
