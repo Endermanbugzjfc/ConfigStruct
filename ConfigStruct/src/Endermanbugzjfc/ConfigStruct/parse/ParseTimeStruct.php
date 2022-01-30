@@ -48,9 +48,19 @@ final class ParseTimeStruct
 
     public function parseValue(
         array $value
-    ) : array
+    ) : ParseResultForStruct
     {
+        foreach ($this->scanProperties() as $property) {
+            $property->bindKeyNameIgnoreExistenceInData($value);
+            $parsed[$property->getReflection()->getName()] = $property
+                ->parseValue($value);
+        }
 
+        return ParseResultForStruct::create(
+            $parsed ?? [],
+            [], // TODO
+            []
+        );
     }
 
     public function copyToBoundOrNewObject(
