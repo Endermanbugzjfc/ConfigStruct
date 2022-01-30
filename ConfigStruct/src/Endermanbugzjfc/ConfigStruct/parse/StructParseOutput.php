@@ -4,40 +4,34 @@ namespace Endermanbugzjfc\ConfigStruct\parse;
 
 use ReflectionException;
 
-final class StructParseOutput extends ParseOutput
+final class StructParseOutput
 {
 
     /**
-     * @param ParseStruct $struct
      * @param PropertyParseOutput[] $propertiesOutput
      * @param PropertyParseOutput[] $unusedElements
-     * @param ParseProperty[] $missingElements
+     * @param string[] $missingElements
      */
     private function __construct(
-        protected ParseStruct $struct,
-        protected array       $propertiesOutput,
-        protected array       $unusedElements,
-        protected array       $missingElements
+        protected array $propertiesOutput,
+        protected array $unusedElements,
+        protected array $missingElements
     )
     {
     }
 
     /**
-     * @param ParseStruct $struct
      * @param PropertyParseOutput[] $propertiesOutput
      * @param PropertyParseOutput[] $unusedElements
-     * @param ParseProperty[] $missingElements
-     * @return static
+     * @param string[] $missingElements
      */
     public static function create(
-        ParseStruct $struct,
-        array       $propertiesOutput,
-        array       $unusedElements,
-        array       $missingElements
+        array $propertiesOutput,
+        array $unusedElements,
+        array $missingElements
     ) : self
     {
         return new self(
-            $struct,
             $propertiesOutput,
             $unusedElements,
             $missingElements
@@ -53,7 +47,7 @@ final class StructParseOutput extends ParseOutput
     }
 
     /**
-     * @return ParseProperty[]
+     * @return string[]
      */
     public function getMissingElements() : array
     {
@@ -66,26 +60,6 @@ final class StructParseOutput extends ParseOutput
     public function getPropertiesOutput() : array
     {
         return $this->propertiesOutput;
-    }
-
-    /**
-     * @return ParseStruct
-     */
-    public function getStruct() : ParseStruct
-    {
-        return $this->struct;
-    }
-
-    protected function getFlattenedValue() : array
-    {
-        foreach ($this->getPropertiesOutput() as $property) {
-            $return[$property
-                ->getProperty()
-                ->getReflection()
-                ->getName()]
-                = $property->getFlattenedValue();
-        }
-        return $return ?? [];
     }
 
     public function copyValuesToObject(
