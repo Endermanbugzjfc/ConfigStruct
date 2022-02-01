@@ -12,7 +12,7 @@ final class StructParseOutput
     /**
      * @param ReflectionClass $reflection
      * @param PropertyParseOutput[] $propertiesOutput
-     * @param array $unusedElements
+     * @param PropertyParseOutput[] $unusedElements
      * @param string[] $missingElements
      */
     private function __construct(
@@ -27,7 +27,7 @@ final class StructParseOutput
     /**
      * @param ReflectionClass $reflection
      * @param PropertyParseOutput[] $propertiesOutput
-     * @param array $unusedElements
+     * @param PropertyParseOutput[] $unusedElements
      * @param string[] $missingElements
      * @return StructParseOutput
      */
