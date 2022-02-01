@@ -2,7 +2,6 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
-use Closure;
 use Endermanbugzjfc\ConfigStruct\StructureException;
 use ReflectionProperty;
 
@@ -62,24 +61,6 @@ abstract class PropertyParseOutput
     public function getKeyName() : string
     {
         return $this->keyName;
-    }
-
-    /**
-     * @return StructureException[]
-     */
-    final public function getExceptions() : array
-    {
-        return $this->exceptions;
-    }
-
-    public function walkException(
-        Closure $callback
-    ) : void
-    {
-        $callback(
-            $this,
-            $this->getExceptions()
-        );
     }
 
 }

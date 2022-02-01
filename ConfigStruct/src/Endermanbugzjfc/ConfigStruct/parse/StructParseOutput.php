@@ -101,16 +101,4 @@ final class StructParseOutput
         }
     }
 
-    public function walkExceptions(
-        callable $callback
-    ) : void
-    {
-        foreach (
-            $this->getPropertiesOutput()
-            as $property
-        ) {
-            $property->walkException($callback);
-        }
-    }
-
 }
