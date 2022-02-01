@@ -114,7 +114,7 @@ final class StructParser
 
         // TODO: array
 
-        return MixedParseOutput::create(
+        return RawParseOutput::create(
             $property,
             $keyName,
             $value

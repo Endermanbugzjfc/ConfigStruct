@@ -4,7 +4,7 @@ namespace Endermanbugzjfc\ConfigStruct\parse;
 
 use ReflectionProperty;
 
-final class MixedParseOutput extends PropertyParseOutput
+final class RawParseOutput extends PropertyParseOutput
 {
 
     public static function create(
