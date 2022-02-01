@@ -8,7 +8,7 @@ use ReflectionProperty;
 abstract class PropertyEmitOutput
 {
 
-    abstract public function getFlattenedValues() : mixed;
+    abstract public function getFlattenedValue() : mixed;
 
     protected function __construct(
         protected ReflectionProperty $reflection,
