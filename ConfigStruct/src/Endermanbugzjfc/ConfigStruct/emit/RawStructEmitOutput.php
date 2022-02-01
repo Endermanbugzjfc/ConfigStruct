@@ -5,7 +5,7 @@ namespace Endermanbugzjfc\ConfigStruct\emit;
 use Endermanbugzjfc\ConfigStruct\parse\PropertyParseOutput;
 use ReflectionProperty;
 
-class RawStructEmitOutput extends PropertyParseOutput
+final class RawStructEmitOutput extends PropertyParseOutput
 {
 
     public static function create(
