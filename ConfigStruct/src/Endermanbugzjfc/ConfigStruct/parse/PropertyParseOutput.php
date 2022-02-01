@@ -67,7 +67,7 @@ abstract class PropertyParseOutput
     /**
      * @return StructureException[]
      */
-    public function getExceptions() : array
+    final public function getExceptions() : array
     {
         return $this->exceptions;
     }
