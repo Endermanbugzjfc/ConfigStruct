@@ -2,6 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
+use Endermanbugzjfc\ConfigStruct\StructureException;
 use ReflectionProperty;
 
 abstract class PropertyParseOutput
@@ -21,7 +22,7 @@ abstract class PropertyParseOutput
      * @param ReflectionProperty $reflection
      * @param string $keyName
      * @param mixed $output
-     * @param array $exceptions
+     * @param StructureException[] $exceptions
      */
     protected function __construct(
         protected ReflectionProperty $reflection,
@@ -36,7 +37,7 @@ abstract class PropertyParseOutput
      * @param ReflectionProperty $reflection
      * @param string $keyName
      * @param mixed $output
-     * @param array $exceptions
+     * @param StructureException[] $exceptions
      * @return PropertyParseOutput
      */
     abstract public static function create(
