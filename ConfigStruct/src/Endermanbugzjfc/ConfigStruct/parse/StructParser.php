@@ -2,6 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
+use Closure;
 use Endermanbugzjfc\ConfigStruct\KeyName;
 use ReflectionClass;
 use ReflectionNamedType;
@@ -11,6 +12,7 @@ use function array_key_exists;
 use function array_keys;
 use function array_values;
 use function class_exists;
+use function is_callable;
 
 final class StructParser
 {
@@ -44,12 +46,17 @@ final class StructParser
                 $missing[$property->getName()] = $property;
                 continue;
             }
-            self::parseProperty($property, $key, $input[$key]);
+            $output = self::parseProperty($property, $key, $input[$key]);
+            if (is_callable($output)) {
+                $output();
+                continue;
+            }
+            $outputs[] = $output;
         }
 
         return StructParseOutput::create(
             $reflection,
-            [],
+            $outputs ?? [],
             array_diff(
                 array_keys($input),
                 array_values($map)
@@ -88,7 +95,7 @@ final class StructParser
         ReflectionProperty $property,
         string             $keyName,
         mixed              $value
-    ) : PropertyParseOutput
+    ) : PropertyParseOutput|Closure
     {
         $type = $property->getType();
         if (
@@ -96,8 +103,10 @@ final class StructParser
             and
             class_exists($type->getName())
         ) {
-            return ChildStructParseOutput::indicator(
-                $property
+            return fn() => self::parseChildStruct(
+                $property,
+                $keyName,
+                $value
             );
         }
 
@@ -108,6 +117,15 @@ final class StructParser
             $keyName,
             $value
         );
+    }
+
+    protected static function parseChildStruct(
+        ReflectionProperty $property,
+        string             $keyName,
+        mixed              $value
+    ) : ChildStructParseOutput
+    {
+
     }
 
 }
