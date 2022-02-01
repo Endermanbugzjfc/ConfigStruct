@@ -40,15 +40,6 @@ final class ChildStructParseOutput extends PropertyParseOutput
         );
     }
 
-    public static function indicator(
-        ReflectionProperty $reflection
-    ) : PropertyParseOutput
-    {
-        return new self(
-            $reflection
-        );
-    }
-
     /**
      * @return StructParseOutput
      */
