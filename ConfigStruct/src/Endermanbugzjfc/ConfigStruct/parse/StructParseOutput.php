@@ -55,7 +55,7 @@ final class StructParseOutput
     }
 
     /**
-     * @return PropertyParseOutput[]
+     * @return array
      */
     public function getUnusedElements() : array
     {
