@@ -21,11 +21,13 @@ abstract class PropertyParseOutput
      * @param ReflectionProperty $reflection
      * @param string $keyName
      * @param mixed $output
+     * @param array $exceptions
      */
     protected function __construct(
         protected ReflectionProperty $reflection,
         protected string             $keyName,
-        protected mixed              $output
+        protected mixed              $output,
+        protected array              $exceptions
     )
     {
     }
@@ -34,11 +36,14 @@ abstract class PropertyParseOutput
      * @param ReflectionProperty $reflection
      * @param string $keyName
      * @param mixed $output
+     * @param array $exceptions
+     * @return PropertyParseOutput
      */
     abstract public static function create(
         ReflectionProperty $reflection,
         string             $keyName,
-        mixed              $output
+        mixed              $output,
+        array              $exceptions
     ) : self;
 
     /**

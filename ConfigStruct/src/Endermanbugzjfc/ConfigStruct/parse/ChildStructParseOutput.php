@@ -11,30 +11,35 @@ final class ChildStructParseOutput extends PropertyParseOutput
      * @param ReflectionProperty $reflection
      * @param string $keyName
      * @param mixed $output
+     * @param array $exceptions
      */
     protected function __construct(
         ReflectionProperty $reflection,
         string             $keyName,
-        StructParseOutput  $output
+        StructParseOutput  $output,
+        array              $exceptions
     )
     {
         parent::__construct(
             $reflection,
             $keyName,
-            $output
+            $output,
+            $exceptions
         );
     }
 
     public static function create(
         ReflectionProperty $reflection,
         string             $keyName,
-        mixed              $output
+        mixed              $output,
+        array              $exceptions
     ) : PropertyParseOutput
     {
         return new self(
             $reflection,
             $keyName,
-            $output
+            $output,
+            $exceptions
         );
     }
 

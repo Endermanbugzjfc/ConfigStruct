@@ -10,13 +10,15 @@ final class MixedParseOutput extends PropertyParseOutput
     public static function create(
         ReflectionProperty $reflection,
         string             $keyName,
-        mixed              $output
+        mixed              $output,
+        array              $exceptions
     ) : PropertyParseOutput
     {
         return new self(
             $reflection,
             $keyName,
-            $output
+            $output,
+            $exceptions
         );
     }
 
