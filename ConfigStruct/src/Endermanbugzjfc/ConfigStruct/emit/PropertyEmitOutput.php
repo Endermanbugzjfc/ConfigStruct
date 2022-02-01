@@ -25,7 +25,7 @@ abstract class PropertyEmitOutput
     /**
      * @return ReflectionProperty
      */
-    public function getReflection() : ReflectionProperty
+    final public function getReflection() : ReflectionProperty
     {
         return $this->reflection;
     }
