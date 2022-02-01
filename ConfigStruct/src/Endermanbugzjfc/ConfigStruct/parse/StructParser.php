@@ -55,14 +55,19 @@ final class StructParser
             }
             $outputs[] = $output;
         }
-
-        return StructParseOutput::create(
-            $reflection,
-            $outputs ?? [],
+        foreach (
             array_diff(
                 array_keys($input),
                 array_values($map)
-            ),
+            ) as $name
+        ) {
+            $unhandled[$name] = $input[$name];
+        }
+
+        return StructParseOutput::create(
+            $reflection,
+            $unhandled ?? [],
+            $outputs ?? [],
             $missing ?? []
         );
     }
