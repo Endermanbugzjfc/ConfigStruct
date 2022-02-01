@@ -63,4 +63,15 @@ final class StructEmitOutput
         return $this->skippedEmptyProperties;
     }
 
+    public function getFlattenedValue() : array
+    {
+        foreach (
+            $this->getPropertiesOutput()
+            as $property
+        ) {
+            $return[$property->getKeyName()] = $property->getFlattenedValue();
+        }
+        return $return ?? [];
+    }
+
 }
