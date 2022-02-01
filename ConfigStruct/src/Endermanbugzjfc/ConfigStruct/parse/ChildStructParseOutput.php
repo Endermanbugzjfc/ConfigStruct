@@ -2,6 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
+use Closure;
 use Endermanbugzjfc\ConfigStruct\StructureException;
 use ReflectionProperty;
 
@@ -55,6 +56,12 @@ final class ChildStructParseOutput extends PropertyParseOutput
     protected function getFlattenedValue() : object
     {
         return $this->getChildStruct()->copyValuesToNewObject();
+    }
+
+    public function walkException(Closure $callback) : void
+    {
+        parent::walkException($callback);
+        $this->getChildStruct()->walkExceptions($callback);
     }
 
 }
