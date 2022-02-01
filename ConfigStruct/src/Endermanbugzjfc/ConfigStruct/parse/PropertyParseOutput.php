@@ -63,4 +63,12 @@ abstract class PropertyParseOutput
         return $this->keyName;
     }
 
+    /**
+     * @return StructureException[]
+     */
+    public function getExceptions() : array
+    {
+        return $this->exceptions;
+    }
+
 }
