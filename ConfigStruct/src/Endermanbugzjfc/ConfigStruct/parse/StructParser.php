@@ -127,7 +127,6 @@ final class StructParser
         mixed              $value
     ) : PropertyParseOutput
     {
-        // TODO: recursion guard
         try {
             $output = self::parseStruct(
                 new ReflectionClass($property->getType()->getName()),
