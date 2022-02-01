@@ -12,13 +12,13 @@ final class StructParseOutput
     /**
      * @param ReflectionClass $reflection
      * @param PropertyParseOutput[] $propertiesOutput
-     * @param array $unusedElements
+     * @param array $unhandledElements
      * @param string[] $missingElements
      */
     private function __construct(
         protected ReflectionClass $reflection,
         protected array           $propertiesOutput,
-        protected array           $unusedElements,
+        protected array           $unhandledElements,
         protected array           $missingElements
     )
     {
@@ -27,21 +27,21 @@ final class StructParseOutput
     /**
      * @param ReflectionClass $reflection
      * @param PropertyParseOutput[] $propertiesOutput
-     * @param array $unusedElements
+     * @param array $unhandledElements
      * @param string[] $missingElements
      * @return StructParseOutput
      */
     public static function create(
         ReflectionClass $reflection,
         array           $propertiesOutput,
-        array           $unusedElements,
+        array           $unhandledElements,
         array           $missingElements
     ) : self
     {
         return new self(
             $reflection,
             $propertiesOutput,
-            $unusedElements,
+            $unhandledElements,
             $missingElements
         );
     }
@@ -57,9 +57,9 @@ final class StructParseOutput
     /**
      * @return array
      */
-    public function getUnusedElements() : array
+    public function getUnhandledElements() : array
     {
-        return $this->unusedElements;
+        return $this->unhandledElements;
     }
 
     /**
