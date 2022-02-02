@@ -82,8 +82,8 @@ final class Parse
 
         return StructParseOutput::create(
             $reflection,
-            $unhandled ?? [],
             $outputs ?? [],
+            $unhandled ?? [],
             $missing ?? []
         );
     }
