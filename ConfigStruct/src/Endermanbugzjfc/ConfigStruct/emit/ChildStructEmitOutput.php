@@ -7,6 +7,9 @@ use ReflectionProperty;
 class ChildStructEmitOutput extends PropertyEmitOutput
 {
 
+    /**
+     * @inheritDoc
+     */
     protected function __construct(
         ReflectionProperty $reflection,
         StructEmitOutput   $output
