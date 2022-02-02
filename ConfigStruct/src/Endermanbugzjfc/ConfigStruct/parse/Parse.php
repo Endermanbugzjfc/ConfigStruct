@@ -77,7 +77,7 @@ final class Parse
      * @param array $input
      * @return array
      */
-    public static function getPropertyNameToKeyNameMap(
+    protected static function getPropertyNameToKeyNameMap(
         array $properties,
         array $input
     ) : array
