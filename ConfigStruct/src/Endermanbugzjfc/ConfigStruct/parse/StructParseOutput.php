@@ -5,6 +5,7 @@ namespace Endermanbugzjfc\ConfigStruct\parse;
 use Endermanbugzjfc\ConfigStruct\StructureException;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionProperty;
 
 final class StructParseOutput
 {
@@ -13,7 +14,7 @@ final class StructParseOutput
      * @param ReflectionClass $reflection
      * @param PropertyParseOutput[] $propertiesOutput
      * @param array $unhandledElements
-     * @param string[] $missingElements
+     * @param ReflectionProperty[] $missingElements
      */
     private function __construct(
         protected ReflectionClass $reflection,
@@ -28,7 +29,7 @@ final class StructParseOutput
      * @param ReflectionClass $reflection
      * @param PropertyParseOutput[] $propertiesOutput
      * @param array $unhandledElements
-     * @param string[] $missingElements
+     * @param ReflectionProperty[] $missingElements
      * @return StructParseOutput
      */
     public static function create(
@@ -63,7 +64,7 @@ final class StructParseOutput
     }
 
     /**
-     * @return string[]
+     * @return ReflectionProperty[]
      */
     public function getMissingElements() : array
     {
