@@ -69,7 +69,7 @@ final class Parse
                 $output();
                 continue;
             }
-            $outputs[] = $output;
+            $outputs[$property->getName()] = $output;
         }
         foreach (
             array_diff(
