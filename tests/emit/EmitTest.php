@@ -72,4 +72,39 @@ class EmitTest extends TestCase
         );
     }
 
+
+    public function testEmitStructChildStructRecursive()
+    {
+        $root = new class() {
+
+            public string $testA;
+
+            public self $testSelf;
+
+        };
+        $oneDeep = clone $root;
+        $twoDeep = clone $root;
+
+        $root->testA = "testA";
+        $root->testSelf = $oneDeep;
+        $oneDeep->testA = "testB";
+        $oneDeep->testSelf = $twoDeep;
+
+        $output = Emit::emitStruct(
+            $root
+        );
+
+        $this->assertTrue(
+            $output->getFlattenedValue() === [
+                "testA" => "testA",
+                "testSelf" => [
+                    "testA" => "testB",
+                    "testSelf" => [
+
+                    ]
+                ]
+            ]
+        );
+    }
+
 }
