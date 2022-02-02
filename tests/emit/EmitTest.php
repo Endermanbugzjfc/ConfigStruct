@@ -1,4 +1,6 @@
-<?php
+<?php /** @noinspection ALL */
+
+/** @noinspection PhpMissingFieldTypeInspection */
 
 namespace Endermanbugzjfc\ConfigStruct\emit;
 

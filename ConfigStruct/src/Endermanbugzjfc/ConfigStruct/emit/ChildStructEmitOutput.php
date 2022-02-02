@@ -29,7 +29,7 @@ class ChildStructEmitOutput extends PropertyEmitOutput
         );
     }
 
-    public function getFlattenedValue() : mixed
+    public function getFlattenedValue() : array
     {
         return $this->getChildStruct()->getFlattenedValue();
     }
