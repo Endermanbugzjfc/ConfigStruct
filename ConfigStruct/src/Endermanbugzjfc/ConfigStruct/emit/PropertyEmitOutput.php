@@ -36,7 +36,7 @@ abstract class PropertyEmitOutput
                 KeyName::class
             )[0] ?? null;
         if ($keyName !== null) {
-            return $keyName;
+            return $keyName->getArguments()[0];
         }
         return $this->getReflection()->getName();
     }
