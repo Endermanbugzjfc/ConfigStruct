@@ -24,6 +24,14 @@ final class Parse
     {
     }
 
+    /**
+     * Look at README.md for example.
+     *
+     * @param object $object
+     * @param array $input
+     * @param bool $copyOutputValue
+     * @return StructParseOutput
+     */
     public static function parseStruct(
         object $object,
         array  $input,
@@ -87,7 +95,7 @@ final class Parse
     /**
      * @param ReflectionProperty[] $properties
      * @param array $input
-     * @return array
+     * @return array<string, string>
      */
     protected static function getPropertyNameToKeyNameMap(
         array $properties,
