@@ -2,6 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct\emit;
 
+use Endermanbugzjfc\ConfigStruct\KeyName;
 use PHPUnit\Framework\TestCase;
 
 class EmitTest extends TestCase
@@ -39,6 +40,35 @@ class EmitTest extends TestCase
             ["testNotInitialized"]
                 ->getName()
             === "testNotInitialized"
+        );
+    }
+
+    public function testEmitStructCustomKeyName()
+    {
+        $object = new class() {
+
+            #[KeyName(1)]
+            public int $testA = 3;
+
+            #[KeyName(0)]
+            public int $testB = 2;
+
+        };
+        $output = Emit::emitStruct(
+            $object
+        );
+
+        $this->assertNotTrue(
+            $output->getFlattenedValue() === [
+                2,
+                3
+            ]
+        );
+        $this->assertTrue(
+            $output->getFlattenedValue() === [
+                1 => 3,
+                0 => 2
+            ]
         );
     }
 
