@@ -7,18 +7,9 @@ use PHPUnit\Framework\TestCase;
 class EmitTest extends TestCase
 {
 
-    public function testEmitStruct()
+    public function testEmitStructAccessLevel()
     {
 
     }
 
-    public function testEmitProperty()
-    {
-
-    }
-
-    public function testEmitChildStruct()
-    {
-
-    }
 }
