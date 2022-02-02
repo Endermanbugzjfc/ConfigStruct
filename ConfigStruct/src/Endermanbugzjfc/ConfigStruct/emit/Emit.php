@@ -18,6 +18,10 @@ final class Emit
     {
     }
 
+    /**
+     * @param object $object Its value shouldn't be modified.
+     * @return StructEmitOutput
+     */
     public static function emitStruct(
         object $object
     ) : StructEmitOutput
