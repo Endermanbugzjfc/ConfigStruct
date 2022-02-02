@@ -53,6 +53,7 @@ final class Emit
         object             $object
     ) : bool
     {
+        return $property->isInitialized($object);
     }
 
     public static function emitProperty(
