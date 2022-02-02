@@ -2,9 +2,11 @@
 
 namespace Endermanbugzjfc\ConfigStruct\emit;
 
+use Closure;
 use ReflectionClass;
 use ReflectionProperty;
 use function is_callable;
+use function is_object;
 
 final class Emit
 {
@@ -57,6 +59,26 @@ final class Emit
     }
 
     public static function emitProperty(
+        ReflectionProperty $property,
+        mixed              $value
+    ) : PropertyEmitOutput|Closure
+    {
+        if (is_object($value)) {
+            return fn() => self::emitChildStruct(
+                $property,
+                $value
+            );
+        }
+
+        // TODO: array
+
+        return RawEmitOutput::create(
+            $property,
+            $value
+        );
+    }
+
+    public static function emitChildStruct(
         ReflectionProperty $property,
         mixed              $value
     ) : PropertyEmitOutput
