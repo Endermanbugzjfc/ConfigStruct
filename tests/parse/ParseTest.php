@@ -2,6 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
+use Endermanbugzjfc\ConfigStruct\KeyName;
 use PHPUnit\Framework\TestCase;
 
 class ParseTest extends TestCase
@@ -47,5 +48,44 @@ class ParseTest extends TestCase
         $this->assertNotTrue($protected->isInitialized($object));
         $this->assertTrue($public->isInitialized($object));
         $this->assertTrue($public->getValue($object) === null);
+    }
+
+    public function testParseStructKeyNameCandidatesAndUnhandledElements()
+    {
+        $testIndexKeyNameCandidate = new class() {
+
+            #[KeyName(0)] #[KeyName("")]
+            public $testA;
+
+        };
+        $testEmptyStringKeyNameCandidate = clone $testIndexKeyNameCandidate;
+
+        $testUnhandledElements = Parse::parseStruct(
+            $testIndexKeyNameCandidate,
+            [
+                "testA" => "testA",
+                null => "",
+                0
+            ]
+        );
+        $this->assertTrue(
+            $testIndexKeyNameCandidate->testA === 0
+        );
+        $this->assertTrue(
+            $testUnhandledElements->getUnhandledElements() === [
+                "testA" => "testA",
+                null => ""
+            ]
+        );
+
+        Parse::parseStruct(
+            $testEmptyStringKeyNameCandidate,
+            [
+                null => ""
+            ]
+        );
+        $this->assertTrue(
+            $testEmptyStringKeyNameCandidate->testA === ""
+        );
     }
 }
