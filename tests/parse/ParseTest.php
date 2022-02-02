@@ -93,7 +93,7 @@ class ParseTest extends TestCase
         );
     }
 
-    public function testParseMissingElements()
+    public function testParseStructMissingElements()
     {
         $object = new class() {
 
@@ -121,7 +121,7 @@ class ParseTest extends TestCase
         );
     }
 
-    public function testParseChildStructRecursive()
+    public function testParseStructChildStructRecursive()
     {
         $object = new class() {
 
