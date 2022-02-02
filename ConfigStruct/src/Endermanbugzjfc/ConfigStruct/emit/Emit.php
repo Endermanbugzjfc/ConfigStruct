@@ -80,9 +80,15 @@ final class Emit
 
     public static function emitChildStruct(
         ReflectionProperty $property,
-        mixed              $value
+        object $value
     ) : PropertyEmitOutput
     {
+        return ChildStructEmitOutput::create(
+            $property,
+            self::emitStruct(
+                $value
+            )
+        );
     }
 
 }
