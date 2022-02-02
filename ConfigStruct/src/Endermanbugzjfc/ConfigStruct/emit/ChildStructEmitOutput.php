@@ -2,39 +2,34 @@
 
 namespace Endermanbugzjfc\ConfigStruct\emit;
 
-use Endermanbugzjfc\ConfigStruct\parse\PropertyParseOutput;
 use ReflectionProperty;
 
-class ChildStructEmitOutput extends PropertyParseOutput
+class ChildStructEmitOutput extends PropertyEmitOutput
 {
 
     protected function __construct(
         ReflectionProperty $reflection,
-        string             $keyName,
         StructEmitOutput   $output
     )
     {
         parent::__construct(
             $reflection,
-            $keyName,
             $output
         );
     }
 
     public static function create(
         ReflectionProperty $reflection,
-        string             $keyName,
         mixed              $output
-    ) : PropertyParseOutput
+    ) : PropertyEmitOutput
     {
         return new self(
             $reflection,
-            $keyName,
             $output
         );
     }
 
-    protected function getFlattenedValue() : mixed
+    public function getFlattenedValue() : mixed
     {
         return $this->getChildStruct()->getFlattenedValue();
     }
