@@ -11,14 +11,13 @@ class ParseTest extends TestCase
     {
         $object = new class() {
 
-            private $testPrivateProperty;
+            private ?bool $testPrivateProperty;
 
-            protected $testProtectedProperty;
+            protected ?bool $testProtectedProperty;
 
-            public $testPublicProperty;
+            public ?bool $testPublicProperty;
 
         };
-        $clone = clone $object;
         $output = Parse::parseStruct(
             $object,
             [
@@ -37,9 +36,16 @@ class ParseTest extends TestCase
             $property->getKeyName() === "testPublicProperty"
         );
 
-        $clone->testPublicProperty = null;
-        $this->assertTrue(
-            $object == $clone
-        );
+        [
+            $private,
+            $protected,
+            $public
+        ] = $output->getReflection()->getProperties();
+        $private->setAccessible(true);
+        $protected->setAccessible(true);
+        $this->assertNotTrue($private->isInitialized($object));
+        $this->assertNotTrue($protected->isInitialized($object));
+        $this->assertTrue($public->isInitialized($object));
+        $this->assertTrue($public->getValue($object) === null);
     }
 }
