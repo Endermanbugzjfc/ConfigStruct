@@ -9,9 +9,9 @@ final class StructEmitOutput
 {
 
     /**
-     * @param ReflectionClass $reflection
-     * @param PropertyEmitOutput[] $propertiesOutput
-     * @param ReflectionProperty[] $skippedEmptyProperties
+     * @param ReflectionClass $reflection Reflection of the struct.
+     * @param PropertyEmitOutput[] $propertiesOutput Key = property name and NOT KEY NAME.
+     * @param ReflectionProperty[] $skippedEmptyProperties Key = property name.
      */
     private function __construct(
         protected ReflectionClass $reflection,
@@ -22,10 +22,9 @@ final class StructEmitOutput
     }
 
     /**
-     * @param ReflectionClass $reflection
-     * @param PropertyEmitOutput[] $propertiesOutput
-     * @param ReflectionProperty[] $skippedEmptyProperties
-     * @return StructEmitOutput
+     * @param ReflectionClass $reflection Reflection of the struct.
+     * @param PropertyEmitOutput[] $propertiesOutput Key = property name and NOT KEY NAME.
+     * @param ReflectionProperty[] $skippedEmptyProperties Key = property name.
      */
     public static function create(
         ReflectionClass $reflection,
@@ -49,7 +48,7 @@ final class StructEmitOutput
     }
 
     /**
-     * @return PropertyEmitOutput[]
+     * @return PropertyEmitOutput[] Key = property name and NOT KEY NAME.
      */
     public function getPropertiesOutput() : array
     {
@@ -57,13 +56,16 @@ final class StructEmitOutput
     }
 
     /**
-     * @return ReflectionProperty[]
+     * @return ReflectionProperty[] Key = property name.
      */
     public function getSkippedEmptyProperties() : array
     {
         return $this->skippedEmptyProperties;
     }
 
+    /**
+     * @return array Key = key name.
+     */
     public function getFlattenedValue() : array
     {
         foreach (
