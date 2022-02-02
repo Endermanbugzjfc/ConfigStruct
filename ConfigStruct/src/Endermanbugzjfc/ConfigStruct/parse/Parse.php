@@ -4,9 +4,7 @@ namespace Endermanbugzjfc\ConfigStruct\parse;
 
 use Closure;
 use Endermanbugzjfc\ConfigStruct\KeyName;
-use PhpParser\Error;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
 use function array_diff;
@@ -124,12 +122,13 @@ final class Parse
         if (
             $type instanceof ReflectionNamedType
             and
-            class_exists($type->getName())
+            ($class = self::getSafeChildStructClass($property)) !== null
         ) {
             return fn() => self::parseChildStruct(
                 $property,
                 $keyName,
-                $value
+                $value,
+                $class
             );
         }
 
@@ -145,22 +144,31 @@ final class Parse
     public static function parseChildStruct(
         ReflectionProperty $property,
         string             $keyName,
-        mixed              $value
+        mixed              $value,
+        ReflectionClass    $class
     ) : PropertyParseOutput
     {
-        try {
-            $output = self::parseStructReflection(
-                new ReflectionClass($property->getType()->getName()),
-                $value
-            );
-        } catch (ReflectionException $err) {
-            throw new Error($err);
-        }
         return ChildStructParseOutput::create(
             $property,
             $keyName,
-            $output
+            self::parseStructReflection(
+                $class,
+                $value
+            )
         );
+    }
+
+    protected static function getSafeChildStructClass(
+        ReflectionProperty $property
+    ) : ?ReflectionClass
+    {
+        $class = $property->getType()->getName();
+        if ($class === "self") {
+            return $property->getDeclaringClass();
+        }
+        return class_exists($class)
+            ? new ReflectionClass($class)
+            : null;
     }
 
 }
