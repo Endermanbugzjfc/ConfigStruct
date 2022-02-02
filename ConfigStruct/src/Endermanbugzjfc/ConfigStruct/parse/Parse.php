@@ -26,7 +26,7 @@ final class Parse
     {
     }
 
-    public static function parseStruct(
+    public static function parseStructReflection(
         ReflectionClass $reflection,
         array           $input
     ) : StructParseOutput
@@ -133,7 +133,7 @@ final class Parse
     ) : PropertyParseOutput
     {
         try {
-            $output = self::parseStruct(
+            $output = self::parseStructReflection(
                 new ReflectionClass($property->getType()->getName()),
                 $value
             );
