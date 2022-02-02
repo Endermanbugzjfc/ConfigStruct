@@ -88,4 +88,33 @@ class ParseTest extends TestCase
             $testEmptyStringKeyNameCandidate->testA === ""
         );
     }
+
+    public function testParseMissingElements()
+    {
+        $object = new class() {
+
+            public $testNoDefaultValue;
+
+            public $testDefaultValue = true;
+
+        };
+        $output = Parse::parseStruct(
+            $object,
+            [
+
+            ]
+        );
+
+        $this->assertTrue(
+            $output->getMissingElements()
+            ["testNoDefaultValue"]
+                ->getName() === "testNoDefaultValue"
+        );
+        $this->assertTrue(
+            $output->getMissingElements()
+            ["testDefaultValue"]
+                ->getName() === "testDefaultValue"
+        );
+    }
+
 }
