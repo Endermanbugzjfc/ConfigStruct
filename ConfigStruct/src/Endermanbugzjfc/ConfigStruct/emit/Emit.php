@@ -18,7 +18,7 @@ final class Emit
     {
     }
 
-    public function emitStruct(
+    public static function emitStruct(
         object $object
     ) : StructEmitOutput
     {
