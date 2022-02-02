@@ -1,0 +1,10 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/Endermanbugzjfc/ConfigStruct
+build-by-default: true
+branches:
+- master
+projects:
+  ConfigStruct:
+    path: ConfigStruct/
+    model: virion
+    type: library
+...
