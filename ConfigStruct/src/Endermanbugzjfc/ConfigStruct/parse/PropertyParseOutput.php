@@ -9,6 +9,10 @@ abstract class PropertyParseOutput
 
     abstract protected function getFlattenedValue() : mixed;
 
+    /**
+     * @param object $object Overwrites one specified property in this object.
+     * @return object === $object.
+     */
     public function copyToObject(
         object $object,
     ) : object
@@ -18,23 +22,22 @@ abstract class PropertyParseOutput
     }
 
     /**
-     * @param ReflectionProperty $reflection
-     * @param string $keyName
-     * @param mixed $output
+     * @param ReflectionProperty $reflection Reflection of the property.
+     * @param string $keyName The key name will be inconsistent for the same property if it has more than one custom key names.
+     * @param mixed $output Parse output which haven't been flattened.
      */
     protected function __construct(
         protected ReflectionProperty $reflection,
         protected string             $keyName,
-        protected mixed $output
+        protected mixed              $output
     )
     {
     }
 
     /**
-     * @param ReflectionProperty $reflection
-     * @param string $keyName
-     * @param mixed $output
-     * @return PropertyParseOutput
+     * @param ReflectionProperty $reflection Reflection of the property.
+     * @param string $keyName The key name will be inconsistent for the same property if it has more than one custom key names.
+     * @param mixed $output Parse output which haven't been flattened.
      */
     abstract public static function create(
         ReflectionProperty $reflection,
@@ -43,7 +46,7 @@ abstract class PropertyParseOutput
     ) : self;
 
     /**
-     * @return ReflectionProperty
+     * @return ReflectionProperty Reflection of the property.
      */
     final public function getReflection() : ReflectionProperty
     {
@@ -51,7 +54,7 @@ abstract class PropertyParseOutput
     }
 
     /**
-     * @return string
+     * @return string The key name will be inconsistent for the same property if it has more than one custom key names.
      */
     public function getKeyName() : string
     {
