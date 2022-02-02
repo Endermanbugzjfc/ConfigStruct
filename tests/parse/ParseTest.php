@@ -1,4 +1,7 @@
-<?php
+<?php /** @noinspection PhpMissingFieldTypeInspection */
+/** @noinspection PhpUnused */
+
+/** @noinspection PhpUnusedPrivateFieldInspection */
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
