@@ -26,6 +26,22 @@ final class Parse
     {
     }
 
+    public static function parseStruct(
+        object $object,
+        array  $input,
+        bool   $copyOutputValue = true
+    ) : StructParseOutput
+    {
+        $output = self::parseStructReflection(
+            new ReflectionClass($object),
+            $input
+        );
+        if ($copyOutputValue) {
+            $output->copyValuesToObject($object);
+        }
+        return $output;
+    }
+
     public static function parseStructReflection(
         ReflectionClass $reflection,
         array           $input
