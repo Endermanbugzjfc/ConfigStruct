@@ -32,9 +32,10 @@ class ParseTest extends TestCase
             count($output->getPropertiesOutput()) === 1
         );
 
-        $property = $output->getPropertiesOutput()[0];
         $this->assertTrue(
-            $property->getKeyName() === "testPublicProperty"
+            $output->getPropertiesOutput()
+            ["testPublicProperty"]
+                ->getKeyName() === "testPublicProperty"
         );
 
         [
