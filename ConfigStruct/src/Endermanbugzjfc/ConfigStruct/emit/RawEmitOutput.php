@@ -18,6 +18,9 @@ final class RawEmitOutput extends PropertyEmitOutput
         );
     }
 
+    /**
+     * @return mixed Returns the output directly without any special logic and modifications.
+     */
     public function getFlattenedValue() : mixed
     {
         return $this->output;
