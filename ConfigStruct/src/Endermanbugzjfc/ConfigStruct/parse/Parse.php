@@ -63,11 +63,9 @@ final class Parse
                 continue;
             }
             $output = self::parseProperty($property, $key, $input[$key]);
-            if (is_callable($output)) {
-                $output();
-                continue;
-            }
-            $outputs[$property->getName()] = $output;
+            $outputs[$property->getName()] = is_callable($output)
+                ? $output()
+                : $output;
         }
         foreach (
             array_diff(
