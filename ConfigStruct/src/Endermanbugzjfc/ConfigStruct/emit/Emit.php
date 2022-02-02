@@ -8,7 +8,12 @@ use ReflectionProperty;
 final class Emit
 {
 
-    // TODO: __construct()
+    /**
+     * This class should be used statically!
+     */
+    private function __construct()
+    {
+    }
 
     /**
      * Look at README.md for examples.
