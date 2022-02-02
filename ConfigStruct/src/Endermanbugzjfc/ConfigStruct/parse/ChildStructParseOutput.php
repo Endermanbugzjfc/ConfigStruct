@@ -8,14 +8,12 @@ final class ChildStructParseOutput extends PropertyParseOutput
 {
 
     /**
-     * @param ReflectionProperty $reflection
-     * @param string $keyName
-     * @param mixed $output
+     * @inheritDoc
      */
     protected function __construct(
         ReflectionProperty $reflection,
         string             $keyName,
-        StructParseOutput $output
+        StructParseOutput  $output
     )
     {
         parent::__construct(
@@ -25,10 +23,13 @@ final class ChildStructParseOutput extends PropertyParseOutput
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function create(
         ReflectionProperty $reflection,
         string             $keyName,
-        mixed $output
+        mixed              $output
     ) : PropertyParseOutput
     {
         return new self(
@@ -46,6 +47,9 @@ final class ChildStructParseOutput extends PropertyParseOutput
         return $this->output;
     }
 
+    /**
+     * @return object A new instance of the child struct which contains the parsed value.
+     */
     protected function getFlattenedValue() : object
     {
         return $this->getChildStruct()->copyValuesToNewObject();
