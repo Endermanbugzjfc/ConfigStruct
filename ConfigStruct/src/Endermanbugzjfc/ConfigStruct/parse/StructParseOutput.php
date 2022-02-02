@@ -11,10 +11,10 @@ final class StructParseOutput
 {
 
     /**
-     * @param ReflectionClass $reflection
-     * @param PropertyParseOutput[] $propertiesOutput
-     * @param array $unhandledElements
-     * @param ReflectionProperty[] $missingElements
+     * @param ReflectionClass $reflection Reflection of the struct.
+     * @param PropertyParseOutput[] $propertiesOutput Key = property name.
+     * @param array<string, array> $unhandledElements
+     * @param ReflectionProperty[] $missingElements Key = property name.
      */
     private function __construct(
         protected ReflectionClass $reflection,
@@ -26,10 +26,10 @@ final class StructParseOutput
     }
 
     /**
-     * @param ReflectionClass $reflection
-     * @param PropertyParseOutput[] $propertiesOutput
-     * @param array $unhandledElements
-     * @param ReflectionProperty[] $missingElements
+     * @param ReflectionClass $reflection Reflection of the struct.
+     * @param PropertyParseOutput[] $propertiesOutput Key = Property name.
+     * @param array<string, array> $unhandledElements
+     * @param ReflectionProperty[] $missingElements Key = Property name.
      * @return StructParseOutput
      */
     public static function create(
@@ -48,7 +48,7 @@ final class StructParseOutput
     }
 
     /**
-     * @return ReflectionClass
+     * @return ReflectionClass Reflection of the struct.
      */
     public function getReflection() : ReflectionClass
     {
@@ -56,7 +56,7 @@ final class StructParseOutput
     }
 
     /**
-     * @return array
+     * @return array<string, array>
      */
     public function getUnhandledElements() : array
     {
@@ -64,7 +64,7 @@ final class StructParseOutput
     }
 
     /**
-     * @return ReflectionProperty[]
+     * @return ReflectionProperty[] Key = property name.
      */
     public function getMissingElements() : array
     {
@@ -72,13 +72,17 @@ final class StructParseOutput
     }
 
     /**
-     * @return PropertyParseOutput[]
+     * @return ReflectionProperty[] Key = property name.
      */
     public function getPropertiesOutput() : array
     {
         return $this->propertiesOutput;
     }
 
+    /**
+     * @param object $object
+     * @return object === $object.
+     */
     public function copyValuesToObject(
         object $object
     ) : object
@@ -91,6 +95,10 @@ final class StructParseOutput
         return $object;
     }
 
+    /**
+     * @return object The constructor of struct should have 0 arguments.
+     * @throws StructureException Failed to construct an new instance of the struct from reflection.
+     */
     public function copyValuesToNewObject() : object
     {
         try {
