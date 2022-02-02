@@ -16,7 +16,7 @@ use function array_values;
 use function class_exists;
 use function is_callable;
 
-final class StructParser
+final class Parser
 {
 
     /**
