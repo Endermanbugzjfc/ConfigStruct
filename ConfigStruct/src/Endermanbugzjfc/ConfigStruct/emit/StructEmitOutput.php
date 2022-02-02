@@ -3,6 +3,7 @@
 namespace Endermanbugzjfc\ConfigStruct\emit;
 
 use ReflectionClass;
+use ReflectionProperty;
 
 final class StructEmitOutput
 {
@@ -10,7 +11,7 @@ final class StructEmitOutput
     /**
      * @param ReflectionClass $reflection
      * @param PropertyEmitOutput[] $propertiesOutput
-     * @param string[] $skippedEmptyProperties
+     * @param ReflectionProperty[] $skippedEmptyProperties
      */
     private function __construct(
         protected ReflectionClass $reflection,
@@ -23,7 +24,7 @@ final class StructEmitOutput
     /**
      * @param ReflectionClass $reflection
      * @param PropertyEmitOutput[] $propertiesOutput
-     * @param string[] $skippedEmptyProperties
+     * @param ReflectionProperty[] $skippedEmptyProperties
      * @return StructEmitOutput
      */
     public static function create(
@@ -56,7 +57,7 @@ final class StructEmitOutput
     }
 
     /**
-     * @return string[]
+     * @return ReflectionProperty[]
      */
     public function getSkippedEmptyProperties() : array
     {
