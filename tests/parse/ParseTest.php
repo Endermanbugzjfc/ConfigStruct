@@ -117,4 +117,50 @@ class ParseTest extends TestCase
         );
     }
 
+    public function testParseChildStructRecursive()
+    {
+        $object = new class() {
+
+            public $testA;
+
+            public self $testSelf;
+
+        };
+        $class = $object::class;
+        Parse::parseStruct(
+            $object,
+            [
+                "testA" => "testA",
+                "testSelf" => [
+                    "testA" => "testB",
+                    "testSelf" => [
+                    ]
+                ]
+            ]
+        );
+
+        $this->assertTrue(
+            $object->testA === "testA"
+        );
+
+        $oneDeeper = $object->testSelf;
+        $this->assertTrue(
+            $oneDeeper instanceof $class
+        );
+        $this->assertTrue(
+            $oneDeeper->testA === "testB"
+        );
+
+        $twoDeeper = $oneDeeper->testSelf;
+        $this->assertTrue(
+            $twoDeeper instanceof $class
+        );
+        $this->assertTrue(
+            !isset($twoDeeper->testA)
+        );
+        $this->assertTrue(
+            !isset($twoDeeper->testSelf)
+        );
+    }
+
 }
