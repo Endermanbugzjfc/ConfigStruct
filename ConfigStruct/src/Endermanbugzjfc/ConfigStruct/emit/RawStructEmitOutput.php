@@ -2,26 +2,23 @@
 
 namespace Endermanbugzjfc\ConfigStruct\emit;
 
-use Endermanbugzjfc\ConfigStruct\parse\PropertyParseOutput;
 use ReflectionProperty;
 
-final class RawStructEmitOutput extends PropertyParseOutput
+final class RawStructEmitOutput extends PropertyEmitOutput
 {
 
     public static function create(
         ReflectionProperty $reflection,
-        string             $keyName,
-        mixed $output
-    ) : PropertyParseOutput
+        mixed              $output
+    ) : PropertyEmitOutput
     {
         return new self(
             $reflection,
-            $keyName,
             $output
         );
     }
 
-    protected function getFlattenedValue() : mixed
+    public function getFlattenedValue() : mixed
     {
         return $this->output;
     }
