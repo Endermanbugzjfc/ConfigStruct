@@ -2,9 +2,6 @@
   "name": "endermanbugzjfc/configstruct",
   "type": "library",
   "license": "MIT",
-  "require": {
-    "pocketmine/pocketmine-mp": "4.0.0"
-  },
   "autoload": {
     "psr-0": {
       "Endermanbugzjfc\\ConfigStruct\\": "ConfigStruct/src/"
