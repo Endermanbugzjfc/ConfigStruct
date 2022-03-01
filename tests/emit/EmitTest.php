@@ -4,6 +4,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct\emit;
 
+use Endermanbugzjfc\ConfigStruct\Emit;
 use Endermanbugzjfc\ConfigStruct\KeyName;
 use PHPUnit\Framework\TestCase;
 
