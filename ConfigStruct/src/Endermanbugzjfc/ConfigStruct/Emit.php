@@ -45,7 +45,6 @@ final class Emit
                 $object
             );
             $value = self::property(
-                $property,
                 $value
             );
             $return[$name] = $value;
