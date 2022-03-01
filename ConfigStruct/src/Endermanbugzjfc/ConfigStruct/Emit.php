@@ -52,12 +52,11 @@ final class Emit
     }
 
     /**
-     * @param ReflectionProperty $property This reflection property is required to call another emit function base on its type and attributes provided.
+     * Redirect to the correct emit function base on the value's type and attributes provided.
      * @param mixed $value Value of the property.
      * @return mixed
      */
     public static function property(
-        ReflectionProperty $property,
         mixed              $value
     ) : mixed
     {
