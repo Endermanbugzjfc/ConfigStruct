@@ -56,11 +56,11 @@ final class Emit
     /**
      * Redirect to the correct emit function base on the value's type and attributes provided.
      * @param mixed $value Value of the property.
-     * @return mixed
+     * @return string|int|bool|array|float
      */
     public static function property(
         mixed              $value
-    ) : mixed
+    ) : string|int|bool|array|float
     {
         if (is_object(
             $value
