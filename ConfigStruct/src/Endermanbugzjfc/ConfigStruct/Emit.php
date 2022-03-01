@@ -2,14 +2,10 @@
 
 namespace Endermanbugzjfc\ConfigStruct;
 
+use Endermanbugzjfc\ConfigStruct\utils\StaticClassTrait;
+
 final class Emit
 {
-
-    /**
-     * This class should be used statically!
-     */
-    private function __construct()
-    {
-    }
+    use StaticClassTrait;
 
 }
