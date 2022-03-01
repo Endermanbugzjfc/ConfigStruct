@@ -7,7 +7,7 @@ use Throwable;
 use const E_ERROR;
 
 /**
- * This exception should neither be recovered nor be caught. Direct change to the source code (structure of the struct class) should be made.
+ * This exception should never be caught. Direct change to the source code (class structure) should be made.
  */
 final class StructureException extends RuntimeException
 {
