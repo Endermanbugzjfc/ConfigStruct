@@ -5,6 +5,8 @@ namespace Endermanbugzjfc\ConfigStruct;
 use Endermanbugzjfc\ConfigStruct\utils\StaticClassTrait;
 use ReflectionClass;
 use ReflectionProperty;
+use function is_object;
+use function is_scalar;
 
 final class Emit
 {
@@ -60,7 +62,23 @@ final class Emit
         mixed              $value
     ) : mixed
     {
+        if (is_object(
+            $value
+        )) {
+            return self::object(
+                $value
+            );
+        }
 
+        // TODO: array
+
+        if (!is_scalar(
+            $value
+        )) {
+            return (array)$value;
+        }
+
+        return $value;
     }
 
 }
