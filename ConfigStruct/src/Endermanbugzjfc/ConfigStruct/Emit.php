@@ -14,7 +14,7 @@ final class Emit
     use StaticClassTrait;
 
     /**
-     * Convert an object into array. Base on its structure, which are the property types and attributes provided.
+     * Convert an object into array. Base on its structure, which are the value types and attributes provided.
      *
      * Non-public, non-initialized and static properties are always ignored.
      *
