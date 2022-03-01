@@ -2,7 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
-use Endermanbugzjfc\ConfigStruct\StructureException;
+use Endermanbugzjfc\ConfigStruct\StructureError;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;
@@ -97,7 +97,7 @@ final class StructParseOutput
 
     /**
      * @return object The constructor of struct should have 0 arguments.
-     * @throws StructureException Failed to construct an new instance of the struct from reflection.
+     * @throws StructureError Failed to construct an new instance of the struct from reflection.
      */
     public function copyValuesToNewObject() : object
     {
@@ -106,7 +106,7 @@ final class StructParseOutput
                 $this->getReflection()->newInstance()
             );
         } catch (ReflectionException $err) {
-            throw new StructureException($err);
+            throw new StructureError($err);
         }
     }
 

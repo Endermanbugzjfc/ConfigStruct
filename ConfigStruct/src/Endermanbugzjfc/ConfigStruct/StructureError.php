@@ -9,7 +9,7 @@ use const E_ERROR;
 /**
  * This exception should never be caught. Direct change to the source code (class structure) should be made.
  */
-final class StructureException extends RuntimeException
+final class StructureError extends RuntimeException
 {
 
     public function __construct(
