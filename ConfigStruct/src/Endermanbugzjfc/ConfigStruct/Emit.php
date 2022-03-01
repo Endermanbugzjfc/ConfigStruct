@@ -5,7 +5,6 @@ namespace Endermanbugzjfc\ConfigStruct;
 use Endermanbugzjfc\ConfigStruct\utils\StaticClassTrait;
 use ReflectionClass;
 use ReflectionProperty;
-use function is_object;
 
 final class Emit
 {
@@ -42,16 +41,27 @@ final class Emit
             $value = $property->getValue(
                 $object
             );
-            if (is_object(
+            $value = self::property(
+                $property,
                 $value
-            )) {
-                $value = self::object($value);
-            }
-            // TODO: Array
+            );
             $return[$name] = $value;
         }
 
         return $return ?? [];
+    }
+
+    /**
+     * @param ReflectionProperty $property This reflection property is required to call another emit function base on its type and attributes provided.
+     * @param mixed $value Value of the property.
+     * @return mixed
+     */
+    public static function property(
+        ReflectionProperty $property,
+        mixed              $value
+    ) : mixed
+    {
+
     }
 
 }
