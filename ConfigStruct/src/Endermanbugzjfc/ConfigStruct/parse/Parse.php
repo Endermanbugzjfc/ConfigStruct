@@ -4,6 +4,7 @@ namespace Endermanbugzjfc\ConfigStruct\parse;
 
 use Closure;
 use Endermanbugzjfc\ConfigStruct\KeyName;
+use Endermanbugzjfc\ConfigStruct\utils\StaticClassTrait;
 use ReflectionClass;
 use ReflectionNamedType;
 use ReflectionProperty;
@@ -16,13 +17,7 @@ use function is_callable;
 
 final class Parse
 {
-
-    /**
-     * This class should be used statically!
-     */
-    private function __construct()
-    {
-    }
+    use StaticClassTrait;
 
     /**
      * Look at README.md for example.
