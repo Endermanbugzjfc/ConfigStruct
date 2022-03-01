@@ -19,7 +19,7 @@ final class Emit
     }
 
     /**
-     * @param object $object Its value shouldn't be modified.
+     * @param object $object The object to be emitted. Basically flatten to array base on its structure (property types, attributes, etc...).
      * @return StructEmitOutput
      */
     public static function emitStruct(
@@ -27,7 +27,23 @@ final class Emit
     ) : StructEmitOutput
     {
         $reflection = new ReflectionClass($object);
+        self::emitStructReflection(
+            $reflection,
+            $object
+        );
+    }
 
+    /**
+     * @see Emit::emitStruct()
+     * @param ReflectionClass $reflection Reflection is required to identify the object's structure.
+     * @param object $object
+     * @return StructEmitOutput
+     */
+    public static function emitStructReflection(
+        ReflectionClass $reflection,
+        object          $object
+    ) : StructEmitOutput
+    {
         foreach ($reflection->getProperties(
             ReflectionProperty::IS_PUBLIC
         ) as $property) {
@@ -84,7 +100,7 @@ final class Emit
 
     public static function emitChildStruct(
         ReflectionProperty $property,
-        object $value
+        object             $value
     ) : PropertyEmitOutput
     {
         return ChildStructEmitOutput::create(
