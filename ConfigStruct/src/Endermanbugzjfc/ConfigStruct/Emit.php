@@ -27,7 +27,9 @@ final class Emit
         object $object
     ) : array
     {
-        $reflect = new ReflectionClass($object);
+        $reflect = new ReflectionClass(
+            $object
+        );
         foreach (
             $reflect->getProperties(
                 ReflectionProperty::IS_PUBLIC
@@ -59,7 +61,7 @@ final class Emit
      * @return string|int|bool|array|float
      */
     public static function value(
-        mixed              $value
+        mixed $value
     ) : string|int|bool|array|float
     {
         if (is_object(
