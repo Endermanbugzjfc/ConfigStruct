@@ -56,7 +56,7 @@ final class Emit
     }
 
     /**
-     * Redirect to the correct emit function base on the value's type and attributes provided.
+     * Redirect to the correct emit function. Base on the value's type and attributes provided.
      * @param mixed $value Value of the property.
      * @return string|int|bool|array|float
      */
