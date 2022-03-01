@@ -20,7 +20,7 @@ final class Emit
 
     /**
      * @param object $object The object to be emitted. Basically flatten to array base on its structure (property types, attributes, etc...).
-     * @return StructEmitOutput
+     * @return StructEmitOutput Non-public properties are always ignored. They will not be listed as a skipped property.
      */
     public static function emitStruct(
         object $object
