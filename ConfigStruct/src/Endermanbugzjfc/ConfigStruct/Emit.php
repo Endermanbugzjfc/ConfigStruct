@@ -44,7 +44,7 @@ final class Emit
             $value = $property->getValue(
                 $object
             );
-            $value = self::property(
+            $value = self::value(
                 $value
             );
             $return[$name] = $value;
@@ -58,7 +58,7 @@ final class Emit
      * @param mixed $value Value of the property.
      * @return string|int|bool|array|float
      */
-    public static function property(
+    public static function value(
         mixed              $value
     ) : string|int|bool|array|float
     {
@@ -74,7 +74,7 @@ final class Emit
             $value
         )) {
             foreach ($value as $key => $item) {
-                $return[$key] = self::property(
+                $return[$key] = self::value(
                     $item
                 );
             }
