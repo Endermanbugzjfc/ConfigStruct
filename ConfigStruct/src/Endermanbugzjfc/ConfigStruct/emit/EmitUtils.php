@@ -18,20 +18,21 @@ final class EmitUtils
     }
 
     /**
-     * Filter non-public properties from an array that is converted from object.
-     * @param array $array
+     * Filter non-public property names (contains character "\000") from an array of property names.
+     * @param string[] $array
      * @return void
      */
-    public static function filterNonPublic(
+    public static function filterNonPublicNames(
         array &$array
-    ) : void {
-        foreach ($array as $key => $value) {
+    ) : void
+    {
+        foreach ($array as $name) {
             if (str_contains(
-                $key,
+                $name,
                 "\000"
             )) {
                 unset(
-                    $array[$key]
+                    $array[$name]
                 );
             }
         }
