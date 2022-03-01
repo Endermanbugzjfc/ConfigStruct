@@ -5,6 +5,7 @@ namespace Endermanbugzjfc\ConfigStruct;
 use Endermanbugzjfc\ConfigStruct\utils\StaticClassTrait;
 use ReflectionClass;
 use ReflectionProperty;
+use function is_array;
 use function is_object;
 use function is_scalar;
 
@@ -70,7 +71,16 @@ final class Emit
             );
         }
 
-        // TODO: array
+        if (is_array(
+            $value
+        )) {
+            foreach ($value as $key => $item) {
+                $return[$key] = self::property(
+                    $item
+                );
+            }
+            return $return ?? [];
+        }
 
         if (!is_scalar(
             $value
