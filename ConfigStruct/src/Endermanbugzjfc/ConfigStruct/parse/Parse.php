@@ -182,12 +182,10 @@ final class Parse
     }
 
     /**
-     * "Type" refers to class at here.
+     * Find the best matching struct for the input (list element) by checking the count of handled elements. The struct which handles the most elements will be selected. The input will then be parsed into a {@link ObjectParseOutput} with the selected struct.
      *
-     * Find the best matching type for the input (list element) by checking the count of elements that are handled by the type. The type which handles the most elements will be selected. The input will then be parsed into a {@link ObjectParseOutput} by with the selected type.
-     *
-     * Incompatible types will never be used. This function is strict. There will not be any type (here refers to the PHP type system itself) casting.
-     * @param ReflectionClass[] $listTypes
+     * Incompatible structs will never be used. This function is type-strict. There will not be any type-casting.
+     * @param ReflectionClass[] $listTypes Struct candidates.
      * @param array $input An array which was converted from object.
      * @return ObjectParseOutput|null Null = no suitable type for this input (all types are incompatible).
      */
