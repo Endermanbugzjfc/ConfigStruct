@@ -50,7 +50,7 @@ final class ObjectParseOutput
     }
 
     /**
-     * @return ReflectionProperty[] Key = property name.
+     * @return PropertyParseOutput[] Key = property name.
      */
     public function getPropertiesOutput() : array
     {
