@@ -7,6 +7,7 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;
 use Throwable;
+use TypeError;
 
 final class ObjectParseOutput
 {
@@ -91,7 +92,7 @@ final class ObjectParseOutput
                     $object,
                     $property->getValue()
                 );
-            } catch (Throwable $err) {
+            } catch (TypeError $err) {
                 $errs[$name] = $err;
             }
         }
@@ -100,7 +101,7 @@ final class ObjectParseOutput
 
     /**
      * Copy output data to an new object.
-     * @param array|null $errs  Reference parameter, use this to retrieve the errors from {@link ObjectParseOutput::copyToObject()}.
+     * @param array|null $errs Reference parameter, use this to retrieve the errors from {@link ObjectParseOutput::copyToObject()}.
      * @return object The constructor of object should have 0 arguments.
      * @throws StructureError Failed to construct a new instance (probably incompatible arguments).
      */
