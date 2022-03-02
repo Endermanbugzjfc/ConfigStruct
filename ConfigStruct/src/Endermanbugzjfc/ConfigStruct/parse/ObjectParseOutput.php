@@ -17,12 +17,14 @@ final class ObjectParseOutput
      * @param PropertyParseOutput[] $propertiesOutput Key = property name.
      * @param array $unhandledElements Raw value of elements in the input which do not have the corresponding property.
      * @param ReflectionProperty[] $missingElements Key = property name.
+     * @param Throwable[] $errors Parse time errors. Key = property name.
      */
     public function __construct(
         protected ReflectionClass $reflection,
         protected array           $propertiesOutput,
         protected array           $unhandledElements,
-        protected array           $missingElements
+        protected array           $missingElements,
+        protected array           $errors
     )
     {
     }
@@ -60,6 +62,14 @@ final class ObjectParseOutput
     }
 
     /**
+     * @return Throwable[] Parse time errors. Key = property name.
+     */
+    public function getErrors() : array
+    {
+        return $this->errors;
+    }
+
+    /**
      * Copy output data to the given object.
      * @param object $object This object will be modified.
      * @return Throwable[] Errors (mostly {@link TypeError}). Key = property name.
@@ -68,8 +78,14 @@ final class ObjectParseOutput
         object $object
     ) : array
     {
+        $errs = $this->getErrors();
         $properties = $this->getPropertiesOutput();
         foreach ($properties as $name => $property) {
+            if (isset(
+                $errs[$name]
+            )) {
+                continue;
+            }
             try {
                 $property->getReflection()->setValue(
                     $object,
