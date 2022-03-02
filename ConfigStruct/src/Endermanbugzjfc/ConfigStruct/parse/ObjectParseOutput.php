@@ -61,6 +61,18 @@ final class ObjectParseOutput
     }
 
     /**
+     * @return Throwable[][] array<string, list<Throwable>> Key = property name. All properties are in the array. Property with no error = empty list.
+     */
+    public function getErrors() : array
+    {
+        $properties = $this->getPropertiesOutput();
+        foreach ($properties as $name => $property) {
+            $errs[$name] = $property->getErrors();
+        }
+        return $errs ?? [];
+    }
+
+    /**
      * Copy output data to the given object.
      * @param object $object This object will be modified.
      * @return Throwable[][] array<string, list<Throwable>>. Mostly {@link TypeError} or other parse time errors. Key = property name.
