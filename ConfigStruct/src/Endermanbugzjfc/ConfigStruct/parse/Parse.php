@@ -182,7 +182,11 @@ final class Parse
     }
 
     /**
-     * Find the best matching type for the input (list element) and parse the input into a {@link ObjectParseOutput}. Incompatible types will never be used. During this process, int might be casted to float.
+     * "Type" refers to class at here.
+     *
+     * Find the best matching type for the input (list element) by checking the count of elements that are handled by the type. The type which handles the most elements will be selected. The input will then be parsed into a {@link ObjectParseOutput} by with the selected type.
+     *
+     * Incompatible types will never be used. This function is strict. There will not be any type (here refers to the PHP type system itself) casting.
      * @param ReflectionClass[] $listTypes
      * @param array $input An array which was converted from object.
      * @return ObjectParseOutput|null Null = no suitable type for this input (all types are incompatible).
@@ -205,10 +209,8 @@ final class Parse
                 $propertyName = $property->getName();
                 $name = $map[$propertyName] ?? null;
                 if ($name === null) {
-                    $missing[$propertyName] = $property;
                     continue;
                 }
-
                 $compatible = self::isValueCompatibleWithProperty(
                     $property,
                     $input[$name]
@@ -216,21 +218,27 @@ final class Parse
                 if (!$compatible) {
                     break;
                 }
+                unset(
+                    $input[$name]
+                );
             }
             if ($compatible) {
-                $missingCounts[$key] = count($missing ?? []);
+                $unhandledCounts[$key] = count($input);
             }
         }
         if (empty(
-            $missingCounts ?? []
+            $unhandledCounts ?? []
         )) {
             throw new InvalidArgumentException(
                 "No list types were given"
             );
         }
-        asort($missingCounts);
-        $indexes = array_keys($missingCounts);
-        $first = $indexes[0];
+        asort($unhandledCounts);
+        $indexes = array_keys($unhandledCounts);
+        $first = $indexes[0] ?? null;
+        if ($first === null) {
+            return null;
+        }
         $type = $listTypes[$first];
 
         return self::reflectionClass(
