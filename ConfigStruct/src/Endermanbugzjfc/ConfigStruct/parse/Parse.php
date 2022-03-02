@@ -83,7 +83,8 @@ final class Parse
             $reflect,
             $output ?? [],
             $input,
-            $missing ?? []
+            $missing ?? [],
+            []
         );
     }
 
@@ -113,6 +114,7 @@ final class Parse
             return new ChildStructParseOutput(
                 $name,
                 $property,
+                [],
                 self::reflectionClass(
                     $value,
                     $reflect
@@ -145,6 +147,7 @@ final class Parse
             return new ListParseOutput(
                 $name,
                 $property,
+                [],
                 $elements ?? []
             );
         }
@@ -152,6 +155,7 @@ final class Parse
         return new RawParseOutput(
             $property,
             $name,
+            [],
             $value
         );
     }
