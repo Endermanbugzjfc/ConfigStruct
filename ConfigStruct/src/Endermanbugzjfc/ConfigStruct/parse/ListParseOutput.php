@@ -30,7 +30,7 @@ final class ListParseOutput extends PropertyParseOutput implements ArrayAccess, 
         );
     }
 
-    public function getValue() : bool|int|float|string|array
+    public function getValue() : array
     {
         foreach (
             $this->getObjectParseOutput()

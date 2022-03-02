@@ -19,7 +19,7 @@ final class ChildStructParseOutput extends PropertyParseOutput
         );
     }
 
-    public function getValue() : bool|int|float|string|array
+    public function getValue() : object
     {
         return $this->getObjectParseOutput()->copyToNewObject();
     }
