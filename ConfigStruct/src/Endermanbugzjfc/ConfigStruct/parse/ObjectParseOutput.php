@@ -7,17 +7,17 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;
 use Throwable;
-use TypeError;
 
 final class ObjectParseOutput
 {
 
+    // TODO: Fix document for $errors, cannot be rendered by PHPStorm correctly.
     /**
      * @param ReflectionClass $reflection
      * @param PropertyParseOutput[] $propertiesOutput Key = property name.
      * @param array $unhandledElements Raw value of elements in the input which do not have the corresponding property.
      * @param ReflectionProperty[] $missingElements Key = property name.
-     * @param Throwable[] $errors Parse time errors. Key = property name.
+     * @param Throwable[][] $errors array<string, list<Throwable>>. Parse time errors. Key = property name.
      */
     public function __construct(
         protected ReflectionClass $reflection,
@@ -62,7 +62,7 @@ final class ObjectParseOutput
     }
 
     /**
-     * @return Throwable[] Parse time errors. Key = property name.
+     * @return Throwable[][] array<string, list<Throwable>>. Parse time errors. Key = property name.
      */
     public function getErrors() : array
     {
@@ -72,7 +72,7 @@ final class ObjectParseOutput
     /**
      * Copy output data to the given object.
      * @param object $object This object will be modified.
-     * @return Throwable[] Errors (mostly {@link TypeError}). Key = property name.
+     * @return Throwable[][] array<string, list<Throwable>>. Mostly {@ink TypeError} or other parse time errors. Key = property name.
      */
     public function copyToObject(
         object $object
