@@ -198,17 +198,31 @@ final class Parse
      * Find the best matching struct for the input (list element) by checking the count of handled elements. The struct which handles the most elements will be selected. The input will then be parsed into a {@link ObjectParseOutput} with the selected struct.
      *
      * Incompatible structs will never be used.
+     * @param ReflectionProperty $property Property is needed for {@link StructureError} message.
      * @param ReflectionClass[] $listTypes Struct candidates.
      * @param array $input An array which was converted from object.
      * @return ObjectParseOutput|null Null = no suitable type for this input (all types are incompatible).
-     * @throws StructureError Failed to construct a new instance (probably incompatible arguments).
      */
     public static function listElement(
+        ReflectionProperty $property,
         array $listTypes,
         array $input
     ) : ?ObjectParseOutput
     {
+        $listTypesRaw = [];
         foreach ($listTypes as $key => $listType) {
+            $listTypeRaw = $listType->getName();
+            if (in_array(
+                $listTypeRaw,
+                $listTypesRaw,
+                true
+            )) {
+                $debugClass = $property->getDeclaringClass()->getName();
+                $debugProperty = $property->getName();
+                throw new StructureError(
+                    "Duplicated list type $listTypeRaw in $debugClass->$debugProperty"
+                );
+            }
             $output = self::reflectionClass(
                 $input,
                 $listType
