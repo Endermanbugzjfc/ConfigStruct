@@ -5,12 +5,10 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
-use ArrayAccess;
-use Iterator;
 use ReflectionProperty;
 use function array_values;
 
-final class ListParseOutput extends PropertyParseOutput implements ArrayAccess, Iterator
+final class ListParseOutput extends PropertyParseOutput
 {
 
     /**
