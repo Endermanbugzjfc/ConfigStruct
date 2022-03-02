@@ -6,6 +6,8 @@ use Endermanbugzjfc\ConfigStruct\StructureError;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;
+use Throwable;
+use TypeError;
 
 final class ObjectParseOutput
 {
@@ -58,21 +60,26 @@ final class ObjectParseOutput
     }
 
     /**
-     * Copy output data to the given object. Without checking the compatibility.
-     *
-     * It is your job to ensure you had passed the correct object. If you do not want to deal with this, considering using {@link ObjectParseOutput::copyToNewObject()}.
+     * Copy output data to the given object.
      * @param object $object This object will be modified.
-     * @return object The same object as the above argument.
+     * @return Throwable[] Errors (mostly {@link TypeError}). Key = property name.
      */
     public function copyToObject(
         object $object
-    ) : object
+    ) : array
     {
         $properties = $this->getPropertiesOutput();
         foreach ($properties as $name => $property) {
-            $object->$name = $property;
+            try {
+                $property->getReflection()->setValue(
+                    $object,
+                    $property->getValue()
+                );
+            } catch (Throwable $err) {
+                $errs[$name] = $err;
+            }
         }
-        return $object;
+        return $errs ?? [];
     }
 
     /**
@@ -80,16 +87,19 @@ final class ObjectParseOutput
      * @return object The constructor of object should have 0 arguments.
      * @throws StructureError Failed to construct a new instance (probably incompatible arguments).
      */
-    public function copyToNewObject() : object
+    public function copyToNewObject(
+        ?array &$errs = null
+    ) : object
     {
         try {
             $instance = $this->getReflection()->newInstance();
         } catch (ReflectionException $err) {
             throw new StructureError($err);
         }
-        return $this->copyToObject(
+        $errs = $this->copyToObject(
             $instance
         );
+        return $instance;
     }
 
 }
