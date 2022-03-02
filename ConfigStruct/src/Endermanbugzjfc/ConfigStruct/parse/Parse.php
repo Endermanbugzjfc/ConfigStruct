@@ -182,15 +182,15 @@ final class Parse
     }
 
     /**
-     * Find the best matching type for the input (list element) and parse the input into a {@link ObjectParseOutput}.
+     * Find the best matching type for the input (list element) and parse the input into a {@link ObjectParseOutput}. Incompatible types will never be used. During this process, int might be casted to float.
      * @param ReflectionClass[] $listTypes
      * @param array $input An array which was converted from object.
-     * @return ObjectParseOutput
+     * @return ObjectParseOutput|null Null = no suitable type for this input (all types are incompatible).
      */
     public static function listElement(
         array $listTypes,
         array $input
-    ) : ObjectParseOutput
+    ) : ?ObjectParseOutput
     {
         foreach ($listTypes as $key => $listType) {
             $properties = $listType->getProperties(
@@ -200,14 +200,26 @@ final class Parse
                 $properties,
                 $input
             );
+            $compatible = true;
             foreach ($properties as $property) {
                 $propertyName = $property->getName();
                 $name = $map[$propertyName] ?? null;
                 if ($name === null) {
                     $missing[$propertyName] = $property;
+                    continue;
+                }
+
+                $compatible = self::isValueCompatibleWithProperty(
+                    $property,
+                    $input[$name]
+                );
+                if (!$compatible) {
+                    break;
                 }
             }
-            $missingCounts[$key] = count($missing ?? []);
+            if ($compatible) {
+                $missingCounts[$key] = count($missing ?? []);
+            }
         }
         if (empty(
             $missingCounts ?? []
@@ -216,7 +228,6 @@ final class Parse
                 "No list types were given"
             );
         }
-        // TODO: Type check
         asort($missingCounts);
         $indexes = array_keys($missingCounts);
         $first = $indexes[0];
@@ -226,6 +237,13 @@ final class Parse
             $input,
             $type
         );
+    }
+
+    protected static function isValueCompatibleWithProperty(
+        ReflectionProperty $property,
+        mixed              $value
+    ) : bool
+    {
     }
 
 }
