@@ -32,7 +32,13 @@ final class ListParseOutput extends PropertyParseOutput implements ArrayAccess, 
 
     public function getValue() : bool|int|float|string|array
     {
-        // TODO: Implement getValue() method.
+        foreach (
+            $this->getObjectParseOutput()
+            as $key => $output
+        ) {
+            $return[$key] = $output->copyToNewObject();
+        }
+        return $return ?? [];
     }
 
     /**
