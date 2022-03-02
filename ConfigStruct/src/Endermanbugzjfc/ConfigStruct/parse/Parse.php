@@ -7,6 +7,7 @@ use Endermanbugzjfc\ConfigStruct\KeyName;
 use Endermanbugzjfc\ConfigStruct\utils\StaticClassTrait;
 use ReflectionAttribute;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
 use function array_diff;
@@ -81,13 +82,42 @@ final class Parse
         }
     }
 
+    /**
+     * Redirect to the correct parse function. Base on the property's type and attributes provided.
+     * @param string $name
+     * @param ReflectionProperty $property
+     * @param mixed $value
+     * @return PropertyParseOutput
+     */
     public static function property(
         string             $name,
         ReflectionProperty $property,
         mixed              $value
     ) : PropertyParseOutput
     {
+        try {
+            $reflect = new ReflectionClass(
+                $property->getType()
+            );
+        } catch (ReflectionException) {
+        }
+        if (isset($reflect)) {
+            // TODO: Recode
+            return ChildStructParseOutput::create(
+                $property,
+                $name,
+                self::arrayInput(
+                    $value,
+                    $reflect
+                )
+            );
+        }
 
+        return RawParseOutput::create(
+            $property,
+            $name,
+            $value
+        );
     }
 
     /**
