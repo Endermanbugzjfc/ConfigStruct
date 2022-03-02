@@ -18,14 +18,12 @@ final class ObjectParseOutput
      * @param PropertyParseOutput[] $propertiesOutput Key = property name.
      * @param array $unhandledElements Raw value of elements in the input which do not have the corresponding property.
      * @param ReflectionProperty[] $missingElements Key = property name.
-     * @param Throwable[][] $errors array<string, list<Throwable>>. Parse time errors. Key = property name.
      */
     public function __construct(
         protected ReflectionClass $reflection,
         protected array           $propertiesOutput,
         protected array           $unhandledElements,
-        protected array           $missingElements,
-        protected array           $errors
+        protected array           $missingElements
     )
     {
     }
@@ -63,14 +61,6 @@ final class ObjectParseOutput
     }
 
     /**
-     * @return Throwable[][] array<string, list<Throwable>>. Parse time errors. Key = property name.
-     */
-    public function getErrors() : array
-    {
-        return $this->errors;
-    }
-
-    /**
      * Copy output data to the given object.
      * @param object $object This object will be modified.
      * @return Throwable[][] array<string, list<Throwable>>. Mostly {@link TypeError} or other parse time errors. Key = property name.
@@ -79,21 +69,16 @@ final class ObjectParseOutput
         object $object
     ) : array
     {
-        $errs = $this->getErrors();
         $properties = $this->getPropertiesOutput();
         foreach ($properties as $name => $property) {
-            if (isset(
-                $errs[$name]
-            )) {
-                continue;
-            }
+            $errs[$name] = $property->getErrors();
             try {
                 $property->getReflection()->setValue(
                     $object,
                     $property->getValue()
                 );
             } catch (TypeError $err) {
-                $errs[$name] = $err;
+                $errs[$name][] = $err;
             }
         }
         return $errs ?? [];
