@@ -8,6 +8,7 @@ namespace Endermanbugzjfc\ConfigStruct\parse;
 use ArrayAccess;
 use Iterator;
 use ReflectionProperty;
+use function array_values;
 
 final class ListParseOutput extends PropertyParseOutput implements ArrayAccess, Iterator
 {
@@ -81,4 +82,12 @@ final class ListParseOutput extends PropertyParseOutput implements ArrayAccess, 
     {
         // TODO: Implement offsetUnset() method.
     }
+
+    public function isAssociative() : bool
+    {
+        return array_values(
+            $this->objectParseOutput
+        ) === $this->objectParseOutput;
+    }
+
 }
