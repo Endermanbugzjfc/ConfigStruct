@@ -8,9 +8,9 @@ final class RawParseOutput extends PropertyParseOutput
 {
 
     public function __construct(
-        ReflectionProperty $reflection,
-        string             $keyName,
-        protected mixed    $value
+        ReflectionProperty                    $reflection,
+        string                                $keyName,
+        protected bool|int|float|string|array $value
     )
     {
         parent::__construct(
@@ -20,9 +20,9 @@ final class RawParseOutput extends PropertyParseOutput
     }
 
     /**
-     * @return mixed
+     * @return array|bool|float|int|string
      */
-    public function getValue() : mixed
+    public function getValue() : float|array|bool|int|string
     {
         return $this->value;
     }
