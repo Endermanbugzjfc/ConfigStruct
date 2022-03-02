@@ -7,52 +7,29 @@ use ReflectionProperty;
 final class ChildStructParseOutput extends PropertyParseOutput
 {
 
-    /**
-     * @inheritDoc
-     */
-    protected function __construct(
-        ReflectionProperty $reflection,
-        string             $keyName,
-        ObjectParseOutput $output
+    public function __construct(
+        ReflectionProperty          $reflection,
+        string                      $keyName,
+        protected ObjectParseOutput $objectParseOutput
     )
     {
         parent::__construct(
             $reflection,
-            $keyName,
-            $output
+            $keyName
         );
     }
 
-    /**
-     * @inheritDoc
-     */
-    public static function create(
-        ReflectionProperty $reflection,
-        string             $keyName,
-        mixed              $output
-    ) : PropertyParseOutput
+    public function getValue() : bool|int|float|string|array
     {
-        return new self(
-            $reflection,
-            $keyName,
-            $output
-        );
+        return $this->getObjectParseOutput()->copyToNewObject();
     }
 
     /**
      * @return ObjectParseOutput
      */
-    public function getChildStruct() : ObjectParseOutput
+    public function getObjectParseOutput() : ObjectParseOutput
     {
-        return $this->output;
-    }
-
-    /**
-     * @return object A new instance of the child struct which contains the parsed value.
-     */
-    protected function getValue() : object
-    {
-        return $this->getChildStruct()->copyToNewObject();
+        return $this->objectParseOutput;
     }
 
 }
