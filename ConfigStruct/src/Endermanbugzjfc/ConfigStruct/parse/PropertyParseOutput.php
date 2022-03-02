@@ -7,7 +7,7 @@ use ReflectionProperty;
 abstract class PropertyParseOutput
 {
 
-    abstract public function getValue() : bool|int|float|string|array;
+    abstract public function getValue() : mixed;
 
     public function __construct(
         protected string             $keyName,
