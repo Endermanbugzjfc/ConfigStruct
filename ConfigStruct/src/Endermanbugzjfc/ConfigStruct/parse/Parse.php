@@ -11,6 +11,7 @@ use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
 use function array_key_exists;
+use function in_array;
 
 final class Parse
 {
@@ -167,19 +168,32 @@ final class Parse
     ) : array
     {
         foreach ($properties as $property) {
+            $names = [];
             foreach (
                 $property->getAttributes(KeyName::class)
                 as $keyName
             ) {
                 $name = $keyName->getArguments()[0];
+                if (in_array(
+                    $name,
+                    $names,
+                    true
+                )) {
+                    $debugClass = $property->getDeclaringClass()->getName();
+                    $debugProperty = $property->getName();
+                    throw new StructureError(
+                        "Duplicated key name \"$name\" in $debugClass->$debugProperty"
+                    );
+                }
+                $names[] = $name;
                 if (!array_key_exists($name, $input)) {
                     continue;
                 }
-                $names[$property->getName()] = $name;
+                $map[$property->getName()] = $name;
                 break;
             }
         }
-        return $names ?? [];
+        return $map ?? [];
     }
 
     /**
