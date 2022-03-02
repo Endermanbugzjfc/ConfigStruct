@@ -4,17 +4,13 @@ namespace Endermanbugzjfc\ConfigStruct\parse;
 
 use Endermanbugzjfc\ConfigStruct\KeyName;
 use Endermanbugzjfc\ConfigStruct\ListType;
+use Endermanbugzjfc\ConfigStruct\StructureError;
 use Endermanbugzjfc\ConfigStruct\utils\StaticClassTrait;
-use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
 use function array_key_exists;
-use function array_keys;
-use function asort;
-use function count;
-use function gettype;
 
 final class Parse
 {
@@ -189,10 +185,11 @@ final class Parse
     /**
      * Find the best matching struct for the input (list element) by checking the count of handled elements. The struct which handles the most elements will be selected. The input will then be parsed into a {@link ObjectParseOutput} with the selected struct.
      *
-     * Incompatible structs will never be used. This function is type-strict. There will not be any type-casting.
+     * Incompatible structs will never be used.
      * @param ReflectionClass[] $listTypes Struct candidates.
      * @param array $input An array which was converted from object.
      * @return ObjectParseOutput|null Null = no suitable type for this input (all types are incompatible).
+     * @throws StructureError Failed to construct a new instance (probably incompatible arguments).
      */
     public static function listElement(
         array $listTypes,
@@ -200,68 +197,32 @@ final class Parse
     ) : ?ObjectParseOutput
     {
         foreach ($listTypes as $key => $listType) {
-            $properties = $listType->getProperties(
-                ReflectionProperty::IS_PUBLIC
+            $output = self::reflectionClass(
+                $input,
+                $listType
             );
-            $map = self::getPropertyNameToKeyNameMap(
-                $properties,
-                $input
-            );
-            $compatible = true;
-            foreach ($properties as $property) {
-                $propertyName = $property->getName();
-                $name = $map[$propertyName] ?? null;
-                if ($name === null) {
-                    continue;
-                }
-                $compatible = self::isValueCompatibleWithProperty(
-                    $property,
-                    $input[$name]
-                );
-                if (!$compatible) {
-                    break;
-                }
-                unset(
-                    $input[$name]
-                );
+            if (!empty($output->getErrors())) {
+                continue;
             }
-            if ($compatible) {
-                $unhandledCounts[$key] = count($input);
-            }
+            $outputs[$key] = $output;
         }
-        if (empty(
-            $unhandledCounts ?? []
-        )) {
-            throw new InvalidArgumentException(
-                "No list types were given"
-            );
-        }
-        asort($unhandledCounts);
-        $indexes = array_keys($unhandledCounts);
-        $first = $indexes[0] ?? null;
-        if ($first === null) {
+        if (!isset($outputs)) {
             return null;
         }
-        $type = $listTypes[$first];
+        $leastUnhandled = null;
+        foreach ($outputs as $output2) {
+            if ($leastUnhandled instanceof ObjectParseOutput) {
+                $unhandled = $output2->getUnhandledElements();
+                if (
+                    $leastUnhandled->getUnhandledElements() < $unhandled
+                ) {
+                    continue;
+                }
+                $leastUnhandled = $output2;
+            }
+        }
 
-        return self::reflectionClass(
-            $input,
-            $type
-        );
-    }
-
-    /**
-     * Check if the value type equals to the property type. No any type-casting or special logics.
-     * @param ReflectionProperty $property
-     * @param mixed $value
-     * @return bool True = value is compatible with the property.
-     */
-    protected static function isValueCompatibleWithProperty(
-        ReflectionProperty $property,
-        mixed              $value
-    ) : bool
-    {
-        return gettype($value) === $property->getType()->getName();
+        return $leastUnhandled;
     }
 
 }
