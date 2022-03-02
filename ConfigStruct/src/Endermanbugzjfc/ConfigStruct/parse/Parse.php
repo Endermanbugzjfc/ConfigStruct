@@ -111,11 +111,11 @@ final class Parse
         }
         if (isset($reflect)) {
             return new ChildStructParseOutput(
-                $property,
                 $name,
-                self::arrayToObject(
+                $property,
+                self::reflectionClass(
                     $value,
-
+                    $reflect
                 )
             );
         }
@@ -161,9 +161,9 @@ final class Parse
             throw new AssertionError($sortType); // TODO
         }
 
-        return RawParseOutput::create(
-            $property,
+        return new RawParseOutput(
             $name,
+            $property,
             $value
         );
     }
