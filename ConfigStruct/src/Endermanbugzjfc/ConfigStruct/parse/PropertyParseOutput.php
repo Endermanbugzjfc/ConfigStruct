@@ -21,32 +21,16 @@ abstract class PropertyParseOutput
         return $object;
     }
 
-    /**
-     * @param ReflectionProperty $reflection Reflection of the property.
-     * @param string $keyName The key name will be inconsistent for the same property if it has more than one custom key names.
-     * @param mixed $output Parse output which haven't been flattened.
-     */
-    protected function __construct(
+    public function __construct(
         protected ReflectionProperty $reflection,
         protected string             $keyName,
-        protected mixed              $output
+        mixed                        $output
     )
     {
     }
 
     /**
-     * @param ReflectionProperty $reflection Reflection of the property.
-     * @param string $keyName The key name will be inconsistent for the same property if it has more than one custom key names.
-     * @param mixed $output Parse output which haven't been flattened.
-     */
-    abstract public static function create(
-        ReflectionProperty $reflection,
-        string             $keyName,
-        mixed $output
-    ) : self;
-
-    /**
-     * @return ReflectionProperty Reflection of the property.
+     * @return ReflectionProperty
      */
     final public function getReflection() : ReflectionProperty
     {
@@ -54,7 +38,7 @@ abstract class PropertyParseOutput
     }
 
     /**
-     * @return string The key name will be inconsistent for the same property if it has more than one custom key names.
+     * @return string
      */
     public function getKeyName() : string
     {
