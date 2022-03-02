@@ -80,8 +80,7 @@ final class Parse
             $reflect,
             $output ?? [],
             $input,
-            $missing ?? [],
-            []
+            $missing ?? []
         );
     }
 
