@@ -7,24 +7,24 @@ use ReflectionProperty;
 final class RawParseOutput extends PropertyParseOutput
 {
 
-    public static function create(
+    public function __construct(
         ReflectionProperty $reflection,
         string             $keyName,
-        mixed              $output
-    ) : PropertyParseOutput
+        protected mixed    $value
+    )
     {
-        return new self(
+        parent::__construct(
             $reflection,
-            $keyName,
-            $output
+            $keyName
         );
     }
 
     /**
-     * @return mixed Returns the output directly without any special logic and modifications.
+     * @return mixed
      */
-    protected function getValue() : mixed
+    public function getValue() : mixed
     {
-        return $this->output;
+        return $this->value;
     }
+
 }
