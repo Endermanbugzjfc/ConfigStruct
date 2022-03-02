@@ -96,9 +96,12 @@ final class Parse
     ) : PropertyParseOutput
     {
         try {
-            $reflect = new ReflectionClass(
-                $property->getType()
-            );
+            $type = $property->getType();
+            if ($type instanceof ReflectionNamedType) {
+                $reflect = new ReflectionClass(
+                    $type->getName()
+                );
+            }
         } catch (ReflectionException) {
         }
         if (isset($reflect)) {
