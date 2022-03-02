@@ -179,9 +179,8 @@ final class Parse
                     true
                 )) {
                     $debugClass = $property->getDeclaringClass()->getName();
-                    $debugProperty = $property->getName();
                     throw new StructureError(
-                        "Duplicated key name \"$name\" in $debugClass->$debugProperty"
+                        "Duplicated key name \"$name\" in $debugClass->$name"
                     );
                 }
                 $names[] = $name;
