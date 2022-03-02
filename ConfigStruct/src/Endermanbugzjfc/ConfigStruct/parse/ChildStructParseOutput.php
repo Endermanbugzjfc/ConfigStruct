@@ -8,14 +8,14 @@ final class ChildStructParseOutput extends PropertyParseOutput
 {
 
     public function __construct(
-        ReflectionProperty          $reflection,
         string                      $keyName,
+        ReflectionProperty          $reflection,
         protected ObjectParseOutput $objectParseOutput
     )
     {
         parent::__construct(
-            $reflection,
-            $keyName
+            $keyName,
+            $reflection
         );
     }
 

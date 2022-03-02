@@ -8,14 +8,14 @@ final class RawParseOutput extends PropertyParseOutput
 {
 
     public function __construct(
-        ReflectionProperty                    $reflection,
         string                                $keyName,
+        ReflectionProperty                    $reflection,
         protected bool|int|float|string|array $value
     )
     {
         parent::__construct(
-            $reflection,
-            $keyName
+            $keyName,
+            $reflection
         );
     }
 

@@ -10,8 +10,8 @@ abstract class PropertyParseOutput
     abstract public function getValue() : bool|int|float|string|array;
 
     public function __construct(
-        protected ReflectionProperty $reflection,
         protected string             $keyName,
+        protected ReflectionProperty $reflection
     )
     {
     }
