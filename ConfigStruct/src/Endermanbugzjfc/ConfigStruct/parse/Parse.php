@@ -194,4 +194,24 @@ final class Parse
         return $names ?? [];
     }
 
+    /**
+     * @param ReflectionProperty[] $properties
+     * @param string[] $map Key = property name. Value = key name.
+     * @return ReflectionProperty[] Key = property name.
+     */
+    protected static function getMissingElements(
+        array $properties,
+        array $map
+    ) : array
+    {
+        foreach ($properties as $property) {
+            $propertyName = $property->getName();
+            $name = $map[$propertyName] ?? null;
+            if ($name === null) {
+                $missing[$propertyName] = $property;
+            }
+        }
+        return $missing ?? [];
+    }
+
 }
