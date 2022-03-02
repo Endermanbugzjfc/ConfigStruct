@@ -13,7 +13,7 @@ final class ChildStructParseOutput extends PropertyParseOutput
     protected function __construct(
         ReflectionProperty $reflection,
         string             $keyName,
-        StructParseOutput  $output
+        ObjectParseOutput $output
     )
     {
         parent::__construct(
@@ -40,9 +40,9 @@ final class ChildStructParseOutput extends PropertyParseOutput
     }
 
     /**
-     * @return StructParseOutput
+     * @return ObjectParseOutput
      */
-    public function getChildStruct() : StructParseOutput
+    public function getChildStruct() : ObjectParseOutput
     {
         return $this->output;
     }

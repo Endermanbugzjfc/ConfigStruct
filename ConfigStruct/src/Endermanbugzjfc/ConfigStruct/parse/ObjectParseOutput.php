@@ -7,7 +7,7 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;
 
-final class StructParseOutput
+final class ObjectParseOutput
 {
 
     /**
@@ -30,7 +30,7 @@ final class StructParseOutput
      * @param PropertyParseOutput[] $propertiesOutput Key = Property name.
      * @param array<string, array> $unhandledElements
      * @param ReflectionProperty[] $missingElements Key = Property name.
-     * @return StructParseOutput
+     * @return ObjectParseOutput
      */
     public static function create(
         ReflectionClass $reflection,
