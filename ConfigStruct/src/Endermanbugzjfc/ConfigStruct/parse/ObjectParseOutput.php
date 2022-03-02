@@ -11,9 +11,9 @@ final class ObjectParseOutput
 {
 
     /**
-     * @param ReflectionClass $reflection Reflection of the struct.
+     * @param ReflectionClass $reflection
      * @param PropertyParseOutput[] $propertiesOutput Key = property name.
-     * @param array<string, array> $unhandledElements
+     * @param array $unhandledElements Raw value of elements in the input which do not have the corresponding property.
      * @param ReflectionProperty[] $missingElements Key = property name.
      */
     private function __construct(
@@ -26,29 +26,7 @@ final class ObjectParseOutput
     }
 
     /**
-     * @param ReflectionClass $reflection Reflection of the struct.
-     * @param PropertyParseOutput[] $propertiesOutput Key = Property name.
-     * @param array<string, array> $unhandledElements
-     * @param ReflectionProperty[] $missingElements Key = Property name.
-     * @return ObjectParseOutput
-     */
-    public static function create(
-        ReflectionClass $reflection,
-        array           $propertiesOutput,
-        array           $unhandledElements,
-        array           $missingElements
-    ) : self
-    {
-        return new self(
-            $reflection,
-            $propertiesOutput,
-            $unhandledElements,
-            $missingElements
-        );
-    }
-
-    /**
-     * @return ReflectionClass Reflection of the struct.
+     * @return ReflectionClass
      */
     public function getReflection() : ReflectionClass
     {
@@ -56,7 +34,7 @@ final class ObjectParseOutput
     }
 
     /**
-     * @return array<string, array>
+     * @return array Raw value of elements in the input which do not have the corresponding property.
      */
     public function getUnhandledElements() : array
     {
