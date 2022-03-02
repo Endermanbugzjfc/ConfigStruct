@@ -2,15 +2,14 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
-use AssertionError;
 use Endermanbugzjfc\ConfigStruct\KeyName;
 use Endermanbugzjfc\ConfigStruct\ListType;
 use Endermanbugzjfc\ConfigStruct\utils\StaticClassTrait;
+use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
-use function array_filter;
 use function array_key_exists;
 use function array_keys;
 use function asort;
@@ -125,40 +124,28 @@ final class Parse
         );
         if (!empty($listTypes)) {
             foreach ($listTypes as $listType) {
-                $type = $listType->getArguments()[0];
-                if (isset(
-                    $missingCounts[$type]
-                )) {
-                    continue;
-                }
                 try {
-                    $reflect = new ReflectionClass(
-                        $type
+                    $listReflect = new ReflectionClass(
+                        $listType->getArguments()[0]
                     );
                 } catch (ReflectionException) {
-                    // TODO
                     continue;
                 }
-                $properties = $reflect->getProperties(
-                    ReflectionProperty::IS_PUBLIC
-                );
-                $map = self::getPropertyNameToKeyNameMap(
-                    $properties,
-                    $value
-                );
-                $missing = array_filter(
-                    $map,
-                    fn(
-                        $k,
-                        $v
-                    ) : bool => $v === null
-                );
-                $missingCounts[$type] = count($missing);
+                $listReflects[] = $listReflect;
             }
-            asort($missing);
-            $sortTypes = array_keys($missing);
-            $sortType = $sortTypes[0];
-            throw new AssertionError($sortType); // TODO
+            // TODO: Handle invalid types.
+            foreach ($value as $key => $input) {
+                $element = self::listElement(
+                    $listReflects ?? [],
+                    $input
+                );
+                $elements[$key] = $element;
+            }
+            return new ListParseOutput(
+                $name,
+                $property,
+                $elements ?? []
+            );
         }
 
         return new RawParseOutput(
@@ -195,23 +182,50 @@ final class Parse
     }
 
     /**
-     * @param ReflectionProperty[] $properties
-     * @param string[] $map Key = property name. Value = key name.
-     * @return ReflectionProperty[] Key = property name.
+     * Find the best matching type for the input (list element) and parse the input into a {@link ObjectParseOutput}.
+     * @param ReflectionClass[] $listTypes
+     * @param array $input An array which was converted from object.
+     * @return ObjectParseOutput
      */
-    protected static function getMissingElements(
-        array $properties,
-        array $map
-    ) : array
+    public static function listElement(
+        array $listTypes,
+        array $input
+    ) : ObjectParseOutput
     {
-        foreach ($properties as $property) {
-            $propertyName = $property->getName();
-            $name = $map[$propertyName] ?? null;
-            if ($name === null) {
-                $missing[$propertyName] = $property;
+        foreach ($listTypes as $key => $listType) {
+            $properties = $listType->getProperties(
+                ReflectionProperty::IS_PUBLIC
+            );
+            $map = self::getPropertyNameToKeyNameMap(
+                $properties,
+                $input
+            );
+            foreach ($properties as $property) {
+                $propertyName = $property->getName();
+                $name = $map[$propertyName] ?? null;
+                if ($name === null) {
+                    $missing[$propertyName] = $property;
+                }
             }
+            $missingCounts[$key] = count($missing ?? []);
         }
-        return $missing ?? [];
+        if (empty(
+            $missingCounts ?? []
+        )) {
+            throw new InvalidArgumentException(
+                "No list types were given"
+            );
+        }
+        // TODO: Type check
+        asort($missingCounts);
+        $indexes = array_keys($missingCounts);
+        $first = $indexes[0];
+        $type = $listTypes[$first];
+
+        return self::reflectionClass(
+            $input,
+            $type
+        );
     }
 
 }
