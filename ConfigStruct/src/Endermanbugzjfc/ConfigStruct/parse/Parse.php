@@ -3,7 +3,6 @@
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
 use AssertionError;
-use Closure;
 use Endermanbugzjfc\ConfigStruct\KeyName;
 use Endermanbugzjfc\ConfigStruct\ListType;
 use Endermanbugzjfc\ConfigStruct\utils\StaticClassTrait;
@@ -11,15 +10,11 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
-use function array_diff;
 use function array_filter;
 use function array_key_exists;
 use function array_keys;
-use function array_values;
 use function asort;
-use function class_exists;
 use function count;
-use function is_callable;
 
 final class Parse
 {
@@ -150,74 +145,6 @@ final class Parse
     }
 
     /**
-     * Look at README.md for example.
-     *
-     * @param object $object
-     * @param array $input
-     * @param bool $copyOutputValue
-     * @return StructParseOutput
-     */
-    public static function parseStruct(
-        object $object,
-        array  $input,
-        bool   $copyOutputValue = true
-    ) : StructParseOutput
-    {
-        $output = self::parseStructReflection(
-            new ReflectionClass($object),
-            $input
-        );
-        if ($copyOutputValue) {
-            $output->copyValuesToObject($object);
-        }
-        return $output;
-    }
-
-    public static function parseStructReflection(
-        ReflectionClass $reflection,
-        array           $input
-    ) : StructParseOutput
-    {
-        $properties = $reflection->getProperties(
-            ReflectionProperty::IS_PUBLIC
-        );
-        $map = self::getPropertyNameToKeyNameMap(
-            $properties,
-            $input
-        );
-
-        foreach ($properties as $property) {
-            $key = $map[$property->getName()] ?? $property->getName();
-            if (!array_key_exists(
-                $key,
-                $input
-            )) {
-                $missing[$property->getName()] = $property;
-                continue;
-            }
-            $output = self::parseProperty($property, $key, $input[$key]);
-            $outputs[$property->getName()] = is_callable($output)
-                ? $output()
-                : $output;
-        }
-        foreach (
-            array_diff(
-                array_keys($input),
-                array_values($map)
-            ) as $name
-        ) {
-            $unhandled[$name] = $input[$name];
-        }
-
-        return StructParseOutput::create(
-            $reflection,
-            $outputs ?? [],
-            $unhandled ?? [],
-            $missing ?? []
-        );
-    }
-
-    /**
      * @param ReflectionProperty[] $properties
      * @param array $input
      * @return array<string, string>
@@ -241,65 +168,6 @@ final class Parse
             }
         }
         return $names ?? [];
-    }
-
-    public static function parseProperty(
-        ReflectionProperty $property,
-        string             $keyName,
-        mixed              $value
-    ) : PropertyParseOutput|Closure
-    {
-        $type = $property->getType();
-        if (
-            $type instanceof ReflectionNamedType
-            and
-            ($class = self::getSafeChildStructClass($property)) !== null
-        ) {
-            return fn() => self::parseChildStruct(
-                $property,
-                $keyName,
-                $value,
-                $class
-            );
-        }
-
-        // TODO: array
-
-        return RawParseOutput::create(
-            $property,
-            $keyName,
-            $value
-        );
-    }
-
-    public static function parseChildStruct(
-        ReflectionProperty $property,
-        string             $keyName,
-        mixed              $value,
-        ReflectionClass    $class
-    ) : PropertyParseOutput
-    {
-        return ChildStructParseOutput::create(
-            $property,
-            $keyName,
-            self::parseStructReflection(
-                $class,
-                $value
-            )
-        );
-    }
-
-    protected static function getSafeChildStructClass(
-        ReflectionProperty $property
-    ) : ?ReflectionClass
-    {
-        $class = $property->getType()->getName();
-        if ($class === "self") {
-            return $property->getDeclaringClass();
-        }
-        return class_exists($class)
-            ? new ReflectionClass($class)
-            : null;
     }
 
 }
