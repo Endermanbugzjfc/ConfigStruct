@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
 use ReflectionProperty;
+use Throwable;
 use function array_values;
 
 final class ListParseOutput extends PropertyParseOutput
@@ -14,17 +15,20 @@ final class ListParseOutput extends PropertyParseOutput
     /**
      * @param string $keyName
      * @param ReflectionProperty $reflection
+     * @param Throwable[] $errors
      * @param ObjectParseOutput[] $objectParseOutput
      */
     public function __construct(
         string             $keyName,
         ReflectionProperty $reflection,
+        array              $errors,
         protected array    $objectParseOutput
     )
     {
         parent::__construct(
             $keyName,
-            $reflection
+            $reflection,
+            $errors
         );
     }
 
@@ -50,8 +54,8 @@ final class ListParseOutput extends PropertyParseOutput
     public function isAssociative() : bool
     {
         return array_values(
-            $this->objectParseOutput
-        ) === $this->objectParseOutput;
+                $this->objectParseOutput
+            ) === $this->objectParseOutput;
     }
 
 }

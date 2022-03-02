@@ -3,15 +3,22 @@
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
 use ReflectionProperty;
+use Throwable;
 
 abstract class PropertyParseOutput
 {
 
     abstract public function getValue() : mixed;
 
+    /**
+     * @param string $keyName
+     * @param ReflectionProperty $reflection
+     * @param Throwable[] $errors Parse time errors.
+     */
     public function __construct(
         protected string             $keyName,
-        protected ReflectionProperty $reflection
+        protected ReflectionProperty $reflection,
+        protected array $errors
     )
     {
     }
@@ -30,6 +37,14 @@ abstract class PropertyParseOutput
     public function getKeyName() : string
     {
         return $this->keyName;
+    }
+
+    /**
+     * @return Throwable[]
+     */
+    public function getErrors() : array
+    {
+        return $this->errors;
     }
 
 }

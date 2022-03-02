@@ -7,15 +7,20 @@ use ReflectionProperty;
 final class ChildStructParseOutput extends PropertyParseOutput
 {
 
+    /**
+     * @inheritDoc
+     */
     public function __construct(
         string                      $keyName,
         ReflectionProperty          $reflection,
+        array                       $errors,
         protected ObjectParseOutput $objectParseOutput
     )
     {
         parent::__construct(
             $keyName,
-            $reflection
+            $reflection,
+            $errors
         );
     }
 
