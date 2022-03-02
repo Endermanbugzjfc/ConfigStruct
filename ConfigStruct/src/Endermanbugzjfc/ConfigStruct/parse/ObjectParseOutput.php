@@ -96,18 +96,19 @@ final class ObjectParseOutput
     }
 
     /**
-     * @return object The constructor of struct should have 0 arguments.
-     * @throws StructureError Failed to construct an new instance of the struct from reflection.
+     * @return object The constructor of object should have 0 arguments.
+     * @throws StructureError Failed to construct a new instance (probably incompatible arguments).
      */
     public function copyValuesToNewObject() : object
     {
         try {
-            return $this->copyValuesToObject(
-                $this->getReflection()->newInstance()
-            );
+            $instance = $this->getReflection()->newInstance();
         } catch (ReflectionException $err) {
             throw new StructureError($err);
         }
+        return $this->copyValuesToObject(
+            $instance
+        );
     }
 
 }
