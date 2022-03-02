@@ -162,8 +162,8 @@ final class Parse
         }
 
         return new RawParseOutput(
-            $name,
             $property,
+            $name,
             $value
         );
     }
