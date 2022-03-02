@@ -52,7 +52,7 @@ final class ChildStructParseOutput extends PropertyParseOutput
      */
     protected function getValue() : object
     {
-        return $this->getChildStruct()->copyValuesToNewObject();
+        return $this->getChildStruct()->copyToNewObject();
     }
 
 }

@@ -58,10 +58,13 @@ final class ObjectParseOutput
     }
 
     /**
-     * @param object $object
-     * @return object === $object.
+     * Copy output data to the given object. Without checking the compatibility.
+     *
+     * It is your job to ensure you had passed the correct object. If you do not want to deal with this, considering using {@link ObjectParseOutput::copyToNewObject()}.
+     * @param object $object This object will be modified.
+     * @return object The same object as the above argument.
      */
-    public function copyValuesToObject(
+    public function copyToObject(
         object $object
     ) : object
     {
@@ -73,17 +76,18 @@ final class ObjectParseOutput
     }
 
     /**
+     * Copy output data to an new object.
      * @return object The constructor of object should have 0 arguments.
      * @throws StructureError Failed to construct a new instance (probably incompatible arguments).
      */
-    public function copyValuesToNewObject() : object
+    public function copyToNewObject() : object
     {
         try {
             $instance = $this->getReflection()->newInstance();
         } catch (ReflectionException $err) {
             throw new StructureError($err);
         }
-        return $this->copyValuesToObject(
+        return $this->copyToObject(
             $instance
         );
     }
