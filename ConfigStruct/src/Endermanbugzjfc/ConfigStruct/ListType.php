@@ -7,7 +7,7 @@ use Attribute;
 /**
  * TODO
  */
-#[Attribute(Attribute::TARGET_PROPERTY)]
+#[Attribute(Attribute::TARGET_PROPERTY | Attribute::IS_REPEATABLE)]
 class ListType
 {
 
