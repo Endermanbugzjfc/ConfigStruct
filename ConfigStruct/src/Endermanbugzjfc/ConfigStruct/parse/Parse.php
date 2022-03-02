@@ -66,7 +66,7 @@ final class Parse
             $propertyName = $property->getName();
             $name = $map[$propertyName] ?? null;
             if ($name === null) {
-                $missing[] = $name;
+                $missing[$propertyName] = $property;
                 continue;
             }
             $value = $input[$name];
