@@ -5,7 +5,6 @@ namespace Endermanbugzjfc\ConfigStruct\parse;
 use Closure;
 use Endermanbugzjfc\ConfigStruct\KeyName;
 use Endermanbugzjfc\ConfigStruct\utils\StaticClassTrait;
-use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
@@ -13,7 +12,6 @@ use ReflectionProperty;
 use function array_diff;
 use function array_key_exists;
 use function array_keys;
-use function array_map;
 use function array_values;
 use function class_exists;
 use function is_callable;
@@ -26,53 +24,35 @@ final class Parse
      * Copy the data of an array to object. Base on the object's structure, which is property types and attributes provided.
      * @param array $input
      * @param object $object
+     * @param string[]|null $map See {@link Parse::getPropertyNameToKeyNameMap()}. Key = property name. Value = key name.
      * @return StructParseOutput $object.
      */
     public static function arrayInput(
         array  $input,
-        object $object
+        object $object,
+        ?array $map = null
     ) : StructParseOutput
     {
         $reflect = new ReflectionClass(
             $object
         );
+        $properties = $reflect->getProperties(
+            ReflectionProperty::IS_PUBLIC
+        );
+        $map ??= self::getPropertyNameToKeyNameMap(
+            $properties,
+            $input
+        );
         foreach (
-            $reflect->getProperties(
-                ReflectionProperty::IS_PUBLIC
-            ) as $property
+            $properties as $property
         ) {
-            $names = array_map(
-                fn(ReflectionAttribute $keyName) : string => $keyName
-                    ->getArguments()
-                [0],
-                $property->getAttributes(
-                    KeyName::class
-                )
-            );
-            if (empty($names)) {
-                $names = [
-                    $property->getName()
-                ];
-            }
-            $ok = false;
-            foreach ($names as $name) {
-                if (array_key_exists(
-                    $name,
-                    $input
-                )) {
-                    $ok = true;
-                    break;
-                }
-            }
-            if (
-                !isset($name)
-                or
-                !$ok
-            ) {
-                $missing[] = $property;
+            $propertyName = $property->getName();
+            $name = $map[$propertyName] ?? null;
+            if ($name === null) {
+                $missing[] = $name;
                 continue;
             }
-            $output[$property->getName()] = self::property(
+            $output[$propertyName] = self::property(
                 $name,
                 $property,
                 $property->getValue(
