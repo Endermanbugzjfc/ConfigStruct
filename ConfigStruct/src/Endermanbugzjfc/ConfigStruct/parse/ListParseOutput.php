@@ -15,12 +15,12 @@ final class ListParseOutput extends PropertyParseOutput implements ArrayAccess, 
     /**
      * @param string $keyName
      * @param ReflectionProperty $reflection
-     * @param ChildStructParseOutput[] $childStructParseOutput
+     * @param ObjectParseOutput[] $objectParseOutput
      */
     public function __construct(
         string             $keyName,
         ReflectionProperty $reflection,
-        protected array    $childStructParseOutput
+        protected array    $objectParseOutput
     )
     {
         parent::__construct(
