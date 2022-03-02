@@ -2,18 +2,23 @@
 
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
+use AssertionError;
 use Closure;
 use Endermanbugzjfc\ConfigStruct\KeyName;
+use Endermanbugzjfc\ConfigStruct\ListType;
 use Endermanbugzjfc\ConfigStruct\utils\StaticClassTrait;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
 use function array_diff;
+use function array_filter;
 use function array_key_exists;
 use function array_keys;
 use function array_values;
+use function asort;
 use function class_exists;
+use function count;
 use function is_callable;
 
 final class Parse
@@ -94,6 +99,47 @@ final class Parse
                     $reflect
                 )
             );
+        }
+
+        $listTypes = $property->getAttributes(
+            ListType::class
+        );
+        if (!empty($listTypes)) {
+            foreach ($listTypes as $listType) {
+                $type = $listType->getArguments()[0];
+                if (isset(
+                    $missingCounts[$type]
+                )) {
+                    continue;
+                }
+                try {
+                    $reflect = new ReflectionClass(
+                        $type
+                    );
+                } catch (ReflectionException) {
+                    // TODO
+                    continue;
+                }
+                $properties = $reflect->getProperties(
+                    ReflectionProperty::IS_PUBLIC
+                );
+                $map = self::getPropertyNameToKeyNameMap(
+                    $properties,
+                    $value
+                );
+                $missing = array_filter(
+                    $map,
+                    fn(
+                        $k,
+                        $v
+                    ) : bool => $v === null
+                );
+                $missingCounts[$type] = count($missing);
+            }
+            asort($missing);
+            $sortTypes = array_keys($missing);
+            $sortType = $sortTypes[0];
+            throw new AssertionError($sortType); // TODO
         }
 
         return RawParseOutput::create(
