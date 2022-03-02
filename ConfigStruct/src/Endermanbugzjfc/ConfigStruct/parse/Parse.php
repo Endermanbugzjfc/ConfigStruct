@@ -21,17 +21,17 @@ final class Parse
     use StaticClassTrait;
 
     /**
-     * Copy the data of an array to object. Base on the object's structure, which is property types and attributes provided.
+     * Parse the data of an array. Base on an object's structure, which is property types and attributes provided.
      * @param array $input
      * @param object $object
      * @param string[]|null $map See {@link Parse::getPropertyNameToKeyNameMap()}. Key = property name. Value = key name.
-     * @return StructParseOutput $object.
+     * @return ObjectParseOutput $object.
      */
-    public static function arrayInput(
+    public static function arrayToObject(
         array  $input,
         object $object,
         ?array $map = null
-    ) : StructParseOutput
+    ) : ObjectParseOutput
     {
         $reflect = new ReflectionClass(
             $object
