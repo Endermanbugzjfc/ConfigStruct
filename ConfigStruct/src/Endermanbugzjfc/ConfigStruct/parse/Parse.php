@@ -14,6 +14,7 @@ use function array_key_exists;
 use function array_keys;
 use function asort;
 use function count;
+use function gettype;
 
 final class Parse
 {
@@ -245,11 +246,18 @@ final class Parse
         );
     }
 
+    /**
+     * Check if the value type equals to the property type. No any type-casting or special logics.
+     * @param ReflectionProperty $property
+     * @param mixed $value
+     * @return bool True = value is compatible with the property.
+     */
     protected static function isValueCompatibleWithProperty(
         ReflectionProperty $property,
         mixed              $value
     ) : bool
     {
+        return gettype($value) === $property->getType()->getName();
     }
 
 }
