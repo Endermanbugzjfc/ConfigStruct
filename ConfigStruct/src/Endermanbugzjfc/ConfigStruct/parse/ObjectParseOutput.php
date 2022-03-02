@@ -65,10 +65,9 @@ final class ObjectParseOutput
         object $object
     ) : object
     {
-        foreach ($this->getPropertiesOutput() as $property) {
-            $property->copyToObject(
-                $object
-            );
+        $properties = $this->getPropertiesOutput();
+        foreach ($properties as $name => $property) {
+            $object->$name = $property;
         }
         return $object;
     }
