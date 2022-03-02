@@ -16,7 +16,7 @@ final class ObjectParseOutput
      * @param array $unhandledElements Raw value of elements in the input which do not have the corresponding property.
      * @param ReflectionProperty[] $missingElements Key = property name.
      */
-    private function __construct(
+    public function __construct(
         protected ReflectionClass $reflection,
         protected array           $propertiesOutput,
         protected array           $unhandledElements,
