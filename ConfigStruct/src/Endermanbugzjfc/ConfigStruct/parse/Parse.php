@@ -23,7 +23,7 @@ final class Parse
     /**
      * Parse the data of an array. Base on an object's structure, which is property types and attributes provided.
      * @param array $input
-     * @param object $object
+     * @param object $object This object will be modified.
      * @param string[]|null $map See {@link Parse::getPropertyNameToKeyNameMap()}. Key = property name. Value = key name.
      * @return ObjectParseOutput $object.
      */
@@ -36,6 +36,23 @@ final class Parse
         $reflect = new ReflectionClass(
             $object
         );
+        $output = self::reflectionClass(
+            $input,
+            $reflect,
+            $map
+        );
+        $output->copyToObject(
+            $object
+        );
+        return $output;
+    }
+
+    public static function reflectionClass(
+        array           $input,
+        ReflectionClass $reflect,
+        ?array          $map = null
+    ) : ObjectParseOutput
+    {
         $properties = $reflect->getProperties(
             ReflectionProperty::IS_PUBLIC
         );
@@ -93,13 +110,12 @@ final class Parse
         } catch (ReflectionException) {
         }
         if (isset($reflect)) {
-            // TODO: Recode
-            return ChildStructParseOutput::create(
+            return new ChildStructParseOutput(
                 $property,
                 $name,
-                self::arrayInput(
+                self::arrayToObject(
                     $value,
-                    $reflect
+
                 )
             );
         }
