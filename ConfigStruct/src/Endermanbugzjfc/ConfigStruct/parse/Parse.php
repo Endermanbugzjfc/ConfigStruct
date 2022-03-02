@@ -127,12 +127,12 @@ final class Parse
                     $listReflect = new ReflectionClass(
                         $listType->getArguments()[0]
                     );
-                } catch (ReflectionException) {
+                } catch (ReflectionException $err) {
+                    $errs[] = $err;
                     continue;
                 }
                 $listReflects[] = $listReflect;
             }
-            // TODO: Handle invalid types.
             foreach ($value as $key => $input) {
                 $element = self::listElement(
                     $listReflects ?? [],
@@ -143,7 +143,7 @@ final class Parse
             return new ListParseOutput(
                 $name,
                 $property,
-                [],
+                $errs ?? [],
                 $elements ?? []
             );
         }
