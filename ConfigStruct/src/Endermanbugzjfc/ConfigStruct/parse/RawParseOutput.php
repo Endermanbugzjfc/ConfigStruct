@@ -23,7 +23,7 @@ final class RawParseOutput extends PropertyParseOutput
     /**
      * @return mixed Returns the output directly without any special logic and modifications.
      */
-    protected function getFlattenedValue() : mixed
+    protected function getValue() : mixed
     {
         return $this->output;
     }

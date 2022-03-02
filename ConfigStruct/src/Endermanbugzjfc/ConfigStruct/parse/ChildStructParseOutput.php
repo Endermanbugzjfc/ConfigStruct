@@ -50,7 +50,7 @@ final class ChildStructParseOutput extends PropertyParseOutput
     /**
      * @return object A new instance of the child struct which contains the parsed value.
      */
-    protected function getFlattenedValue() : object
+    protected function getValue() : object
     {
         return $this->getChildStruct()->copyValuesToNewObject();
     }
