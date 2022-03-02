@@ -72,7 +72,7 @@ final class ObjectParseOutput
     /**
      * Copy output data to the given object.
      * @param object $object This object will be modified.
-     * @return Throwable[][] array<string, list<Throwable>>. Mostly {@ink TypeError} or other parse time errors. Key = property name.
+     * @return Throwable[][] array<string, list<Throwable>>. Mostly {@link TypeError} or other parse time errors. Key = property name.
      */
     public function copyToObject(
         object $object
