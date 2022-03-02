@@ -52,14 +52,22 @@ final class Parse
                 $missing[] = $name;
                 continue;
             }
+            $value = $input[$name];
+            unset(
+                $input[$name]
+            );
             $output[$propertyName] = self::property(
                 $name,
                 $property,
-                $property->getValue(
-                    $object
-                )
+                $value
             );
         }
+        return new ObjectParseOutput(
+            $reflect,
+            $output ?? [],
+            $input,
+            $missing ?? []
+        );
     }
 
     /**
