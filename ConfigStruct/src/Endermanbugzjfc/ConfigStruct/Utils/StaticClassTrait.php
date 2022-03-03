@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Endermanbugzjfc\ConfigStruct\utils;
+namespace Endermanbugzjfc\ConfigStruct\Utils;
 
 trait StaticClassTrait
 {

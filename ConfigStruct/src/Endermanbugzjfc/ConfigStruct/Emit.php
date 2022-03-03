@@ -2,7 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct;
 
-use Endermanbugzjfc\ConfigStruct\utils\StaticClassTrait;
+use Endermanbugzjfc\ConfigStruct\Utils\StaticClassTrait;
 use ReflectionClass;
 use ReflectionProperty;
 use function is_array;

@@ -7,7 +7,7 @@ use Endermanbugzjfc\ConfigStruct\ParseOutput\ListParseOutput;
 use Endermanbugzjfc\ConfigStruct\ParseOutput\ObjectParseOutput;
 use Endermanbugzjfc\ConfigStruct\ParseOutput\PropertyParseOutput;
 use Endermanbugzjfc\ConfigStruct\ParseOutput\RawParseOutput;
-use Endermanbugzjfc\ConfigStruct\utils\StaticClassTrait;
+use Endermanbugzjfc\ConfigStruct\Utils\StaticClassTrait;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
