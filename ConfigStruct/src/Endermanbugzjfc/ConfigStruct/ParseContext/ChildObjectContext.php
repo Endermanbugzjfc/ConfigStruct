@@ -2,39 +2,39 @@
 
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
-use ReflectionProperty;
-
 final class ChildObjectContext extends BasePropertyContext
 {
+    use ExtendingContextTrait;
 
-    /**
-     * @inheritDoc
-     */
-    public function __construct(
-        string                      $keyName,
-        ReflectionProperty          $reflection,
-        array                       $errors,
-        protected ObjectContext $objectParseOutput
-    )
+    protected ObjectContext $objectContext;
+
+    public static function create(
+        BasePropertyContext $context,
+        ObjectContext       $objectContext
+    ) : self
     {
-        parent::__construct(
-            $keyName,
-            $reflection,
-            $errors
+        $return = self::createFromDefaultContext(
+            $context
         );
+        $return->objectContext = $objectContext;
+
+        return $return;
     }
 
+    /**
+     * @return object Copy the object context to a new object.
+     */
     public function getValue() : object
     {
-        return $this->getObjectParseOutput()->copyToNewObject();
+        return $this->asObjectContext()->copyToNewObject();
     }
 
     /**
      * @return ObjectContext
      */
-    public function getObjectParseOutput() : ObjectContext
+    public function asObjectContext() : ObjectContext
     {
-        return $this->objectParseOutput;
+        return $this->objectContext;
     }
 
 }
