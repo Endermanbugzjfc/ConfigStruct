@@ -7,7 +7,7 @@ use Throwable;
 use const E_ERROR;
 
 /**
- * This exception should never be caught. Direct change to the source code (class structure) should be made.
+ * This error should never be caught. Direct change to the source code (class structure) should be made.
  */
 final class StructureError extends RuntimeException
 {
