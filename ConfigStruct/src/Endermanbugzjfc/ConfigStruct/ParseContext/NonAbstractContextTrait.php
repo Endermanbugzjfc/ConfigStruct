@@ -6,7 +6,7 @@ namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
 use RuntimeException;
 
-trait ExtendingContextTrait
+trait NonAbstractContextTrait
 {
 
     /**

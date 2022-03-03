@@ -4,7 +4,7 @@ namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
 final class ChildObjectContext extends BasePropertyContext
 {
-    use ExtendingContextTrait;
+    use NonAbstractContextTrait;
 
     protected ObjectContext $objectContext;
 
