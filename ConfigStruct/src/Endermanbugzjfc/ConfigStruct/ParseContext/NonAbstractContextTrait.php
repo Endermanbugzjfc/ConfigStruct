@@ -30,8 +30,7 @@ trait NonAbstractContextTrait
      * If you this message, means this method is unavailable.
      */
     public static function create(
-        BasePropertyContext $context,
-                            $value
+        BasePropertyContext $context
     )
     {
         throw new RuntimeException(
