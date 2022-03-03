@@ -22,12 +22,10 @@ class BasePropertyContext
     /**
      * @param string $keyName
      * @param ReflectionProperty $reflection
-     * @param Throwable[] $errors Parse time errors.
      */
     public function __construct(
         protected string             $keyName,
-        protected ReflectionProperty $reflection,
-        protected array              $errors,
+        protected ReflectionProperty $reflection
     )
     {
     }
@@ -68,6 +66,12 @@ class BasePropertyContext
     {
         $this->keyName = $keyName;
     }
+
+
+    /**
+     * @var Throwable[]
+     */
+    protected array $errors;
 
     /**
      * @return Throwable[]
