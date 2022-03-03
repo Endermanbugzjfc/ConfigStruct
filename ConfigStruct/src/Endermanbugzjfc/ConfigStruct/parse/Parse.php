@@ -135,6 +135,7 @@ final class Parse
             }
             foreach ($value as $key => $input) {
                 $element = self::listElement(
+                    $property,
                     $listReflects ?? [],
                     $input
                 );
