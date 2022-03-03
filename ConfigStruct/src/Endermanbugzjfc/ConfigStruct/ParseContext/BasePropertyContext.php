@@ -70,11 +70,14 @@ class BasePropertyContext
     protected array $errors;
 
     /**
+     * This method should never be called unless from a "non-abstract" property parse context.
      * @return Throwable[]
      */
     public function getErrors() : array
     {
-        return $this->errors;
+        throw new RuntimeException(
+            "Trying to get errors from an abstract property parse context"
+        );
     }
 
 }
