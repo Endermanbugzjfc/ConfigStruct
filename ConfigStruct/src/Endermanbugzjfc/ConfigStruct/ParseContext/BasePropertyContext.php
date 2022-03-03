@@ -3,29 +3,31 @@
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
 use ReflectionProperty;
+use RuntimeException;
 use Throwable;
 
 class BasePropertyContext
 {
     /**
+     * This method should never be called unless from a "non-abstract" property parse context.
      * @return mixed
      */
     public function getValue() : mixed
     {
-        return $this->value;
+        throw new RuntimeException(
+            "Trying to get value from an abstract property parse context"
+        );
     }
 
     /**
      * @param string $keyName
      * @param ReflectionProperty $reflection
      * @param Throwable[] $errors Parse time errors.
-     * @param mixed $value
      */
     public function __construct(
         protected string             $keyName,
         protected ReflectionProperty $reflection,
-        protected array $errors,
-        protected mixed $value
+        protected array              $errors,
     )
     {
     }
