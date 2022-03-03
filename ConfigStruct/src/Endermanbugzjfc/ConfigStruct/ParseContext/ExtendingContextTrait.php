@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
+use RuntimeException;
+
 trait ExtendingContextTrait
 {
 
@@ -12,6 +14,18 @@ trait ExtendingContextTrait
      */
     private function __construct()
     {
+    }
+
+    public function getValue() : mixed {
+        throw new RuntimeException(
+            "Implement me"
+        );
+    }
+
+    public static function create() : self {
+        throw new RuntimeException(
+            "Implement me"
+        );
     }
 
 }
