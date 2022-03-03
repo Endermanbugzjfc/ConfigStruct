@@ -10,13 +10,13 @@ use Throwable;
 use TypeError;
 use function array_filter;
 
-final class ObjectParseOutput
+final class ObjectContext
 {
 
     // TODO: Fix document for $errors, cannot be rendered by PHPStorm correctly.
     /**
      * @param ReflectionClass $reflection
-     * @param PropertyParseOutput[] $propertiesOutput Key = property name.
+     * @param PropertyContext[] $propertiesOutput Key = property name.
      * @param array $unhandledElements Raw value of elements in the input which do not have the corresponding property.
      * @param ReflectionProperty[] $missingElements Key = property name.
      */
@@ -54,7 +54,7 @@ final class ObjectParseOutput
     }
 
     /**
-     * @return PropertyParseOutput[] Key = property name.
+     * @return PropertyContext[] Key = property name.
      */
     public function getPropertiesOutput() : array
     {
@@ -62,13 +62,13 @@ final class ObjectParseOutput
     }
 
     /**
-     * @return PropertyParseOutput[] Properties that have at least one error.
+     * @return PropertyContext[] Properties that have at least one error.
      */
     public function getErrorProperties() : array
     {
         return array_filter(
             $this->getPropertiesOutput(),
-            fn(PropertyParseOutput $output) : bool => !empty(
+            fn(PropertyContext $output) : bool => !empty(
             $output->getErrors()
             )
         );
@@ -100,7 +100,7 @@ final class ObjectParseOutput
 
     /**
      * Copy output data to an new object.
-     * @param array|null $errs Reference parameter, use this to retrieve the errors from {@link ObjectParseOutput::copyToObject()}.
+     * @param array|null $errs Reference parameter, use this to retrieve the errors from {@link ObjectContext::copyToObject()}.
      * @return object The constructor of object should have 0 arguments.
      * @throws StructureError Failed to construct a new instance (probably incompatible arguments).
      */

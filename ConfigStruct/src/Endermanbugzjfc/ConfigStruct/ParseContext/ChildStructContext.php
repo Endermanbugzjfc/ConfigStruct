@@ -4,7 +4,7 @@ namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
 use ReflectionProperty;
 
-final class ChildStructParseOutput extends PropertyParseOutput
+final class ChildStructContext extends PropertyContext
 {
 
     /**
@@ -14,7 +14,7 @@ final class ChildStructParseOutput extends PropertyParseOutput
         string                      $keyName,
         ReflectionProperty          $reflection,
         array                       $errors,
-        protected ObjectParseOutput $objectParseOutput
+        protected ObjectContext $objectParseOutput
     )
     {
         parent::__construct(
@@ -30,9 +30,9 @@ final class ChildStructParseOutput extends PropertyParseOutput
     }
 
     /**
-     * @return ObjectParseOutput
+     * @return ObjectContext
      */
-    public function getObjectParseOutput() : ObjectParseOutput
+    public function getObjectParseOutput() : ObjectContext
     {
         return $this->objectParseOutput;
     }

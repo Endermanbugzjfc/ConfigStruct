@@ -9,14 +9,14 @@ use ReflectionProperty;
 use Throwable;
 use function array_values;
 
-final class ListParseOutput extends PropertyParseOutput
+final class ListContext extends PropertyContext
 {
 
     /**
      * @param string $keyName
      * @param ReflectionProperty $reflection
      * @param Throwable[] $errors
-     * @param ObjectParseOutput[] $objectParseOutput
+     * @param ObjectContext[] $objectParseOutput
      */
     public function __construct(
         string             $keyName,
@@ -44,7 +44,7 @@ final class ListParseOutput extends PropertyParseOutput
     }
 
     /**
-     * @return ObjectParseOutput[]
+     * @return ObjectContext[]
      */
     public function getObjectParseOutput() : array
     {

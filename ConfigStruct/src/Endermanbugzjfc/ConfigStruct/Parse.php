@@ -2,11 +2,11 @@
 
 namespace Endermanbugzjfc\ConfigStruct;
 
-use Endermanbugzjfc\ConfigStruct\ParseContext\ChildStructParseOutput;
-use Endermanbugzjfc\ConfigStruct\ParseContext\ListParseOutput;
-use Endermanbugzjfc\ConfigStruct\ParseContext\ObjectParseOutput;
-use Endermanbugzjfc\ConfigStruct\ParseContext\PropertyParseOutput;
-use Endermanbugzjfc\ConfigStruct\ParseContext\RawParseOutput;
+use Endermanbugzjfc\ConfigStruct\ParseContext\ChildStructContext;
+use Endermanbugzjfc\ConfigStruct\ParseContext\ListContext;
+use Endermanbugzjfc\ConfigStruct\ParseContext\ObjectContext;
+use Endermanbugzjfc\ConfigStruct\ParseContext\PropertyContext;
+use Endermanbugzjfc\ConfigStruct\ParseContext\RawContext;
 use Endermanbugzjfc\ConfigStruct\Utils\StaticClassTrait;
 use ReflectionClass;
 use ReflectionException;
@@ -24,13 +24,13 @@ final class Parse
      * @param array $input
      * @param object $object This object will be modified.
      * @param string[]|null $map See {@link Parse::getPropertyNameToKeyNameMap()}. Key = property name. Value = key name.
-     * @return ObjectParseOutput $object.
+     * @return ObjectContext $object.
      */
     public static function arrayToObject(
         array  $input,
         object $object,
         ?array $map = null
-    ) : ObjectParseOutput
+    ) : ObjectContext
     {
         $reflect = new ReflectionClass(
             $object
@@ -50,7 +50,7 @@ final class Parse
         array           $input,
         ReflectionClass $reflect,
         ?array          $map = null
-    ) : ObjectParseOutput
+    ) : ObjectContext
     {
         $properties = $reflect->getProperties(
             ReflectionProperty::IS_PUBLIC
@@ -78,7 +78,7 @@ final class Parse
                 $value
             );
         }
-        return new ObjectParseOutput(
+        return new ObjectContext(
             $reflect,
             $output ?? [],
             $input,
@@ -91,13 +91,13 @@ final class Parse
      * @param string $name
      * @param ReflectionProperty $property
      * @param mixed $value
-     * @return PropertyParseOutput
+     * @return PropertyContext
      */
     public static function property(
         string             $name,
         ReflectionProperty $property,
         mixed              $value
-    ) : PropertyParseOutput
+    ) : PropertyContext
     {
         try {
             $type = $property->getType();
@@ -109,7 +109,7 @@ final class Parse
         } catch (ReflectionException) {
         }
         if (isset($reflect)) {
-            return new ChildStructParseOutput(
+            return new ChildStructContext(
                 $name,
                 $property,
                 [],
@@ -143,7 +143,7 @@ final class Parse
                 );
                 $elements[$key] = $element;
             }
-            return new ListParseOutput(
+            return new ListContext(
                 $name,
                 $property,
                 $errs ?? [],
@@ -151,7 +151,7 @@ final class Parse
             );
         }
 
-        return new RawParseOutput(
+        return new RawContext(
             $property,
             $name,
             [],
@@ -198,19 +198,19 @@ final class Parse
     }
 
     /**
-     * Find the best matching struct for the input (list element) by checking the count of handled elements. The struct which handles the most elements will be selected. The input will then be parsed into a {@link ObjectParseOutput} with the selected struct.
+     * Find the best matching struct for the input (list element) by checking the count of handled elements. The struct which handles the most elements will be selected. The input will then be parsed into a {@link ObjectContext} with the selected struct.
      *
      * Incompatible structs will never be used.
      * @param ReflectionProperty $property Property is needed for {@link StructureError} message.
      * @param ReflectionClass[] $listTypes Struct candidates.
      * @param array $input An array which was converted from object.
-     * @return ObjectParseOutput|null Null = no suitable type for this input (all types are incompatible).
+     * @return ObjectContext|null Null = no suitable type for this input (all types are incompatible).
      */
     public static function listElement(
         ReflectionProperty $property,
         array $listTypes,
         array $input
-    ) : ?ObjectParseOutput
+    ) : ?ObjectContext
     {
         $listTypesRaw = [];
         foreach ($listTypes as $key => $listType) {
@@ -240,7 +240,7 @@ final class Parse
         }
         $leastUnhandled = null;
         foreach ($outputs as $output2) {
-            if ($leastUnhandled instanceof ObjectParseOutput) {
+            if ($leastUnhandled instanceof ObjectContext) {
                 $unhandled = $output2->getUnhandledElements();
                 if (
                     $leastUnhandled->getUnhandledElements() < $unhandled
