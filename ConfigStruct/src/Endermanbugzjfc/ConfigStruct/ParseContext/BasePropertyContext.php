@@ -32,6 +32,19 @@ class BasePropertyContext
     {
     }
 
+    protected static function createFromDefaultContext(
+        self $defaultContext
+    ) : static
+    {
+        return new static(
+            $defaultContext->getKeyName(),
+            $defaultContext->getReflection(),
+            $defaultContext->getErrors(),
+            $defaultContext->getValue()
+        );
+    }
+
+
     /**
      * @return ReflectionProperty
      */
