@@ -16,13 +16,19 @@ trait ExtendingContextTrait
     {
     }
 
-    public function getValue() : mixed {
+    /**
+     * If you this message, means this method is unavailable.
+     */
+    public function getValue() {
         throw new RuntimeException(
             "Implement me"
         );
     }
 
-    public static function create() : self {
+    /**
+     * If you this message, means this method is unavailable.
+     */
+    public static function create() {
         throw new RuntimeException(
             "Implement me"
         );
