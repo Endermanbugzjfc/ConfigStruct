@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
+use Throwable;
+use function array_merge;
 use function array_values;
 
 final class ListContext extends BasePropertyContext
@@ -64,6 +66,28 @@ final class ListContext extends BasePropertyContext
         return array_values(
                 $this->getObjectContextsArray()
             ) === $this->getObjectContextsArray();
+    }
+
+    /**
+     * @return Throwable[]
+     */
+    public function getErrors() : array
+    {
+        // TODO: Improve
+        $errs = [];
+        $contexts = $this->getObjectContextsArray();
+        foreach ($contexts as $context) {
+            $properties = $context->getErrorProperties();
+            foreach ($properties as $property) {
+                $propertyErrs = $property->getErrors();
+                $errs = array_merge(
+                    $errs,
+                    $propertyErrs
+                );
+            }
+        }
+
+        return $errs;
     }
 
 }
