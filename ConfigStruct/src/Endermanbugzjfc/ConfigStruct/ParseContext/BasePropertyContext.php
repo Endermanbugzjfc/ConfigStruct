@@ -5,7 +5,7 @@ namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 use ReflectionProperty;
 use Throwable;
 
-class PropertyDefaultContext
+class BasePropertyContext
 {
     /**
      * @return mixed

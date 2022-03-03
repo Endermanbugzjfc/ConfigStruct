@@ -9,7 +9,7 @@ use ReflectionProperty;
 use Throwable;
 use function array_values;
 
-final class ListContext extends PropertyDefaultContext
+final class ListContext extends BasePropertyContext
 {
 
     /**
