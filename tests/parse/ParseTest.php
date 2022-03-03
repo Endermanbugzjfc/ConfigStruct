@@ -6,6 +6,7 @@
 namespace Endermanbugzjfc\ConfigStruct\parse;
 
 use Endermanbugzjfc\ConfigStruct\KeyName;
+use Endermanbugzjfc\ConfigStruct\Parse;
 use PHPUnit\Framework\TestCase;
 
 class ParseTest extends TestCase

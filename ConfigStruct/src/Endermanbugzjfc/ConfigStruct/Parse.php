@@ -1,10 +1,12 @@
 <?php
 
-namespace Endermanbugzjfc\ConfigStruct\parse;
+namespace Endermanbugzjfc\ConfigStruct;
 
-use Endermanbugzjfc\ConfigStruct\KeyName;
-use Endermanbugzjfc\ConfigStruct\ListType;
-use Endermanbugzjfc\ConfigStruct\StructureError;
+use Endermanbugzjfc\ConfigStruct\parse\ChildStructParseOutput;
+use Endermanbugzjfc\ConfigStruct\parse\ListParseOutput;
+use Endermanbugzjfc\ConfigStruct\parse\ObjectParseOutput;
+use Endermanbugzjfc\ConfigStruct\parse\PropertyParseOutput;
+use Endermanbugzjfc\ConfigStruct\parse\RawParseOutput;
 use Endermanbugzjfc\ConfigStruct\utils\StaticClassTrait;
 use ReflectionClass;
 use ReflectionException;
