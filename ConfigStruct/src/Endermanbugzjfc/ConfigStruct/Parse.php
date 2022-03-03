@@ -2,7 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct;
 
-use Endermanbugzjfc\ConfigStruct\ParseContext\ChildStructContext;
+use Endermanbugzjfc\ConfigStruct\ParseContext\ChildObjectContext;
 use Endermanbugzjfc\ConfigStruct\ParseContext\ListContext;
 use Endermanbugzjfc\ConfigStruct\ParseContext\ObjectContext;
 use Endermanbugzjfc\ConfigStruct\ParseContext\PropertyContext;
@@ -109,7 +109,7 @@ final class Parse
         } catch (ReflectionException) {
         }
         if (isset($reflect)) {
-            return new ChildStructContext(
+            return new ChildObjectContext(
                 $name,
                 $property,
                 [],

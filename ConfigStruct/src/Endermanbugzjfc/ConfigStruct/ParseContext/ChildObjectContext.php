@@ -4,7 +4,7 @@ namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
 use ReflectionProperty;
 
-final class ChildStructContext extends PropertyContext
+final class ChildObjectContext extends PropertyContext
 {
 
     /**
