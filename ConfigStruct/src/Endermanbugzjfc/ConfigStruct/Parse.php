@@ -5,7 +5,7 @@ namespace Endermanbugzjfc\ConfigStruct;
 use Endermanbugzjfc\ConfigStruct\ParseContext\ChildObjectContext;
 use Endermanbugzjfc\ConfigStruct\ParseContext\ListContext;
 use Endermanbugzjfc\ConfigStruct\ParseContext\ObjectContext;
-use Endermanbugzjfc\ConfigStruct\ParseContext\PropertyContext;
+use Endermanbugzjfc\ConfigStruct\ParseContext\PropertyDefaultContext;
 use Endermanbugzjfc\ConfigStruct\ParseContext\RawContext;
 use Endermanbugzjfc\ConfigStruct\Utils\StaticClassTrait;
 use ReflectionClass;
@@ -91,13 +91,13 @@ final class Parse
      * @param string $name
      * @param ReflectionProperty $property
      * @param mixed $value
-     * @return PropertyContext
+     * @return PropertyDefaultContext
      */
     public static function property(
         string             $name,
         ReflectionProperty $property,
         mixed              $value
-    ) : PropertyContext
+    ) : PropertyDefaultContext
     {
         try {
             $type = $property->getType();

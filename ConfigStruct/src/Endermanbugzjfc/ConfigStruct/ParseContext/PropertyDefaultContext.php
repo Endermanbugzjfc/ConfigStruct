@@ -5,7 +5,7 @@ namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 use ReflectionProperty;
 use Throwable;
 
-abstract class PropertyContext
+abstract class PropertyDefaultContext
 {
 
     abstract public function getValue() : mixed;

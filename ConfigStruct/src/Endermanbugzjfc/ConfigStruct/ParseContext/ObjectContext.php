@@ -16,7 +16,7 @@ final class ObjectContext
     // TODO: Fix document for $errors, cannot be rendered by PHPStorm correctly.
     /**
      * @param ReflectionClass $reflection
-     * @param PropertyContext[] $propertiesOutput Key = property name.
+     * @param PropertyDefaultContext[] $propertiesOutput Key = property name.
      * @param array $unhandledElements Raw value of elements in the input which do not have the corresponding property.
      * @param ReflectionProperty[] $missingElements Key = property name.
      */
@@ -54,7 +54,7 @@ final class ObjectContext
     }
 
     /**
-     * @return PropertyContext[] Key = property name.
+     * @return PropertyDefaultContext[] Key = property name.
      */
     public function getPropertiesOutput() : array
     {
@@ -62,13 +62,13 @@ final class ObjectContext
     }
 
     /**
-     * @return PropertyContext[] Properties that have at least one error.
+     * @return PropertyDefaultContext[] Properties that have at least one error.
      */
     public function getErrorProperties() : array
     {
         return array_filter(
             $this->getPropertiesOutput(),
-            fn(PropertyContext $output) : bool => !empty(
+            fn(PropertyDefaultContext $output) : bool => !empty(
             $output->getErrors()
             )
         );
