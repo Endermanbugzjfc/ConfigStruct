@@ -26,12 +26,11 @@ final class ListContext extends BasePropertyContext
         array               $objectContexts
     ) : self
     {
-        $return = self::createFromDefaultContext(
-            $context
-        );
-        $return->objectContexts = $objectContexts;
+        $self = new self();
+        $self->substitute($context);
+        $self->objectContexts = $objectContexts;
 
-        return $return;
+        return $self;
     }
 
     /**
