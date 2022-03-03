@@ -5,37 +5,43 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
-use ReflectionProperty;
-use Throwable;
 use function array_values;
 
 final class ListContext extends BasePropertyContext
 {
+    use NonAbstractContextTrait;
 
     /**
-     * @param string $keyName
-     * @param ReflectionProperty $reflection
-     * @param Throwable[] $errors
-     * @param ObjectContext[] $objectParseOutput
+     * @var ObjectContext[]
      */
-    public function __construct(
-        string             $keyName,
-        ReflectionProperty $reflection,
-        array              $errors,
-        protected array    $objectParseOutput
-    )
+    protected array $objectContexts;
+
+    /**
+     * @param BasePropertyContext $context
+     * @param ObjectContext[] $objectContexts
+     * @return self
+     */
+    public static function create(
+        BasePropertyContext $context,
+        array               $objectContexts
+    ) : self
     {
-        parent::__construct(
-            $keyName,
-            $reflection,
-            $errors
+        $return = self::createFromDefaultContext(
+            $context
         );
+        $return->objectContexts = $objectContexts;
+
+        return $return;
     }
 
+    /**
+     * Copy object contexts to new objects.
+     * @return object[] Keys are reserved.
+     */
     public function getValue() : array
     {
         foreach (
-            $this->getObjectParseOutput()
+            $this->getObjectContextsArray()
             as $key => $output
         ) {
             $return[$key] = $output->copyToNewObject();
@@ -44,18 +50,21 @@ final class ListContext extends BasePropertyContext
     }
 
     /**
-     * @return ObjectContext[]
+     * @return ObjectContext[] Keys are reserved.
      */
-    public function getObjectParseOutput() : array
+    public function getObjectContextsArray() : array
     {
-        return $this->objectParseOutput;
+        return $this->objectContexts;
     }
 
+    /**
+     * @return bool False = indexed array (incremental numeric keys). True = associative array (disordered keys).
+     */
     public function isAssociative() : bool
     {
         return array_values(
-                $this->objectParseOutput
-            ) === $this->objectParseOutput;
+                $this->getObjectContextsArray()
+            ) === $this->getObjectContextsArray();
     }
 
 }
