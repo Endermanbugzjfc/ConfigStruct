@@ -2,10 +2,8 @@
 
 /** @noinspection PhpMissingFieldTypeInspection */
 
-namespace Endermanbugzjfc\ConfigStruct\emit;
+namespace Endermanbugzjfc\ConfigStruct;
 
-use Endermanbugzjfc\ConfigStruct\Emit;
-use Endermanbugzjfc\ConfigStruct\KeyName;
 use PHPUnit\Framework\TestCase;
 
 class EmitTest extends TestCase
