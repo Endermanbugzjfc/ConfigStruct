@@ -30,7 +30,7 @@ class BasePropertyContext
     {
     }
 
-    protected static function createFromDefaultContext(
+    final protected static function createFromDefaultContext(
         self $defaultContext
     ) : static
     {
