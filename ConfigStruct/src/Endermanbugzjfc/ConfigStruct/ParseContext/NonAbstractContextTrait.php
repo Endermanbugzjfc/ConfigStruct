@@ -19,7 +19,8 @@ trait NonAbstractContextTrait
     /**
      * If you this message, means this method is unavailable.
      */
-    public function getValue() {
+    public function getValue()
+    {
         throw new RuntimeException(
             "Implement me"
         );
@@ -28,7 +29,8 @@ trait NonAbstractContextTrait
     /**
      * If you this message, means this method is unavailable.
      */
-    public static function create() {
+    public static function create()
+    {
         throw new RuntimeException(
             "Implement me"
         );
