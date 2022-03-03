@@ -8,17 +8,21 @@ final class ChildObjectContext extends BasePropertyContext
 
     protected ObjectContext $objectContext;
 
+    /**
+     * @param BasePropertyContext $context
+     * @param ObjectContext $objectContext
+     * @return static
+     */
     public static function create(
         BasePropertyContext $context,
         ObjectContext       $objectContext
     ) : self
     {
-        $return = self::createFromDefaultContext(
-            $context
-        );
-        $return->objectContext = $objectContext;
+        $self = new self();
+        $self->substitute($context);
+        $self->objectContext = $objectContext;
 
-        return $return;
+        return $self;
     }
 
     /**
