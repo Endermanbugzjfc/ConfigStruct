@@ -13,12 +13,11 @@ final class RawContext extends BasePropertyContext
         mixed $value
     ) : self
     {
-        $return = self::createFromDefaultContext(
-            $context
-        );
-        $return->value = $value;
+        $self = new self();
+        $self->substitute($context);
+        $self->value = $value;
 
-        return $return;
+        return $self;
     }
 
     /**
