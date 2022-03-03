@@ -151,9 +151,9 @@ final class Parse
             );
         }
 
-        return new RawContext(
-            $property,
+        return new PropertyDefaultContext(
             $name,
+            $property,
             [],
             $value
         );

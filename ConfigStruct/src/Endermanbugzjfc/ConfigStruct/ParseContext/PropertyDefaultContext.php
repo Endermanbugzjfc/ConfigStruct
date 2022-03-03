@@ -5,20 +5,27 @@ namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 use ReflectionProperty;
 use Throwable;
 
-abstract class PropertyDefaultContext
+class PropertyDefaultContext
 {
-
-    abstract public function getValue() : mixed;
+    /**
+     * @return mixed
+     */
+    public function getValue() : mixed
+    {
+        return $this->value;
+    }
 
     /**
      * @param string $keyName
      * @param ReflectionProperty $reflection
      * @param Throwable[] $errors Parse time errors.
+     * @param mixed $value
      */
     public function __construct(
         protected string             $keyName,
         protected ReflectionProperty $reflection,
-        protected array $errors
+        protected array $errors,
+        protected mixed $value
     )
     {
     }
