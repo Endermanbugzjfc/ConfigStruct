@@ -3,10 +3,9 @@
 
 /** @noinspection PhpUnusedPrivateFieldInspection */
 
-namespace Endermanbugzjfc\ConfigStruct\parse;
+namespace Endermanbugzjfc\ConfigStruct\ParseOutput;
 
 use Endermanbugzjfc\ConfigStruct\KeyName;
-use Endermanbugzjfc\ConfigStruct\Parse;
 use PHPUnit\Framework\TestCase;
 
 class ParseTest extends TestCase
