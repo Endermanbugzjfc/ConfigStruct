@@ -1,6 +1,6 @@
 <?php
 
-namespace Endermanbugzjfc\ConfigStruct\ParseOutput;
+namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
 use ReflectionProperty;
 use Throwable;

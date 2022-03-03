@@ -2,11 +2,11 @@
 
 namespace Endermanbugzjfc\ConfigStruct;
 
-use Endermanbugzjfc\ConfigStruct\ParseOutput\ChildStructParseOutput;
-use Endermanbugzjfc\ConfigStruct\ParseOutput\ListParseOutput;
-use Endermanbugzjfc\ConfigStruct\ParseOutput\ObjectParseOutput;
-use Endermanbugzjfc\ConfigStruct\ParseOutput\PropertyParseOutput;
-use Endermanbugzjfc\ConfigStruct\ParseOutput\RawParseOutput;
+use Endermanbugzjfc\ConfigStruct\ParseContext\ChildStructParseOutput;
+use Endermanbugzjfc\ConfigStruct\ParseContext\ListParseOutput;
+use Endermanbugzjfc\ConfigStruct\ParseContext\ObjectParseOutput;
+use Endermanbugzjfc\ConfigStruct\ParseContext\PropertyParseOutput;
+use Endermanbugzjfc\ConfigStruct\ParseContext\RawParseOutput;
 use Endermanbugzjfc\ConfigStruct\Utils\StaticClassTrait;
 use ReflectionClass;
 use ReflectionException;
