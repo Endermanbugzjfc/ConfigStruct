@@ -72,9 +72,12 @@ final class Parse
             unset(
                 $input[$name]
             );
-            $output[$propertyName] = self::property(
+            $context = self::createBasePropertyContext(
                 $name,
-                $property,
+                $property
+            );
+            $output[$propertyName] = self::property(
+                $context,
                 $value
             );
         }
@@ -86,33 +89,41 @@ final class Parse
         );
     }
 
-    /**
-     * Redirect to the correct parse function. Base on the property's type and attributes provided.
-     * @param string $name
-     * @param ReflectionProperty $property
-     * @param mixed $value
-     * @return BasePropertyContext
-     */
-    public static function property(
-        string             $name,
-        ReflectionProperty $property,
-        mixed              $value
+    protected static function createBasePropertyContext(
+        mixed              $name,
+        ReflectionProperty $property
     ) : BasePropertyContext
     {
-        try {
-            $type = $property->getType();
-            if ($type instanceof ReflectionNamedType) {
+        return new BasePropertyContext(
+            $name,
+            $property
+        );
+    }
+
+    /**
+     * Redirect to the correct parse function. Base on the property's type and attributes provided.
+     * @param BasePropertyContext $context Non-abstract property parse contexts will be created from this.
+     * @param mixed $value
+     * @return BasePropertyContext A non-abstract property parse context.
+     */
+    public static function property(
+        BasePropertyContext $context,
+        mixed               $value
+    ) : BasePropertyContext
+    {
+        $property = $context->getReflection();
+        $type = $property->getType();
+        if ($type instanceof ReflectionNamedType) {
+            try {
                 $reflect = new ReflectionClass(
                     $type->getName()
                 );
+            } catch (ReflectionException) {
             }
-        } catch (ReflectionException) {
         }
         if (isset($reflect)) {
-            return new ChildObjectContext(
-                $name,
-                $property,
-                [],
+            return ChildObjectContext::create(
+                $context,
                 self::reflectionClass(
                     $value,
                     $reflect
@@ -130,7 +141,7 @@ final class Parse
                         $listType->getArguments()[0]
                     );
                 } catch (ReflectionException $err) {
-                    $errs[] = $err;
+                    // TODO: Handle error
                     continue;
                 }
                 $listReflects[] = $listReflect;
@@ -143,19 +154,16 @@ final class Parse
                 );
                 $elements[$key] = $element;
             }
-            return new ListContext(
-                $name,
-                $property,
-                $errs ?? [],
+            return ListContext::create(
+                $context,
                 $elements ?? []
             );
         }
 
-        return new BasePropertyContext(
-            $name,
-            $property,
-            [],
-            $value
+        return RawContext::create(
+            $context,
+            $value,
+            []
         );
     }
 
@@ -208,8 +216,8 @@ final class Parse
      */
     public static function listElement(
         ReflectionProperty $property,
-        array $listTypes,
-        array $input
+        array              $listTypes,
+        array              $input
     ) : ?ObjectContext
     {
         $listTypesRaw = [];
