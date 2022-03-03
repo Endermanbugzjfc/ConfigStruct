@@ -30,16 +30,12 @@ class BasePropertyContext
     {
     }
 
-    final protected static function createFromDefaultContext(
+    final protected function substitute(
         self $defaultContext
-    ) : static
+    ) : void
     {
-        return new static(
-            $defaultContext->getKeyName(),
-            $defaultContext->getReflection(),
-            $defaultContext->getErrors(),
-            $defaultContext->getValue()
-        );
+        $this->keyName = $defaultContext->getKeyName();
+        $this->reflection = $defaultContext->getReflection();
     }
 
 
