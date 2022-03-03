@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
 use RuntimeException;
-use Throwable;
 
 trait NonAbstractContextTrait
 {
@@ -29,12 +28,9 @@ trait NonAbstractContextTrait
 
     /**
      * If you this message, means this method is unavailable.
-     * @param BasePropertyContext $context
-     * @param Throwable[] $errors
      */
     public static function create(
-        BasePropertyContext $context,
-        array               $errors
+        BasePropertyContext $context
     )
     {
         throw new RuntimeException(
