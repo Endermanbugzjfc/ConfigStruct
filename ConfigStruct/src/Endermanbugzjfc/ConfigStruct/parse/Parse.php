@@ -228,7 +228,7 @@ final class Parse
                 $input,
                 $listType
             );
-            if (!empty($output->getErrors())) {
+            if (!empty($output->getErrorProperties())) {
                 continue;
             }
             $outputs[$key] = $output;

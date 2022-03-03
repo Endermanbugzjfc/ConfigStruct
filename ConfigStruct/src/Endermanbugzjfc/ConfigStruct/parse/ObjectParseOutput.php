@@ -8,6 +8,7 @@ use ReflectionException;
 use ReflectionProperty;
 use Throwable;
 use TypeError;
+use function array_filter;
 
 final class ObjectParseOutput
 {
@@ -61,15 +62,16 @@ final class ObjectParseOutput
     }
 
     /**
-     * @return Throwable[][] array<string, list<Throwable>> Key = property name. All properties are in the array. Property with no error = empty list.
+     * @return PropertyParseOutput[] Properties that have at least one error.
      */
-    public function getErrors() : array
+    public function getErrorProperties() : array
     {
-        $properties = $this->getPropertiesOutput();
-        foreach ($properties as $name => $property) {
-            $errs[$name] = $property->getErrors();
-        }
-        return $errs ?? [];
+        return array_filter(
+            $this->getPropertiesOutput(),
+            fn(PropertyParseOutput $output) : bool => !empty(
+            $output->getErrors()
+            )
+        );
     }
 
     /**
