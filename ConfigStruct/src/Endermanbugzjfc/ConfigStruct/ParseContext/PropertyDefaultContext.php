@@ -47,6 +47,14 @@ class PropertyDefaultContext
     }
 
     /**
+     * @param string $keyName
+     */
+    public function setKeyName(string $keyName) : void
+    {
+        $this->keyName = $keyName;
+    }
+
+    /**
      * @return Throwable[]
      */
     public function getErrors() : array
