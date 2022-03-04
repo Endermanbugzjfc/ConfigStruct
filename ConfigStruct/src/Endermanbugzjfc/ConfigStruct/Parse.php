@@ -141,7 +141,7 @@ final class Parse
                         $listType->getArguments()[0]
                     );
                 } catch (ReflectionException $err) {
-                    // TODO: Handle error
+                    $errs[] = $err;
                     continue;
                 }
                 $listReflects[] = $listReflect;
@@ -156,7 +156,8 @@ final class Parse
             }
             return ListContext::create(
                 $context,
-                $elements ?? []
+                $elements ?? [],
+                $errs ?? []
             );
         }
 
