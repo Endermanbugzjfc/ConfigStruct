@@ -63,7 +63,7 @@ class EmitTest extends TestCase
     }
 
 
-    public function testObjectChildStructRecursive()
+    public function testObjectRecursiveChildren()
     {
         $root = new class() {
 
