@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 class EmitTest extends TestCase
 {
 
-    public function testEmitStructPropertySkipping()
+    public function testObjectPropertySkipping()
     {
         $object = new class() {
 
@@ -33,7 +33,7 @@ class EmitTest extends TestCase
         );
     }
 
-    public function testEmitStructCustomKeyName()
+    public function testObjectCustomKeyName()
     {
         $object = new class() {
 
@@ -63,7 +63,7 @@ class EmitTest extends TestCase
     }
 
 
-    public function testEmitStructChildStructRecursive()
+    public function testObjectChildStructRecursive()
     {
         $root = new class() {
 
