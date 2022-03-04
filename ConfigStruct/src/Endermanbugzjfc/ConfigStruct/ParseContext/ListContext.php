@@ -20,6 +20,11 @@ final class ListContext extends BasePropertyContext
     protected array $objectContexts;
 
     /**
+     * @var Throwable[]
+     */
+    protected array $errors;
+
+    /**
      * @param BasePropertyContext $context
      * @param ObjectContext[] $objectContexts
      * @param Throwable[] $errors No key. Mostly {@link ReflectionException} from invalid {@link ListType} attributes.
