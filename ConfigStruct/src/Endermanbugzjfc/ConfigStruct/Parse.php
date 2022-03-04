@@ -26,7 +26,7 @@ final class Parse
      * @param string[]|null $map See {@link Parse::getPropertyNameToKeyNameMap()}. Key = property name. Value = key name.
      * @return ObjectContext $object.
      */
-    public static function arrayToObject(
+    public static function object(
         array  $input,
         object $object,
         ?array $map = null
