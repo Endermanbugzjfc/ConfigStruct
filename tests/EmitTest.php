@@ -25,22 +25,11 @@ class EmitTest extends TestCase
         };
         $output = Emit::object($object);
         $this->assertTrue(
-            $output->getFlattenedValue() === [
+            $output === [
                 "testNoType" => null,
                 "testDefaultValue" => true,
                 "testNull" => null
             ]
-        );
-
-        $skipped = $output->getSkippedEmptyProperties();
-        $this->assertTrue(
-            count($skipped) === 1
-        );
-        $this->assertTrue(
-            $skipped
-            ["testNotInitialized"]
-                ->getName()
-            === "testNotInitialized"
         );
     }
 
@@ -60,13 +49,13 @@ class EmitTest extends TestCase
         );
 
         $this->assertNotTrue(
-            $output->getFlattenedValue() === [
+            $output === [
                 2,
                 3
             ]
         );
         $this->assertTrue(
-            $output->getFlattenedValue() === [
+            $output === [
                 1 => 3,
                 0 => 2
             ]
@@ -96,7 +85,7 @@ class EmitTest extends TestCase
         );
 
         $this->assertTrue(
-            $output->getFlattenedValue() === [
+            $output === [
                 "testA" => "testA",
                 "testSelf" => [
                     "testA" => "testB",
