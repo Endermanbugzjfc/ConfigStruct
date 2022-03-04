@@ -239,7 +239,11 @@ final class Parse
                 $input,
                 $listType
             );
-            if (!empty($output->getErrorProperties())) {
+            $errs = [];
+            $output->copyToNewObject(
+                $errs
+            );
+            if (!empty($errs)) {
                 continue;
             }
             $outputs[$key] = $output;

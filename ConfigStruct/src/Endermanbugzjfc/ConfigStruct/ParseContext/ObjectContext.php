@@ -8,7 +8,6 @@ use ReflectionException;
 use ReflectionProperty;
 use Throwable;
 use TypeError;
-use function array_filter;
 
 final class ObjectContext
 {
@@ -59,19 +58,6 @@ final class ObjectContext
     public function getPropertyContexts() : array
     {
         return $this->propertyContexts;
-    }
-
-    /**
-     * @return BasePropertyContext[] Properties that have at least one error.
-     */
-    public function getErrorProperties() : array
-    {
-        return array_filter(
-            $this->getPropertyContexts(),
-            fn(BasePropertyContext $output) : bool => !empty(
-            $output->getErrors()
-            )
-        );
     }
 
     /**
