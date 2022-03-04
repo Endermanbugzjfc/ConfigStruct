@@ -163,8 +163,7 @@ final class Parse
 
         return RawContext::create(
             $context,
-            $value,
-            []
+            $value
         );
     }
 
