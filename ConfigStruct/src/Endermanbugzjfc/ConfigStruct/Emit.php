@@ -40,9 +40,10 @@ final class Emit
             )) {
                 continue;
             }
-            $name = $property->getAttributes(
+            $keyName = $property->getAttributes(
                     KeyName::class
-                )[0]?->getArguments()[0]
+                )[0] ?? null;
+            $name = $keyName?->getArguments()[0]
                 ?? $property->getName();
 
             $value = $property->getValue(
