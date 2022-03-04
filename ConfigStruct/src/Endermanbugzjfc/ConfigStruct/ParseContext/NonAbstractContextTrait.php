@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
 use RuntimeException;
-use Throwable;
 
 trait NonAbstractContextTrait
 {
@@ -33,17 +32,6 @@ trait NonAbstractContextTrait
     public static function create(
         BasePropertyContext $context
     )
-    {
-        throw new RuntimeException(
-            "Implement me"
-        );
-    }
-
-    /**
-     * If you this message, means this method is unavailable.
-     * @return Throwable[]
-     */
-    public function getErrors() : array
     {
         throw new RuntimeException(
             "Implement me"

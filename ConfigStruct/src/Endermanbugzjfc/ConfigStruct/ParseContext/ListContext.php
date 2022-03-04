@@ -5,8 +5,9 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
+use Endermanbugzjfc\ConfigStruct\ListType;
+use ReflectionException;
 use Throwable;
-use function array_merge;
 use function array_values;
 
 final class ListContext extends BasePropertyContext
@@ -21,16 +22,19 @@ final class ListContext extends BasePropertyContext
     /**
      * @param BasePropertyContext $context
      * @param ObjectContext[] $objectContexts
+     * @param Throwable[] $errors No key. Mostly {@link ReflectionException} from invalid {@link ListType} attributes.
      * @return self
      */
     public static function create(
         BasePropertyContext $context,
-        array               $objectContexts
+        array               $objectContexts,
+        array               $errors
     ) : self
     {
         $self = new self();
         $self->substitute($context);
         $self->objectContexts = $objectContexts;
+        $self->errors = $errors;
 
         return $self;
     }
@@ -69,25 +73,11 @@ final class ListContext extends BasePropertyContext
     }
 
     /**
-     * @return Throwable[]
+     * @return Throwable[] No key. Mostly {@link ReflectionException} from invalid {@link ListType} attributes.
      */
     public function getErrors() : array
     {
-        // TODO: Improve
-        $errs = [];
-        $contexts = $this->getObjectContextsArray();
-        foreach ($contexts as $context) {
-            $properties = $context->getErrorProperties();
-            foreach ($properties as $property) {
-                $propertyErrs = $property->getErrors();
-                $errs = array_merge(
-                    $errs,
-                    $propertyErrs
-                );
-            }
-        }
-
-        return $errs;
+        return $this->errors;
     }
 
 }
