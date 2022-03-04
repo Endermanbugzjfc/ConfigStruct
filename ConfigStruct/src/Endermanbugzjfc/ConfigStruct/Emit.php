@@ -35,7 +35,9 @@ final class Emit
                 ReflectionProperty::IS_PUBLIC
             ) as $property
         ) {
-            if (!$property->isInitialized()) {
+            if (!$property->isInitialized(
+                $object
+            )) {
                 continue;
             }
             $name = $property->getAttributes(
