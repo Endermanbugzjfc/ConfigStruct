@@ -35,7 +35,7 @@ final class Parse
         $reflect = new ReflectionClass(
             $object
         );
-        $output = self::reflectionClass(
+        $output = self::objectByReflection(
             $input,
             $reflect,
             $map
@@ -46,7 +46,7 @@ final class Parse
         return $output;
     }
 
-    public static function reflectionClass(
+    public static function objectByReflection(
         array           $input,
         ReflectionClass $reflect,
         ?array          $map = null
@@ -124,7 +124,7 @@ final class Parse
         if (isset($reflect)) {
             return ChildObjectContext::create(
                 $context,
-                self::reflectionClass(
+                self::objectByReflection(
                     $value,
                     $reflect
                 )
@@ -234,7 +234,7 @@ final class Parse
                     "Duplicated list type $listTypeRaw in $debugClass->$debugProperty"
                 );
             }
-            $output = self::reflectionClass(
+            $output = self::objectByReflection(
                 $input,
                 $listType
             );
