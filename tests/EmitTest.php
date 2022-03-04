@@ -23,7 +23,7 @@ class EmitTest extends TestCase
             public ?bool $testNull = null;
 
         };
-        $output = Emit::emitStruct($object);
+        $output = Emit::object($object);
         $this->assertTrue(
             $output->getFlattenedValue() === [
                 "testNoType" => null,
@@ -55,7 +55,7 @@ class EmitTest extends TestCase
             public int $testB = 2;
 
         };
-        $output = Emit::emitStruct(
+        $output = Emit::object(
             $object
         );
 
@@ -91,7 +91,7 @@ class EmitTest extends TestCase
         $oneDeep->testA = "testB";
         $oneDeep->testSelf = $twoDeep;
 
-        $output = Emit::emitStruct(
+        $output = Emit::object(
             $root
         );
 
