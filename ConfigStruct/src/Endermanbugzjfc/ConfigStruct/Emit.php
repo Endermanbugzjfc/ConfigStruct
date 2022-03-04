@@ -61,11 +61,11 @@ final class Emit
     /**
      * Redirect to the correct emit function. Base on the value's type and attributes provided.
      * @param mixed $value Value of the property.
-     * @return string|int|bool|array|float
+     * @return string|int|bool|array|float|null
      */
     public static function value(
         mixed $value
-    ) : string|int|bool|array|float
+    ) : string|int|bool|array|float|null
     {
         if (is_object(
             $value
@@ -86,9 +86,13 @@ final class Emit
             return $return ?? [];
         }
 
-        if (!is_scalar(
-            $value
-        )) {
+        if (
+            $value !== null
+            and
+            !is_scalar(
+                $value
+            )
+        ) {
             return (array)$value;
         }
 
