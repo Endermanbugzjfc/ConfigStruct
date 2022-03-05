@@ -31,10 +31,10 @@ final class Parse
      * @throws ParseError
      */
     public static function object(
-        array  $input,
-        object $object,
+        array   $input,
+        object  $object,
         ?string $rootHeaderLabel = null,
-        ?array $map = null
+        ?array  $map = null
     ) : ObjectContext
     {
         $reflect = new ReflectionClass(
@@ -250,11 +250,11 @@ final class Parse
                 $input,
                 $listType
             );
-            $errs = [];
-            $output->copyToNewObject(
-                $errs
-            );
-            if (!empty($errs)) {
+            try {
+                $output->copyToNewObject(
+                    "object"
+                );
+            } catch (ParseError) {
                 continue;
             }
             $outputs[$key] = $output;
