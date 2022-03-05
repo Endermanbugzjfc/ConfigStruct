@@ -3,7 +3,9 @@
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
 use Endermanbugzjfc\ConfigStruct\ParseContext\BeforeParse\PropertyDetails;
-use function array_walk_recursive;
+use function array_values;
+use function count;
+use function is_array;
 
 abstract class BasePropertyContext
 {
@@ -32,24 +34,41 @@ abstract class BasePropertyContext
     }
 
     /**
-     * @return int Total errors count of the errors tree.
+     * @return array
      */
-    public function getErrorsCount() : int
+    public function getErrorsCountTree() : array
     {
-        $count = 0;
         $tree = $this->getErrorsTree();
-        array_walk_recursive(
-            $tree,
-            function () use
-            (
-                &
-                $count
-            ) {
-                $count++;
-            }
-        );
 
-        return $count;
+        return self::getErrorsCountTreeRecursive(
+            $tree
+        );
+    }
+
+    private static function getErrorsCountTreeRecursive(
+        array $tree
+    ) : array
+    {
+        foreach ($tree as $key => $item) {
+            if (!is_array(
+                $item
+            )) {
+                continue;
+            }
+
+            if (array_values(
+                $item
+            ) === $item) {
+                $tree[$key] = count($item);
+                continue;
+            }
+
+            $tree[$key] = self::getErrorsCountTreeRecursive(
+                $item
+            );
+        }
+
+        return $tree;
     }
 
     /**
