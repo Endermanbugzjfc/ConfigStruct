@@ -72,12 +72,20 @@ final class ListContext extends BasePropertyContext
         $contexts = $this->getObjectContextsArray();
         foreach ($contexts as $key => $context) {
             if ($context->hasError()) {
-                $treeKey = "element \"$key\"";
+                $treeKey = self::getErrorsTreeSubElementKey(
+                    $key
+                );
                 $tree[$treeKey] = $context->getErrorsTree();
             }
         }
 
         return $tree;
+    }
+
+    private static function getErrorsTreeSubElementKey(
+        string $elementKey
+    ) : string {
+        return "element \"$elementKey\"";
     }
 
 }
