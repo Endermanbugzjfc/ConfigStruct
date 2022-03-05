@@ -32,7 +32,7 @@ abstract class BasePropertyContext
 
     /**
      * Get the errors tree and put it in an array using the key name (not exact) as key.
-     * @return array array<string, array>
+     * @return array array<string, array> Can be array_merge() with the wrapped errors tree of other properties.
      */
     final public function getWrappedErrorsTree() : array
     {
