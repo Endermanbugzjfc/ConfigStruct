@@ -2,10 +2,6 @@
 
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
-use Endermanbugzjfc\ConfigStruct\Utils\ConfigStructUtils;
-use function count;
-use function is_array;
-
 abstract class BasePropertyContext
 {
     abstract public function getValue() : mixed;
@@ -38,32 +34,6 @@ abstract class BasePropertyContext
         return !empty(
         $tree
         );
-    }
-
-    private static function getErrorsCountTreeRecursive(
-        array $tree
-    ) : array
-    {
-        foreach ($tree as $key => $item) {
-            if (!is_array(
-                $item
-            )) {
-                continue;
-            }
-
-            if (ConfigStructUtils::arrayIsList(
-                $item
-            )) {
-                $tree[$key] = count($item);
-                continue;
-            }
-
-            $tree[$key] = self::getErrorsCountTreeRecursive(
-                $item
-            );
-        }
-
-        return $tree;
     }
 
     final public function getErrorsTreeKey() : string
