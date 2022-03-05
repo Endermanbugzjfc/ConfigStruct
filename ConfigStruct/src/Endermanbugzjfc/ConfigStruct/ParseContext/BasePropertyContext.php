@@ -2,65 +2,25 @@
 
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
-use ReflectionProperty;
-use RuntimeException;
+use Endermanbugzjfc\ConfigStruct\ParseContext\BeforeParse\PropertyDetails;
 use Throwable;
 
-class BasePropertyContext
+abstract class BasePropertyContext
 {
-    /**
-     * This method should never be called unless from a "non-abstract" property parse context.
-     * @return mixed
-     */
-    public function getValue() : mixed
-    {
-        throw new RuntimeException(
-            "Trying to get value from an abstract property parse context"
-        );
-    }
+    abstract public function getValue() : mixed;
 
-    /**
-     * @param string $keyName
-     * @param ReflectionProperty $reflection
-     */
     public function __construct(
-        protected string             $keyName,
-        protected ReflectionProperty $reflection
+        private PropertyDetails $details
     )
     {
     }
 
-    final protected function substitute(
-        self $defaultContext
-    ) : void
-    {
-        $this->keyName = $defaultContext->getKeyName();
-        $this->reflection = $defaultContext->getReflection();
-    }
-
-
     /**
-     * @return ReflectionProperty
+     * @return PropertyDetails
      */
-    final public function getReflection() : ReflectionProperty
+    final public function getDetails() : PropertyDetails
     {
-        return $this->reflection;
-    }
-
-    /**
-     * @return string
-     */
-    public function getKeyName() : string
-    {
-        return $this->keyName;
-    }
-
-    /**
-     * @param string $keyName
-     */
-    public function setKeyName(string $keyName) : void
-    {
-        $this->keyName = $keyName;
+        return $this->details;
     }
 
     /**
