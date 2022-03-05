@@ -5,10 +5,10 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\ConfigStruct;
 
+use Endermanbugzjfc\ConfigStruct\ParseError\BaseParseError;
 use Exception;
 use function array_unshift;
 use function implode;
-use function is_string;
 use function str_repeat;
 use const E_RECOVERABLE_ERROR;
 
@@ -102,9 +102,7 @@ final class ParseError extends Exception
 
         $count = 0;
         foreach ($tree as $key => $content) {
-            if (!is_string(
-                $content
-            )) {
+            if (!$content instanceof BaseParseError) {
                 $children[$key] = $content;
                 continue;
             }
