@@ -123,4 +123,12 @@ final class ObjectContext
         return $tree;
     }
 
+    public function hasError() : bool
+    {
+        $tree = $this->getErrorsTree();
+        return !empty(
+        $tree
+        );
+    }
+
 }
