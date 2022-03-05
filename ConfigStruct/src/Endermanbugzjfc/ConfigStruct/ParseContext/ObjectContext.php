@@ -102,6 +102,9 @@ final class ObjectContext
                             : $types->getTypes()
                     )
                 );
+                if ($types->allowsNull()) {
+                    $expectedTypes[] = "null";
+                }
 
                 $treeKey = $property->getErrorsTreeKey();
                 $errs[$treeKey][] = new TypeMismatchError(
