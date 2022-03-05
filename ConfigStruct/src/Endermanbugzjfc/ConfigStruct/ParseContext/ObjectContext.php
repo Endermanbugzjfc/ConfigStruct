@@ -8,6 +8,7 @@ use ReflectionException;
 use ReflectionProperty;
 use Throwable;
 use TypeError;
+use function array_merge;
 
 final class ObjectContext
 {
@@ -103,6 +104,18 @@ final class ObjectContext
             $instance
         );
         return $instance;
+    }
+
+    public function getErrorsTree() : array
+    {
+        $tree = [];
+        $properties = $this->getPropertyContexts();
+        foreach ($properties as $property) {
+            array_merge(
+                $tree,
+                $property->getWrappedErrorsTree()
+            );
+        }
     }
 
 }
