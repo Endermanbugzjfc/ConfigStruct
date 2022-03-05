@@ -3,7 +3,6 @@
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
 use Endermanbugzjfc\ConfigStruct\ParseContext\BeforeParse\PropertyDetails;
-use Throwable;
 
 abstract class BasePropertyContext
 {
@@ -24,9 +23,9 @@ abstract class BasePropertyContext
     }
 
     /**
-     * @return Throwable[]
+     * @return array Only string keys will be shown.
      */
-    public function getErrors() : array
+    public function getErrorsTree() : array
     {
         return [];
     }
