@@ -33,4 +33,21 @@ abstract class BaseParseError implements Stringable
         return $this->previous;
     }
 
+    public function __debugInfo() : ?array
+    {
+        $return = [
+            "message" => $this->getMessage()
+        ];
+        $previous = $this->getPrevious();
+        if ($previous !== null) {
+            $return["previous"] = [
+                "class" => $previous::class,
+                "message" => $previous->getMessage(),
+                "code" => $previous->getCode()
+            ];
+        }
+
+        return $return;
+    }
+
 }
