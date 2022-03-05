@@ -7,6 +7,9 @@ namespace Endermanbugzjfc\ConfigStruct\ParseContext\BeforeParse;
 
 use ReflectionProperty;
 
+/**
+ * A wrapper class to be passed between parser functions. Without the need to make breaking changes when more property details have been introduced.
+ */
 final class PropertyDetails
 {
 
