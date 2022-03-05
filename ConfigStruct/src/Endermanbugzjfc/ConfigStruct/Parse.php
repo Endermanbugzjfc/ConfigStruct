@@ -103,16 +103,16 @@ final class Parse
 
     /**
      * Redirect to the correct parse function. Base on the property's type and attributes provided.
-     * @param PropertyDetails $context
+     * @param PropertyDetails $details
      * @param mixed $value
      * @return BasePropertyContext A non-abstract property parse context.
      */
     public static function property(
-        PropertyDetails $context,
+        PropertyDetails $details,
         mixed           $value
     ) : BasePropertyContext
     {
-        $property = $context->getReflection();
+        $property = $details->getReflection();
         $type = $property->getType();
         if ($type instanceof ReflectionNamedType) {
             try {
@@ -124,7 +124,7 @@ final class Parse
         }
         if (isset($reflect)) {
             return ChildObjectContext::create(
-                $context,
+                $details,
                 self::objectByReflection(
                     $value,
                     $reflect
@@ -156,14 +156,14 @@ final class Parse
                 $elements[$key] = $element;
             }
             return ListContext::create(
-                $context,
+                $details,
                 $elements ?? [],
                 $errs ?? []
             );
         }
 
         return RawContext::create(
-            $context,
+            $details,
             $value
         );
     }
