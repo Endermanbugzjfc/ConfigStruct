@@ -125,6 +125,8 @@ final class ObjectContext
                 $count += $property->getErrorsCount();
             }
         }
+
+        return $tree;
     }
 
 }
