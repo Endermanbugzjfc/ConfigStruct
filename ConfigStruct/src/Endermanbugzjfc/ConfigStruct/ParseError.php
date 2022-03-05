@@ -5,9 +5,9 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\ConfigStruct;
 
-use RuntimeException;
+use Exception;
 
-final class ParseError extends RuntimeException
+final class ParseError extends Exception
 {
 
 }
