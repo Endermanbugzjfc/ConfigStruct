@@ -164,6 +164,9 @@ final class Parse
                     $listReflects ?? [],
                     $input
                 );
+                if ($element === null) {
+                    continue; // TODO: Find better solution.
+                }
                 $elements[$key] = $element;
             }
             return new ListContext(
