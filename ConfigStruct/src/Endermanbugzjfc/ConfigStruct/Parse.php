@@ -103,13 +103,13 @@ final class Parse
 
     /**
      * Redirect to the correct parse function. Base on the property's type and attributes provided.
-     * @param BasePropertyContext $context Non-abstract property parse contexts will be created from this.
+     * @param PropertyDetails $context
      * @param mixed $value
      * @return BasePropertyContext A non-abstract property parse context.
      */
     public static function property(
-        BasePropertyContext $context,
-        mixed               $value
+        PropertyDetails $context,
+        mixed           $value
     ) : BasePropertyContext
     {
         $property = $context->getReflection();
