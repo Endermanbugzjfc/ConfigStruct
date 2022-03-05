@@ -7,11 +7,15 @@ namespace Endermanbugzjfc\ConfigStruct\ParseError;
 
 use Endermanbugzjfc\ConfigStruct\ListType;
 use Endermanbugzjfc\ConfigStruct\Parse;
+use Endermanbugzjfc\ConfigStruct\ParseError;
 use PHPUnit\Framework\TestCase;
 
 class InvalidListTypeErrorTest extends TestCase
 {
 
+    /**
+     * @throws ParseError
+     */
     public function testGetMessage()
     {
         $object = new class() {
