@@ -20,8 +20,8 @@ final class ConfigStructUtils
     ) : bool
     {
         return array_values(
-            $array
-        ) === $array;
+                $array
+            ) === $array;
     }
 
 }
