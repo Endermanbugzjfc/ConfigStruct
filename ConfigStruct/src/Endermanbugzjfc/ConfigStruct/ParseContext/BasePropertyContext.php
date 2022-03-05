@@ -45,6 +45,14 @@ abstract class BasePropertyContext
         );
     }
 
+    public function hasError() : bool
+    {
+        $tree = $this->getErrorsTree();
+        return !empty(
+        $tree
+        );
+    }
+
     private static function getErrorsCountTreeRecursive(
         array $tree
     ) : array
