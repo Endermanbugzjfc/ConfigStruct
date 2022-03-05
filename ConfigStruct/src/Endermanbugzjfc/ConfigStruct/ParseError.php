@@ -9,11 +9,17 @@ use Endermanbugzjfc\ConfigStruct\ParseError\BaseParseError;
 use Exception;
 use function array_unshift;
 use function implode;
+use function in_array;
 use function str_repeat;
 use const E_RECOVERABLE_ERROR;
 
 final class ParseError extends Exception
 {
+
+    /**
+     * @var string[]
+     */
+    protected array $hideErrorTypes = [];
 
     public function __construct(
         protected array  $errorsTree,
@@ -43,12 +49,29 @@ final class ParseError extends Exception
         return $this->rootHeaderLabel;
     }
 
+    /**
+     * @return string[]
+     */
+    public function getHideErrorTypes() : array
+    {
+        return $this->hideErrorTypes;
+    }
+
+    /**
+     * @param string $rootHeaderLabel
+     * @param string $indentation
+     * @param string[] $hideErrorTypes
+     * @return void
+     * @see ParseError::errorsTreeToString()
+     */
     public function regenerateErrorMessage(
         string $rootHeaderLabel,
-        string $indentation = "    "
+        string $indentation = "    ",
+        array  $hideErrorTypes = []
     ) : void
     {
         $this->rootHeaderLabel = $rootHeaderLabel;
+        $this->hideErrorTypes = $hideErrorTypes;
         $this->message = $this->generateErrorMessage(
             $indentation
         );
@@ -56,13 +79,15 @@ final class ParseError extends Exception
 
     protected function generateErrorMessage(
         string $indentation = "    "
-    ) : string {
+    ) : string
+    {
         $tree = $this->getErrorsTree();
         $label = $this->getRootHeaderLabel();
         return self::errorsTreeToString(
             $tree,
             $label,
-            $indentation
+            $indentation,
+            $this->getHideErrorTypes()
         );
     }
 
@@ -70,19 +95,22 @@ final class ParseError extends Exception
      * @param array $tree The errors tree.
      * @param string $label The label that will be displayed in the first line (header). File path should be given if the parsed data was from a file.
      * @param string $indentation Indentation per depth, to make the errors tree more readable for human. Four spaces by default.
+     * @param string[] $hideErrorTypes Class name of the errors ({@link BaseParseError}) to hide.
      * @return string
      */
     public static function errorsTreeToString(
         array  $tree,
         string $label,
-        string $indentation = "    "
+        string $indentation = "    ",
+        array  $hideErrorTypes = []
     ) : string
     {
         return self::errorsTreeToStringRecursive(
             $tree,
             $label,
             $indentation,
-            0
+            0,
+            $hideErrorTypes
         );
     }
 
@@ -91,6 +119,7 @@ final class ParseError extends Exception
         string $label,
         string $defaultIndentation,
         int    $depth,
+        array  $hideErrorTypes,
         ?int   &$count = null
     ) : string
     {
@@ -106,6 +135,14 @@ final class ParseError extends Exception
                 $children[$key] = $content;
                 continue;
             }
+
+            if (in_array(
+                $content::class,
+                $hideErrorTypes,
+                true
+            )) {
+                continue;
+            }
             $count++;
             $lines[] = $indentation . $content;
         }
@@ -116,6 +153,7 @@ final class ParseError extends Exception
                 $key,
                 $defaultIndentation,
                 $depth + 1,
+                $hideErrorTypes,
                 $count
             );
         }
