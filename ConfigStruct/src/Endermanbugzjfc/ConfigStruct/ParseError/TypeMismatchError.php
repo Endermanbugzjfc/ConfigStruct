@@ -5,9 +5,13 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\ConfigStruct\ParseError;
 
+use Endermanbugzjfc\ConfigStruct\ParseContext\ObjectContext;
 use TypeError;
 use function implode;
 
+/**
+ * When a {@link TypeError} occurs in {@link ObjectContext::copyToObject()}.
+ */
 final class TypeMismatchError extends BaseParseError
 {
 
