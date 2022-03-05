@@ -11,7 +11,7 @@ use Throwable;
 abstract class BaseParseError implements Stringable
 {
 
-    abstract public function getMessage();
+    abstract public function getMessage() : string;
 
     public function __toString() : string
     {
