@@ -94,7 +94,11 @@ final class ObjectContext
                 $types = $reflection->getType();
                 $expectedTypes = array_unique(
                     array_map(
-                        fn(ReflectionType $type) : string => class_exists($raw = $type->getName())
+                        fn(ReflectionType $type) : string => (
+                            class_exists($raw = $type->getName())
+                            or
+                            $raw === "self"
+                        )
                             ? "array"
                             : $raw,
                         $types instanceof ReflectionNamedType
