@@ -3,12 +3,17 @@
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
 use Endermanbugzjfc\ConfigStruct\ParseError;
+use Endermanbugzjfc\ConfigStruct\ParseError\TypeMismatchError;
 use Endermanbugzjfc\ConfigStruct\StructureError;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionNamedType;
 use ReflectionProperty;
+use ReflectionType;
 use TypeError;
+use function array_map;
 use function array_merge;
+use function get_debug_type;
 
 final class ObjectContext
 {
@@ -76,14 +81,28 @@ final class ObjectContext
         $properties = $this->getPropertyContexts();
         $errs = $this->getErrorsTree();
         foreach ($properties as $property) {
+            $reflection = $property->getDetails()->getReflection();
+            $value = $property->getValue();
             try {
-                $property->getDetails()->getReflection()->setValue(
+                $reflection->setValue(
                     $object,
-                    $property->getValue()
+                    $value
                 );
             } catch (TypeError $err) {
+                $types = $reflection->getType();
+                $expectedTypes = array_map(
+                    fn(ReflectionType $type) : string => $type->getName(),
+                    $types instanceof ReflectionNamedType
+                        ? [$types]
+                        : $types->getTypes()
+                );
+
                 $treeKey = $property->getErrorsTreeKey();
-                $errs[$treeKey][] = $err;
+                $errs[$treeKey][] = new TypeMismatchError(
+                    $err,
+                    $expectedTypes,
+                    get_debug_type($value)
+                );
             }
         }
 
