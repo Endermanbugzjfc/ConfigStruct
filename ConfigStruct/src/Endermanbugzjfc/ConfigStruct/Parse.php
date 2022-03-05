@@ -14,7 +14,10 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
+use function array_count_values;
 use function array_key_exists;
+use function array_map;
+use function implode;
 use function in_array;
 
 final class Parse
@@ -193,27 +196,44 @@ final class Parse
     ) : array
     {
         foreach ($properties as $property) {
-            $names = [];
+            $propertyName = $property->getName();
             foreach (
                 $property->getAttributes(KeyName::class)
                 as $keyName
             ) {
-                $name = $keyName->getArguments()[0];
-                if (in_array(
-                    $name,
-                    $names,
-                    true
-                )) {
+                $names[] = $keyName->getArguments()[0];
+            }
+            if (!empty($names)) {
+                $namesCount = array_count_values($names);
+                foreach ($namesCount as $name => $count) {
+                    if ($count > 1) {
+                        continue;
+                    }
+                    $duplicated[] = $name;
+                }
+                if (!empty($duplicated)) {
                     $debugClass = $property->getDeclaringClass()->getName();
+                    $duplicatedQuoted = array_map(
+                        fn(string $name) : string => "\"$name\"",
+                        $duplicated
+                    );
+                    $duplicatedList = implode(
+                        ", ",
+                        $duplicatedQuoted
+                    );
                     throw new StructureError(
-                        "Duplicated key name \"$name\" in $debugClass->$name"
+                        "Duplicated key name $duplicatedList in $debugClass->$propertyName"
                     );
                 }
-                $names[] = $name;
+            }
+
+            foreach ($names ?? [
+                $propertyName
+            ] as $name) {
                 if (!array_key_exists($name, $input)) {
                     continue;
                 }
-                $map[$property->getName()] = $name;
+                $map[$propertyName] = $name;
                 break;
             }
         }
@@ -229,7 +249,8 @@ final class Parse
      * @param array $input An array which was converted from object.
      * @return ObjectContext|null Null = no suitable type for this input (all types are incompatible).
      */
-    public static function listElement(
+    public
+    static function listElement(
         ReflectionProperty $property,
         array              $listTypes,
         array              $input
