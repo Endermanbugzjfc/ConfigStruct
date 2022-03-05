@@ -40,12 +40,11 @@ final class Parse
         $reflect = new ReflectionClass(
             $object
         );
-        $output = self::objectByReflection(
+        return self::objectByReflection(
             $input,
             $reflect,
             $map
         );
-        return $output;
     }
 
     public static function objectByReflection(
