@@ -6,9 +6,9 @@ declare(strict_types=1);
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
 use Endermanbugzjfc\ConfigStruct\ListType;
+use Endermanbugzjfc\ConfigStruct\Utils\ConfigStructUtils;
 use ReflectionException;
 use Throwable;
-use function array_values;
 
 final class ListContext extends BasePropertyContext
 {
@@ -72,9 +72,9 @@ final class ListContext extends BasePropertyContext
      */
     public function isAssociative() : bool
     {
-        return array_values(
-                $this->getObjectContextsArray()
-            ) === $this->getObjectContextsArray();
+        return !ConfigStructUtils::arrayIsList(
+            $this->getObjectContextsArray()
+        );
     }
 
     /**

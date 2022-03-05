@@ -3,7 +3,7 @@
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
 use Endermanbugzjfc\ConfigStruct\ParseContext\BeforeParse\PropertyDetails;
-use function array_values;
+use Endermanbugzjfc\ConfigStruct\Utils\ConfigStructUtils;
 use function count;
 use function is_array;
 
@@ -52,9 +52,9 @@ abstract class BasePropertyContext
                 continue;
             }
 
-            if (array_values(
-                    $item
-                ) === $item) {
+            if (ConfigStructUtils::arrayIsList(
+                $item
+            )) {
                 $tree[$key] = count($item);
                 continue;
             }
