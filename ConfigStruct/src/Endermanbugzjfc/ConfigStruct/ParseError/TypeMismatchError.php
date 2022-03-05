@@ -5,13 +5,21 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\ConfigStruct\ParseError;
 
-use Throwable;
+use TypeError;
+use function implode;
 
 final class TypeMismatchError extends BaseParseError
 {
 
+    /**
+     * @param TypeError $previous
+     * @param string[] $expectedTypes
+     * @param string $givenType
+     */
     public function __construct(
-        ?Throwable $previous = null
+        TypeError        $previous,
+        protected array  $expectedTypes,
+        protected string $givenType
     )
     {
         parent::__construct(
@@ -19,8 +27,28 @@ final class TypeMismatchError extends BaseParseError
         );
     }
 
+    /**
+     * @return string[]
+     */
+    public function getExpectedTypes() : array
+    {
+        return $this->expectedTypes;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGivenType() : string
+    {
+        return $this->givenType;
+    }
+
     public function getMessage() : string
     {
-        // TODO: Implement getMessage() method.
+        $expectedTypes = implode(
+            " / ",
+            $this->getExpectedTypes()
+        );
+        return "Element is a {$this->getGivenType()} while it should be a $expectedTypes";
     }
 }
