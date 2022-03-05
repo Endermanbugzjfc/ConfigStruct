@@ -57,8 +57,8 @@ abstract class BasePropertyContext
             }
 
             if (array_values(
-                $item
-            ) === $item) {
+                    $item
+                ) === $item) {
                 $tree[$key] = count($item);
                 continue;
             }
@@ -71,14 +71,32 @@ abstract class BasePropertyContext
         return $tree;
     }
 
+    private function getErrorsTreeKey() : string
+    {
+        return "element \"{$this->getDetails()->getKeyName()}\"";
+    }
+
     /**
-     * Get the errors tree and put it in an array using the key name (not exact) as key.
+     * Get the errors tree and put it in an array using the key name ({@link BasePropertyContext::getErrorsTreeKey()}) as key.
      * @return array array<string, array> Can be array_merge() with the wrapped errors tree of other properties.
      */
     final public function getWrappedErrorsTree() : array
     {
-        $key = "element \"{$this->getDetails()->getKeyName()}\"";
+        $key = $this->getErrorsTreeKey();
         $tree = $this->getErrorsTree();
+        return [
+            $key => $tree
+        ];
+    }
+
+    /**
+     * Get the errors count tree and put it in an array using the key name ({@link BasePropertyContext::getErrorsTreeKey()}) as key.
+     * @return array array<string, array> Can be array_merge() with the wrapped errors count tree of other properties.
+     */
+    final public function getWrappedErrorsCountTree() : array
+    {
+        $key = $this->getErrorsTreeKey();
+        $tree = $this->getErrorsCountTree();
         return [
             $key => $tree
         ];
