@@ -30,7 +30,6 @@ final class Parse
      * @param object $object The parsed data will not be automatically copied to the object, please use {@link ObjectContext::copyToObject()}.
      * @param string[]|null $map See {@link Parse::getPropertyNameToKeyNameMap()}. Key = property name. Value = key name.
      * @return ObjectContext $object.
-     * @throws ParseError
      */
     public static function object(
         array  $input,
