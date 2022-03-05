@@ -3,7 +3,7 @@
 
 declare(strict_types=1);
 
-namespace Endermanbugzjfc\ConfigStruct\ParseContext\BeforeParse;
+namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
 use ReflectionProperty;
 

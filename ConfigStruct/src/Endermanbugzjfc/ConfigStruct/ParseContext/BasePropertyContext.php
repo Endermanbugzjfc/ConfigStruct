@@ -2,7 +2,6 @@
 
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
-use Endermanbugzjfc\ConfigStruct\ParseContext\BeforeParse\PropertyDetails;
 use Endermanbugzjfc\ConfigStruct\Utils\ConfigStructUtils;
 use function count;
 use function is_array;
