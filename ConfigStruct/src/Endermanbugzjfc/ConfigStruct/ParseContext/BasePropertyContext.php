@@ -66,7 +66,7 @@ abstract class BasePropertyContext
         return $tree;
     }
 
-    private function getErrorsTreeKey() : string
+    final function getErrorsTreeKey() : string
     {
         return "element \"{$this->getDetails()->getKeyName()}\"";
     }
