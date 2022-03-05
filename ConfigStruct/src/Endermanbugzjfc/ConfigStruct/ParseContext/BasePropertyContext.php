@@ -24,7 +24,7 @@ abstract class BasePropertyContext
     }
 
     /**
-     * @return array Only string keys will be shown.
+     * @return array
      */
     public function getErrorsTree() : array
     {
