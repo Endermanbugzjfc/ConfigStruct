@@ -116,7 +116,7 @@ final class ParseError extends Exception
             $indentation,
             0,
             $errorFilter
-        );
+        )[0];
     }
 
     protected static function errorsTreeToStringRecursive(
@@ -124,9 +124,8 @@ final class ParseError extends Exception
         string   $label,
         string   $defaultIndentation,
         int      $depth,
-        ?Closure $errorFilter,
-        ?int     &$count = null
-    ) : string
+        ?Closure $errorFilter
+    ) : array
     {
         $lines = [];
         $indentation = str_repeat(
@@ -153,14 +152,18 @@ final class ParseError extends Exception
         }
         unset($tree);
         foreach ($children ?? [] as $key => $child) {
-            self::errorsTreeToStringRecursive(
+            [
+                $newLines,
+                $newCount
+            ] = self::errorsTreeToStringRecursive(
                 $child,
                 $key,
                 $defaultIndentation,
                 $depth + 1,
-                $errorFilter,
-                $count
+                $errorFilter
             );
+            $count += $newCount;
+            $lines[] = $newLines;
         }
 
         $indentation = str_repeat(
@@ -171,10 +174,13 @@ final class ParseError extends Exception
             $lines,
             $indentation . "$count errors in $label"
         );
-        return implode(
-            "\n",
-            $lines
-        );
+        return [
+            implode(
+                "\n",
+                $lines
+            ),
+            $count
+        ];
     }
 
 }
