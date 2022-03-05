@@ -172,7 +172,7 @@ final class ParseError extends Exception
         );
         array_unshift(
             $lines,
-            $indentation . "$count errors in $label:"
+            $indentation . "$count errors in $label"
         );
         return [
             implode(
