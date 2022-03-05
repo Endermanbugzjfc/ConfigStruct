@@ -10,9 +10,61 @@ use function array_unshift;
 use function implode;
 use function is_string;
 use function str_repeat;
+use const E_RECOVERABLE_ERROR;
 
 final class ParseError extends Exception
 {
+
+    public function __construct(
+        protected array  $errorsTree,
+        protected string $rootHeaderLabel
+    )
+    {
+        $message = $this->generateErrorMessage();
+        parent::__construct(
+            $message,
+            E_RECOVERABLE_ERROR
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function getErrorsTree() : array
+    {
+        return $this->errorsTree;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRootHeaderLabel() : string
+    {
+        return $this->rootHeaderLabel;
+    }
+
+    public function regenerateErrorMessage(
+        string $rootHeaderLabel,
+        string $indentation = "    "
+    ) : void
+    {
+        $this->rootHeaderLabel = $rootHeaderLabel;
+        $this->message = $this->generateErrorMessage(
+            $indentation
+        );
+    }
+
+    protected function generateErrorMessage(
+        string $indentation = "    "
+    ) : string {
+        $tree = $this->getErrorsTree();
+        $label = $this->getRootHeaderLabel();
+        return self::errorsTreeToString(
+            $tree,
+            $label,
+            $indentation
+        );
+    }
 
     /**
      * @param array $tree The errors tree.
