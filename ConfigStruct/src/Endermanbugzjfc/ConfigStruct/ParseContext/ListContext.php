@@ -85,7 +85,7 @@ final class ListContext extends BasePropertyContext
     private static function getErrorsTreeSubElementKey(
         string $elementKey
     ) : string {
-        return "element \"$elementKey\"";
+        return "index \"$elementKey\"";
     }
 
 }
