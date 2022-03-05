@@ -106,7 +106,13 @@ final class ObjectContext
         return $instance;
     }
 
-    public function getErrorsTree() : array
+    /**
+     * @param int|null $count Reference parameter, use this to retrieve the total errors count of the errors tree.
+     * @return array
+     */
+    public function getErrorsTree(
+        ?int &$count = null
+    ) : array
     {
         $tree = [];
         $properties = $this->getPropertyContexts();
@@ -115,6 +121,9 @@ final class ObjectContext
                 $tree,
                 $property->getWrappedErrorsTree()
             );
+            if ($count !== null) {
+                $count += $property->getErrorsCount();
+            }
         }
     }
 
