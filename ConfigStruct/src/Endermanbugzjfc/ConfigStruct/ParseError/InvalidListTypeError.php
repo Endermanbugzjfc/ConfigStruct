@@ -5,8 +5,12 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\ConfigStruct\ParseError;
 
+use Endermanbugzjfc\ConfigStruct\ListType;
 use ReflectionException;
 
+/**
+ * @see ListType::__construct()
+ */
 class InvalidListTypeError extends BaseParseError
 {
 
