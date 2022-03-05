@@ -13,6 +13,8 @@ use ReflectionType;
 use TypeError;
 use function array_map;
 use function array_merge;
+use function array_unique;
+use function class_exists;
 use function get_debug_type;
 
 final class ObjectContext
@@ -90,11 +92,15 @@ final class ObjectContext
                 );
             } catch (TypeError $err) {
                 $types = $reflection->getType();
-                $expectedTypes = array_map(
-                    fn(ReflectionType $type) : string => $type->getName(),
-                    $types instanceof ReflectionNamedType
-                        ? [$types]
-                        : $types->getTypes()
+                $expectedTypes = array_unique(
+                    array_map(
+                        fn(ReflectionType $type) : string => class_exists($raw = $type->getName())
+                            ? "array"
+                            : $raw,
+                        $types instanceof ReflectionNamedType
+                            ? [$types]
+                            : $types->getTypes()
+                    )
                 );
 
                 $treeKey = $property->getErrorsTreeKey();
