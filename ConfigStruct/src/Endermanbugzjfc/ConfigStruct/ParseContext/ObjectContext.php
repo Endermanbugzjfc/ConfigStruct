@@ -2,11 +2,11 @@
 
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
+use Endermanbugzjfc\ConfigStruct\ParseError;
 use Endermanbugzjfc\ConfigStruct\StructureError;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;
-use Throwable;
 use TypeError;
 use function array_merge;
 
@@ -64,35 +64,47 @@ final class ObjectContext
     /**
      * Copy output data to the given object.
      * @param object $object This object will be modified.
-     * @return Throwable[][] array<string, list<Throwable>>. Typically {@link TypeError} or other parse time errors. Key = property name.
+     * @param string $rootHeaderLabel See {@link ParseError::getRootHeaderLabel()}.
+     * @return object The same object as the first argument. So it can be used fluently (in chain of function calls).
+     * @throws ParseError
      */
     public function copyToObject(
-        object $object
-    ) : array
+        object $object,
+        string $rootHeaderLabel
+    ) : object
     {
         $properties = $this->getPropertyContexts();
-        foreach ($properties as $name => $property) {
-            $errs[$name] = $property->getErrorsTree();
+        $errs = $this->getErrorsTree();
+        foreach ($properties as $property) {
             try {
                 $property->getDetails()->getReflection()->setValue(
                     $object,
                     $property->getValue()
                 );
             } catch (TypeError $err) {
-                $errs[$name][] = $err;
+                $treeKey = $property->getErrorsTreeKey();
+                $errs[$treeKey][] = $err;
             }
         }
-        return $errs ?? [];
+
+        if (!empty(
+        $errs
+        )) {
+            throw new ParseError(
+                $errs,
+                $rootHeaderLabel
+            );
+        }
+        return $object;
     }
 
     /**
-     * Copy output data to an new object.
-     * @param array|null $errs Reference parameter, use this to retrieve the errors from {@link ObjectContext::copyToObject()}.
+     * @param string $rootHeaderLabel See {@link ParseError::getRootHeaderLabel()}.
      * @return object The constructor of object should have 0 arguments.
-     * @throws StructureError Failed to construct a new instance (probably incompatible arguments).
+     * @throws StructureError|ParseError StructureError = Failed to construct a new instance (probably incompatible arguments).
      */
     public function copyToNewObject(
-        ?array &$errs = null
+        string $rootHeaderLabel
     ) : object
     {
         try {
@@ -100,8 +112,9 @@ final class ObjectContext
         } catch (ReflectionException $err) {
             throw new StructureError($err);
         }
-        $errs = $this->copyToObject(
-            $instance
+        $this->copyToObject(
+            $instance,
+            $rootHeaderLabel
         );
         return $instance;
     }
