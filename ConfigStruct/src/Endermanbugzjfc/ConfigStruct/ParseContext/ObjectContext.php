@@ -72,9 +72,9 @@ final class ObjectContext
     {
         $properties = $this->getPropertyContexts();
         foreach ($properties as $name => $property) {
-            $errs[$name] = $property->getErrors();
+            $errs[$name] = $property->getErrorsTree();
             try {
-                $property->getReflection()->setValue(
+                $property->getDetails()->getReflection()->setValue(
                     $object,
                     $property->getValue()
                 );
@@ -107,24 +107,16 @@ final class ObjectContext
     }
 
     /**
-     * @param int[]|null $countTree Reference parameter, use this to retrieve the errors count tree.
      * @return array
      */
-    public function getErrorsTree(
-        ?array &$countTree = null
-    ) : array
+    public function getErrorsTree() : array
     {
-        $countTree = [];
         $tree = [];
         $properties = $this->getPropertyContexts();
         foreach ($properties as $property) {
             array_merge(
                 $tree,
                 $property->getWrappedErrorsTree()
-            );
-            array_merge(
-                $countTree,
-                $property->getWrappedErrorsCountTree()
             );
         }
 

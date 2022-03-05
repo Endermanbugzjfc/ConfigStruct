@@ -33,18 +33,6 @@ abstract class BasePropertyContext
         return [];
     }
 
-    /**
-     * @return array
-     */
-    public function getErrorsCountTree() : array
-    {
-        $tree = $this->getErrorsTree();
-
-        return self::getErrorsCountTreeRecursive(
-            $tree
-        );
-    }
-
     public function hasError() : bool
     {
         $tree = $this->getErrorsTree();
@@ -92,19 +80,6 @@ abstract class BasePropertyContext
     {
         $key = $this->getErrorsTreeKey();
         $tree = $this->getErrorsTree();
-        return [
-            $key => $tree
-        ];
-    }
-
-    /**
-     * Get the errors count tree and put it in an array using the key name ({@link BasePropertyContext::getErrorsTreeKey()}) as key.
-     * @return array array<string, array> Can be array_merge() with the wrapped errors count tree of other properties.
-     */
-    final public function getWrappedErrorsCountTree() : array
-    {
-        $key = $this->getErrorsTreeKey();
-        $tree = $this->getErrorsCountTree();
         return [
             $key => $tree
         ];
