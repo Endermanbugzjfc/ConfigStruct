@@ -239,8 +239,7 @@ final class Parse
      * @param array $input An array which was converted from object.
      * @return ObjectContext|null Null = no suitable type for this input (all types are incompatible).
      */
-    public
-    static function listElement(
+    public static function listElement(
         ReflectionProperty $property,
         array              $listTypes,
         array              $input
