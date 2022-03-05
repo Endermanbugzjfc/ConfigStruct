@@ -41,7 +41,7 @@ final class ParseError extends Exception
     }
 
     /**
-     * @return string
+     * @return string The label that will be displayed in the first line (header). File path should be given if the parsed data was from a file.
      */
     public function getRootHeaderLabel() : string
     {
