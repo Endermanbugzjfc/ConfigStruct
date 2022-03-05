@@ -18,6 +18,8 @@ final class ParseError extends Exception
 
     protected ?Closure $errorFilter = null;
 
+    protected string $indentation = "    ";
+
     public function __construct(
         protected array  $errorsTree,
         protected string $rootHeaderLabel
@@ -55,6 +57,14 @@ final class ParseError extends Exception
     }
 
     /**
+     * @return string
+     */
+    public function getIndentation() : string
+    {
+        return $this->indentation;
+    }
+
+    /**
      * @param string $rootHeaderLabel
      * @param string $indentation
      * @param Closure|null $errorFilter
@@ -69,21 +79,19 @@ final class ParseError extends Exception
     {
         $this->rootHeaderLabel = $rootHeaderLabel;
         $this->errorFilter = $errorFilter;
-        $this->message = $this->generateErrorMessage(
-            $indentation
-        );
+        $this->indentation = $indentation;
+
+        $this->message = $this->generateErrorMessage();
     }
 
-    protected function generateErrorMessage(
-        string $indentation = "    "
-    ) : string
+    protected function generateErrorMessage() : string
     {
         $tree = $this->getErrorsTree();
         $label = $this->getRootHeaderLabel();
         return self::errorsTreeToString(
             $tree,
             $label,
-            $indentation,
+            $this->getIndentation(),
             $this->getErrorFilter()
         );
     }
