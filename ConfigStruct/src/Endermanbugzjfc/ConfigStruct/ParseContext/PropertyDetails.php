@@ -14,8 +14,8 @@ final class PropertyDetails
 {
 
     public function __construct(
-        protected ReflectionProperty $reflection,
-        protected string $keyName
+        protected string $keyName,
+        protected ReflectionProperty $reflection
     )
     {
     }
