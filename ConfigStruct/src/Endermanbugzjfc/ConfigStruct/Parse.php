@@ -24,13 +24,16 @@ final class Parse
     /**
      * Parse the data of an array. Base on an object's structure, which is property types and attributes provided.
      * @param array $input
-     * @param object $object This object will be modified.
+     * @param object $object If root header label is not given, the parsed data will not be copied to the object.
+     * @param string|null $rootHeaderLabel See {@link ParseError::getRootHeaderLabel()}.
      * @param string[]|null $map See {@link Parse::getPropertyNameToKeyNameMap()}. Key = property name. Value = key name.
      * @return ObjectContext $object.
+     * @throws ParseError
      */
     public static function object(
         array  $input,
         object $object,
+        ?string $rootHeaderLabel = null,
         ?array $map = null
     ) : ObjectContext
     {
@@ -42,9 +45,12 @@ final class Parse
             $reflect,
             $map
         );
-        $output->copyToObject(
-            $object
-        );
+        if ($rootHeaderLabel !== null) {
+            $output->copyToObject(
+                $object,
+                $rootHeaderLabel
+            );
+        }
         return $output;
     }
 
