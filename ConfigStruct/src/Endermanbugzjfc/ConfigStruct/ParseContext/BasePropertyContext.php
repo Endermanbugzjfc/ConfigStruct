@@ -32,7 +32,7 @@ abstract class BasePropertyContext
     }
 
     /**
-     * @return int
+     * @return int Total errors count of the errors tree.
      */
     public function getErrorsCount() : int
     {
