@@ -6,6 +6,7 @@ use Endermanbugzjfc\ConfigStruct\ParseContext\BasePropertyContext;
 use Endermanbugzjfc\ConfigStruct\ParseContext\ChildObjectContext;
 use Endermanbugzjfc\ConfigStruct\ParseContext\ListContext;
 use Endermanbugzjfc\ConfigStruct\ParseContext\ObjectContext;
+use Endermanbugzjfc\ConfigStruct\ParseContext\PropertyDetails;
 use Endermanbugzjfc\ConfigStruct\ParseContext\RawContext;
 use Endermanbugzjfc\ConfigStruct\Utils\StaticClassTrait;
 use ReflectionClass;
@@ -72,7 +73,7 @@ final class Parse
             unset(
                 $input[$name]
             );
-            $context = self::createBasePropertyContext(
+            $context = self::createPropertyDetails(
                 $name,
                 $property
             );
@@ -89,12 +90,12 @@ final class Parse
         );
     }
 
-    protected static function createBasePropertyContext(
+    protected static function createPropertyDetails(
         mixed              $name,
         ReflectionProperty $property
-    ) : BasePropertyContext
+    ) : PropertyDetails
     {
-        return new BasePropertyContext(
+        return new PropertyDetails(
             $name,
             $property
         );
