@@ -5,21 +5,18 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\ConfigStruct;
 
+use Closure;
 use Endermanbugzjfc\ConfigStruct\ParseError\BaseParseError;
 use Exception;
 use function array_unshift;
 use function implode;
-use function in_array;
 use function str_repeat;
 use const E_RECOVERABLE_ERROR;
 
 final class ParseError extends Exception
 {
 
-    /**
-     * @var string[]
-     */
-    protected array $hideErrorTypes = [];
+    protected ?Closure $errorFilter = null;
 
     public function __construct(
         protected array  $errorsTree,
@@ -50,28 +47,28 @@ final class ParseError extends Exception
     }
 
     /**
-     * @return string[]
+     * @return Closure|null Should have 0 arguments and return bool. False = the error will not be displayed in the final error message.
      */
-    public function getHideErrorTypes() : array
+    public function getErrorFilter() : ?Closure
     {
-        return $this->hideErrorTypes;
+        return $this->errorFilter;
     }
 
     /**
      * @param string $rootHeaderLabel
      * @param string $indentation
-     * @param string[] $hideErrorTypes
+     * @param Closure|null $errorFilter
      * @return void
      * @see ParseError::errorsTreeToString()
      */
     public function regenerateErrorMessage(
-        string $rootHeaderLabel,
-        string $indentation = "    ",
-        array  $hideErrorTypes = []
+        string  $rootHeaderLabel,
+        string  $indentation = "    ",
+        Closure $errorFilter = null
     ) : void
     {
         $this->rootHeaderLabel = $rootHeaderLabel;
-        $this->hideErrorTypes = $hideErrorTypes;
+        $this->errorFilter = $errorFilter;
         $this->message = $this->generateErrorMessage(
             $indentation
         );
@@ -87,7 +84,7 @@ final class ParseError extends Exception
             $tree,
             $label,
             $indentation,
-            $this->getHideErrorTypes()
+            $this->getErrorFilter()
         );
     }
 
@@ -95,14 +92,14 @@ final class ParseError extends Exception
      * @param array $tree The errors tree.
      * @param string $label The label that will be displayed in the first line (header). File path should be given if the parsed data was from a file.
      * @param string $indentation Indentation per depth, to make the errors tree more readable for human. Four spaces by default.
-     * @param string[] $hideErrorTypes Class name of the errors ({@link BaseParseError}) to hide.
+     * @param Closure|null $errorFilter See {@link ParseError::getErrorFilter()}.
      * @return string
      */
     public static function errorsTreeToString(
-        array  $tree,
-        string $label,
-        string $indentation = "    ",
-        array  $hideErrorTypes = []
+        array    $tree,
+        string   $label,
+        string   $indentation = "    ",
+        ?Closure $errorFilter = null
     ) : string
     {
         return self::errorsTreeToStringRecursive(
@@ -110,17 +107,17 @@ final class ParseError extends Exception
             $label,
             $indentation,
             0,
-            $hideErrorTypes
+            $errorFilter
         );
     }
 
     protected static function errorsTreeToStringRecursive(
-        array  $tree,
-        string $label,
-        string $defaultIndentation,
-        int    $depth,
-        array  $hideErrorTypes,
-        ?int   &$count = null
+        array    $tree,
+        string   $label,
+        string   $defaultIndentation,
+        int      $depth,
+        ?Closure $errorFilter,
+        ?int     &$count = null
     ) : string
     {
         $lines = [];
@@ -136,11 +133,11 @@ final class ParseError extends Exception
                 continue;
             }
 
-            if (in_array(
-                $content::class,
-                $hideErrorTypes,
-                true
-            )) {
+            if (
+                $errorFilter !== null
+                and
+                !$errorFilter()
+            ) {
                 continue;
             }
             $count++;
@@ -153,7 +150,7 @@ final class ParseError extends Exception
                 $key,
                 $defaultIndentation,
                 $depth + 1,
-                $hideErrorTypes,
+                $errorFilter,
                 $count
             );
         }
