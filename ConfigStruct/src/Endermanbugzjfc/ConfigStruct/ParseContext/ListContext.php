@@ -5,43 +5,28 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
-use Endermanbugzjfc\ConfigStruct\ListType;
+use Endermanbugzjfc\ConfigStruct\ParseError;
 use Endermanbugzjfc\ConfigStruct\Utils\ConfigStructUtils;
-use ReflectionException;
-use Throwable;
+use function array_merge;
 
 final class ListContext extends BasePropertyContext
 {
-    use NonAbstractContextTrait;
 
     /**
-     * @var ObjectContext[]
-     */
-    protected array $objectContexts;
-
-    /**
-     * @var Throwable[]
-     */
-    protected array $errors;
-
-    /**
-     * @param BasePropertyContext $context
+     * @param PropertyDetails $details
      * @param ObjectContext[] $objectContexts
-     * @param Throwable[] $errors No key. Mostly {@link ReflectionException} from invalid {@link ListType} attributes.
-     * @return self
+     * @param ParseError[] $errors Mostly {@link InvalidListTypeError}.
+     * TODO: Typically.
      */
-    public static function create(
-        BasePropertyContext $context,
-        array               $objectContexts,
-        array               $errors
-    ) : self
+    public function __construct(
+        PropertyDetails $details,
+        protected array $objectContexts,
+        protected array $errors
+    )
     {
-        $self = new self();
-        $self->substitute($context);
-        $self->objectContexts = $objectContexts;
-        $self->errors = $errors;
-
-        return $self;
+        parent::__construct(
+            $details
+        );
     }
 
     /**
@@ -77,12 +62,23 @@ final class ListContext extends BasePropertyContext
         );
     }
 
-    /**
-     * @return Throwable[] No key. Mostly {@link ReflectionException} from invalid {@link ListType} attributes.
-     */
-    public function getErrors() : array
+    public function getErrorsTree() : array
     {
-        return $this->errors;
+        $tree = parent::getErrorsTree();
+        $tree = array_merge(
+            $tree,
+            $this->errors
+        );
+
+        $contexts = $this->getObjectContextsArray();
+        foreach ($contexts as $key => $context) {
+            if ($context->hasError()) {
+                $treeKey = "element \"$key\"";
+                $tree[$treeKey] = $context->getErrorsTree();
+            }
+        }
+
+        return $tree;
     }
 
 }

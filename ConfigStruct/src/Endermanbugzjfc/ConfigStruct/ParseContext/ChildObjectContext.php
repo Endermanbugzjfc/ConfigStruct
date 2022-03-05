@@ -4,25 +4,15 @@ namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
 final class ChildObjectContext extends BasePropertyContext
 {
-    use NonAbstractContextTrait;
 
-    protected ObjectContext $objectContext;
-
-    /**
-     * @param BasePropertyContext $context
-     * @param ObjectContext $objectContext
-     * @return static
-     */
-    public static function create(
-        BasePropertyContext $context,
-        ObjectContext       $objectContext
-    ) : self
+    public function __construct(
+        PropertyDetails         $details,
+        protected ObjectContext $objectContext
+    )
     {
-        $self = new self();
-        $self->substitute($context);
-        $self->objectContext = $objectContext;
-
-        return $self;
+        parent::__construct(
+            $details
+        );
     }
 
     /**

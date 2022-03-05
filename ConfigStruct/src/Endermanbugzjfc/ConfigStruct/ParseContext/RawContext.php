@@ -4,25 +4,19 @@ namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
 final class RawContext extends BasePropertyContext
 {
-    use NonAbstractContextTrait;
-
-    protected mixed $value;
 
     /**
-     * @param BasePropertyContext $context
+     * @param PropertyDetails $details
      * @param mixed $value
-     * @return static
      */
-    public static function create(
-        BasePropertyContext $context,
-        mixed               $value
-    ) : self
+    public function __construct(
+        PropertyDetails $details,
+        protected mixed $value
+    )
     {
-        $self = new self();
-        $self->substitute($context);
-        $self->value = $value;
-
-        return $self;
+        parent::__construct(
+            $details
+        );
     }
 
     /**
