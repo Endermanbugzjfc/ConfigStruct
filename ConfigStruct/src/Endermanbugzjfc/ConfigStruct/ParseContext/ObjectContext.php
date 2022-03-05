@@ -155,7 +155,7 @@ final class ObjectContext
         $tree = [];
         $properties = $this->getPropertyContexts();
         foreach ($properties as $property) {
-            array_merge(
+            $tree = array_merge(
                 $tree,
                 $property->getWrappedErrorsTree()
             );
