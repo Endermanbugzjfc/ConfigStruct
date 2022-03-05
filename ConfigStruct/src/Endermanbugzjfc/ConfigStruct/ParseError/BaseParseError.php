@@ -12,8 +12,14 @@ abstract class BaseParseError
 
     abstract public function getMessage();
 
+    public function __construct(
+        protected ?Throwable $previous = null
+    )
+    {
+    }
+
     public function getPrevious() : ?Throwable {
-        return null;
+        return $this->previous;
     }
 
 }
