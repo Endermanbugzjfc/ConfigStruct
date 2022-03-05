@@ -13,6 +13,11 @@ final class ListContext extends BasePropertyContext
 {
 
     /**
+     * @var object[] Keys are reserved.
+     */
+    protected array $objects;
+
+    /**
      * @param PropertyDetails $details
      * @param ObjectContext[] $objectContexts
      * @param ParseError[] $errors Typically {@link InvalidListTypeError}.
@@ -23,6 +28,23 @@ final class ListContext extends BasePropertyContext
         protected array $errors
     )
     {
+        $contexts = $this->getObjectContextsArray();
+        foreach ($contexts as $key => $context) {
+            try {
+                $object = $context->copyToNewObject(
+                    "object array"
+                );
+            } catch (ParseError $err) {
+                $subElementKey = self::getErrorsTreeSubElementKey(
+                    $key
+                );
+                $this->errors[$subElementKey][] = $err->getErrorsTree();
+                continue;
+            }
+            $objects[$key] = $object;
+        }
+        $this->objects = $objects ?? [];
+
         parent::__construct(
             $details
         );
@@ -34,13 +56,7 @@ final class ListContext extends BasePropertyContext
      */
     public function getValue() : array
     {
-        foreach (
-            $this->getObjectContextsArray()
-            as $key => $output
-        ) {
-            $return[$key] = $output->copyToNewObject();
-        }
-        return $return ?? [];
+        return $this->objects;
     }
 
     /**
