@@ -103,6 +103,8 @@ final class Parse
 
     /**
      * Redirect to the correct parse function. Base on the property's type and attributes provided.
+     *
+     * If the type of a property is "self", the declaring class of that property will be used. As long as the child class (who extends the declaring class) does not override the property.
      * @param PropertyDetails $details
      * @param mixed $value
      * @return BasePropertyContext A non-abstract property parse context.
@@ -115,9 +117,13 @@ final class Parse
         $property = $details->getReflection();
         $type = $property->getType();
         if ($type instanceof ReflectionNamedType) {
+            $raw = $type->getName();
+            if ($raw === "self") {
+                $raw = $details->getReflection()->getDeclaringClass()->getName();
+            }
             try {
                 $reflect = new ReflectionClass(
-                    $type->getName()
+                    $raw
                 );
             } catch (ReflectionException) {
             }
