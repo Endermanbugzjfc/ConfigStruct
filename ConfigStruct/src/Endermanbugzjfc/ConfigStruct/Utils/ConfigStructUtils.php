@@ -30,7 +30,7 @@ final class ConfigStructUtils
      * @param array $keys
      * @return void
      */
-    public function arrayUnsetRecursive(
+    public static function arrayUnsetRecursive(
         array    &$array,
         callable $callback,
         array    $keys = []
