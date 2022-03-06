@@ -24,4 +24,40 @@ final class ConfigStructUtils
             ) === $array;
     }
 
+    /**
+     * @param array $array
+     * @param callable $callback See test file for full signatures.
+     * @param array $keys
+     * @return void
+     */
+    public function arrayUnsetRecursive(
+        array    &$array,
+        callable $callback,
+        array    $keys = []
+    ) : void
+    {
+        // Credit: https://stackoverflow.com/questions/9150726/unset-inside-array-walk-recursive-not-working
+        foreach ($array as $key => &$value) {
+            $keysClone = $keys;
+            $keysClone[] = $key;
+            if ($callback(
+                $keysClone,
+                $value
+            )) {
+                unset(
+                    $array[$key]
+                );
+                continue;
+            }
+
+            if (is_array($value)) {
+                self::arrayUnsetRecursive(
+                    $value,
+                    $callback,
+                    $keysClone
+                );
+            }
+        }
+    }
+
 }
