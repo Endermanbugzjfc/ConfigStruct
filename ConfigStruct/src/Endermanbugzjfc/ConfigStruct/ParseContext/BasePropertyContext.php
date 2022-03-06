@@ -54,4 +54,15 @@ abstract class BasePropertyContext
         ];
     }
 
+    /**
+     * Example:
+     * Elements tree: [a => [b, c], d]
+     * [a => [b], d] marks a.b and d as unhandled elements. Omitting a.c.
+     * @return array
+     */
+    public function getUnhandledElementKeyNamesTree() : array
+    {
+        return [];
+    }
+
 }
