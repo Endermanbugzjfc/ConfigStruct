@@ -28,13 +28,11 @@ final class Parse
      * Parse the data of an array. Base on an object's structure, which is property types and attributes provided.
      * @param array $input
      * @param object $object The parsed data will not be automatically copied to the object, please use {@link ObjectContext::copyToObject()}.
-     * @param string[]|null $map See {@link Parse::getPropertyNameToKeyNameMap()}. Key = property name. Value = key name.
      * @return ObjectContext $object.
      */
     public static function object(
         array  $input,
-        object $object,
-        ?array $map = null
+        object $object
     ) : ObjectContext
     {
         $reflect = new ReflectionClass(
@@ -42,15 +40,13 @@ final class Parse
         );
         return self::objectByReflection(
             $input,
-            $reflect,
-            $map
+            $reflect
         );
     }
 
     public static function objectByReflection(
         array           $input,
-        ReflectionClass $reflect,
-        ?array          $map = null
+        ReflectionClass $reflect
     ) : ObjectContext
     {
         $properties = $reflect->getProperties(
