@@ -6,6 +6,10 @@ abstract class BasePropertyContext
 {
     abstract public function getValue() : mixed;
 
+    public function hasValue() : bool {
+        return true;
+    }
+
     public function __construct(
         private PropertyDetails $details
     )
