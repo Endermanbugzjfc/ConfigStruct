@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\ConfigStruct\Utils;
 
+use function array_diff;
 use function array_values;
 
 final class ConfigStructUtils
@@ -24,6 +25,14 @@ final class ConfigStructUtils
             ) === $array;
     }
 
+    /**
+     * Keys are reserved, just like {@link array_diff()}.
+     * @param array $a
+     * @param array $b
+     * @return array
+     *
+     * @see ConfigStructUtilsTest::testArrayDiffRecursive()
+     */
     public static function arrayDiffRecursive(
         array $a,
         array $b
