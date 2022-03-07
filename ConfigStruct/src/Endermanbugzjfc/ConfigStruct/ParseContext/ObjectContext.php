@@ -45,7 +45,7 @@ final class ObjectContext
     }
 
     /**
-     * @return array Raw value of elements in the input which do not have the corresponding property.
+     * @return array Raw value of elements in the input which do not have the corresponding property. Please notice that some properties might also have their unhandled elements, see {@link BasePropertyContext::getUnhandledElements()}.
      */
     public function getUnhandledElements() : array
     {
