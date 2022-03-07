@@ -24,40 +24,36 @@ final class ConfigStructUtils
             ) === $array;
     }
 
-    /**
-     * @param array $array
-     * @param callable $callback See test file for full signatures.
-     * @param array $keys
-     * @return void
-     */
-    public static function arrayUnsetRecursive(
-        array    &$array,
-        callable $callback,
-        array    $keys = []
-    ) : void
+    public static function arrayDiffRecursive(
+        array $a,
+        array $b
+    ) : array
     {
-        // Credit: https://stackoverflow.com/questions/9150726/unset-inside-array-walk-recursive-not-working
-        foreach ($array as $key => &$value) {
-            $keysClone = $keys;
-            $keysClone[] = $key;
-            if ($callback(
-                $keysClone,
-                $value
-            )) {
-                unset(
-                    $array[$key]
-                );
-                continue;
-            }
+        // Credit: https://stackoverflow.com/questions/3876435/recursive-array-diff
+        $return = [];
 
-            if (is_array($value)) {
-                self::arrayUnsetRecursive(
-                    $value,
-                    $callback,
-                    $keysClone
-                );
+        foreach ($a as $k => $v) {
+            if (array_key_exists($k, $b)) {
+                if (is_array($v)) {
+                    $recursiveDiff = self::arrayDiffRecursive(
+                        $v,
+                        $b[$k]
+                    );
+                    if (!empty(
+                    $recursiveDiff
+                    )) {
+                        $return[$k] = $recursiveDiff;
+                    }
+                } else {
+                    if ($v != $b[$k]) {
+                        $return[$k] = $v;
+                    }
+                }
+            } else {
+                $return[$k] = $v;
             }
         }
+        return $return;
     }
 
 }
