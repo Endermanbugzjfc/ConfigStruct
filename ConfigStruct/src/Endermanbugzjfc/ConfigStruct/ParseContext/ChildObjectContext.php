@@ -7,7 +7,7 @@ use Endermanbugzjfc\ConfigStruct\ParseError;
 final class ChildObjectContext extends BasePropertyContext
 {
 
-    protected object $object;
+    protected ?object $object = null;
 
     /**
      * @var ParseError|null If one is thrown by {@link ObjectContext::copyToNewObject()} in {@link ChildObjectContext::__construct}.
@@ -38,6 +38,11 @@ final class ChildObjectContext extends BasePropertyContext
     public function getValue() : object
     {
         return $this->object;
+    }
+
+    public function hasValue() : bool
+    {
+        return $this->object !== null;
     }
 
     /**
