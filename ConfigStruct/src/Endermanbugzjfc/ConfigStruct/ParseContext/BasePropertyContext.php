@@ -54,4 +54,8 @@ abstract class BasePropertyContext
         ];
     }
 
+    public function getUnhandledElements() : array {
+        return [];
+    }
+
 }
