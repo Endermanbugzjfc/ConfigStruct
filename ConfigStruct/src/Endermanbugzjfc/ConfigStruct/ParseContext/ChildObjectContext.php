@@ -53,4 +53,12 @@ final class ChildObjectContext extends BasePropertyContext
         return $this->error->getErrorsTree();
     }
 
+    /**
+     * @return array Unhandled elements in the object context.
+     */
+    public function getUnhandledElements() : array
+    {
+        return $this->asObjectContext()->getUnhandledElements();
+    }
+
 }
