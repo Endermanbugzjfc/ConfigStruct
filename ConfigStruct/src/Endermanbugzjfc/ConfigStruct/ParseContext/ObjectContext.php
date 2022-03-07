@@ -83,8 +83,11 @@ final class ObjectContext
         $properties = $this->getPropertyContexts();
         $errs = $this->getErrorsTree();
         foreach ($properties as $property) {
-            $reflection = $property->getDetails()->getReflection();
             $value = $property->getValue();
+            if (!$property->hasValue()) {
+                continue;
+            }
+            $reflection = $property->getDetails()->getReflection();
             try {
                 $reflection->setValue(
                     $object,
