@@ -25,7 +25,7 @@ final class ConfigStructUtils
     }
 
     /**
-     * @param array $array
+     * @param array $array If the array is list, its keys will be reset at the end of the function.
      * @param callable $callback See test file for full signatures.
      * @param array $keys
      * @return void
@@ -37,6 +37,7 @@ final class ConfigStructUtils
     ) : void
     {
         // Credit: https://stackoverflow.com/questions/9150726/unset-inside-array-walk-recursive-not-working
+        $isList = self::arrayIsList($array);
         foreach ($array as $key => &$value) {
             $keysClone = $keys;
             $keysClone[] = $key;
@@ -57,6 +58,9 @@ final class ConfigStructUtils
                     $keysClone
                 );
             }
+        }
+        if ($isList) {
+            $array = array_values($array);
         }
     }
 
