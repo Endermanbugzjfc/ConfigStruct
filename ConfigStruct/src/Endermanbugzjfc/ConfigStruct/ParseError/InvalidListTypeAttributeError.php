@@ -11,7 +11,7 @@ use ReflectionException;
 /**
  * @see ListType::__construct()
  */
-final class InvalidListTypeError extends BaseParseError
+final class InvalidListTypeAttributeError extends BaseParseError
 {
 
     public function __construct(

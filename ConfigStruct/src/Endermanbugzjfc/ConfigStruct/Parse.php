@@ -8,7 +8,7 @@ use Endermanbugzjfc\ConfigStruct\ParseContext\ListContext;
 use Endermanbugzjfc\ConfigStruct\ParseContext\ObjectContext;
 use Endermanbugzjfc\ConfigStruct\ParseContext\PropertyDetails;
 use Endermanbugzjfc\ConfigStruct\ParseContext\RawContext;
-use Endermanbugzjfc\ConfigStruct\ParseError\InvalidListTypeError;
+use Endermanbugzjfc\ConfigStruct\ParseError\InvalidListTypeAttributeError;
 use Endermanbugzjfc\ConfigStruct\Utils\StaticClassTrait;
 use ReflectionClass;
 use ReflectionException;
@@ -149,7 +149,7 @@ final class Parse
                         $listTypeRaw
                     );
                 } catch (ReflectionException $err) {
-                    $errs[] = new InvalidListTypeError(
+                    $errs[] = new InvalidListTypeAttributeError(
                         $err,
                         $listTypeRaw
                     );
