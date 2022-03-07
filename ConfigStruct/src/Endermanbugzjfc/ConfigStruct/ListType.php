@@ -16,7 +16,7 @@ class ListType
      * @param string $type Class name of the struct candidate. If the class had become invalid during runtime, this candidate will be omitted.
      */
     public function __construct(
-        string $type
+        string $type // TODO: Dynamic.
     )
     {
     }
