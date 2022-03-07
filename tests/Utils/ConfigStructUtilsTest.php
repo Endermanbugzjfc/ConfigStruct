@@ -34,4 +34,34 @@ class ConfigStructUtilsTest extends TestCase
             )
         );
     }
+
+    public function testArrayDiffRecursive()
+    {
+        $array = [
+            "a" => [
+                "b",
+                "c"
+            ],
+            "d"
+        ];
+
+        $diff = ConfigStructUtils::arrayDiffRecursive(
+            $array,
+            [
+                "a" => [
+                    "b"
+                ],
+                "d"
+            ]
+        );
+
+        $this->assertTrue(
+            $diff === [
+                "a" => [
+                    1 => "c"
+                ]
+            ]
+        );
+    }
+
 }
