@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Endermanbugzjfc\ConfigStruct\Utils;
 
 use function array_values;
+use function array_walk_recursive;
 
 final class ConfigStructUtils
 {
@@ -25,8 +26,9 @@ final class ConfigStructUtils
     }
 
     /**
+     * {@link array_walk_recursive()} but supports unset.
      * @param array $array If the array is list, its keys will be reset at the end of the function.
-     * @param callable $callback See test file for full signatures.
+     * @param callable $callback See {@link ConfigStructUtilsTest::testArrayUnsetRecursive()} for full signatures. The value should not be changed if true is returned, as it is going to be removed from the array.
      * @param array $keys
      * @return void
      */
