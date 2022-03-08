@@ -308,14 +308,18 @@ final class Parse
     }
 
     protected function invalidStructure(
-        Throwable $previous,
-        ReflectionClass $class,
-        ?ReflectionProperty $property
-    ) : void {
-        $className = $class->getName();
-        $propertyName = $property === null
-            ? ""
-            : "->" . $property->getDeclaringClass()->getName();
+        Throwable                          $previous,
+        ReflectionClass|ReflectionProperty $classOrProperty
+    ) : void
+    {
+        if ($classOrProperty instanceof ReflectionClass) {
+            $className = $classOrProperty->getName();
+            $propertyName = "";
+        } else {
+            $className = $classOrProperty->getDeclaringClass()->getName();
+            $propertyName = "->" . $classOrProperty->getName();
+        }
+
         throw new StructureError(
             "Invalid structure in " . $className . $propertyName,
             $previous
