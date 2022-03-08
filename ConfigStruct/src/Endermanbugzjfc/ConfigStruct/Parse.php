@@ -307,7 +307,7 @@ final class Parse
         return $leastUnhandled;
     }
 
-    protected function invalidStructure(
+    protected static function invalidStructure(
         Throwable                          $previous,
         ReflectionClass|ReflectionProperty $classOrProperty
     ) : void
