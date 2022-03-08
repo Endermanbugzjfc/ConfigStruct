@@ -41,7 +41,7 @@ class TypeMismatchErrorTest extends TestCase
             );
         } catch (ParseErrorsWrapper $parseError) {
         }
-        if (empty($parseError)) {
+        if (!isset($parseError)) {
             throw new AssertionError(
                 "No errors when copy parsed data to object"
             );
