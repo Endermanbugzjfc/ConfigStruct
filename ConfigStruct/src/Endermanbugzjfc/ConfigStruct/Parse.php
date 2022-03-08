@@ -14,7 +14,6 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
-use function array_count_values;
 use function array_key_exists;
 use function array_map;
 use function implode;
@@ -141,7 +140,7 @@ final class Parse
         $listTypes = $property->getAttributes(
             ListType::class
         );
-        if (!empty($listTypes)) {
+        if ($listTypes !== []) {
             foreach ($listTypes as $listType) {
                 try {
                     $listTypeRaw = $listType->getArguments()[0];
@@ -198,36 +197,37 @@ final class Parse
     {
         foreach ($properties as $property) {
             $propertyName = $property->getName();
+
+            $names = $duplicated = [];
             foreach (
                 $property->getAttributes(KeyName::class)
                 as $keyName
             ) {
-                $names[] = $keyName->getArguments()[0];
-            }
-            if (!empty($names)) {
-                $namesCount = array_count_values($names);
-                foreach ($namesCount as $name => $count) {
-                    if ($count > 1) {
-                        continue;
-                    }
+                $name = $keyName->getArguments()[0];
+                if (in_array(
+                    $name,
+                    $names,
+                    true
+                )) {
                     $duplicated[] = $name;
                 }
-                if (!empty($duplicated)) {
-                    $debugClass = $property->getDeclaringClass()->getName();
-                    $duplicatedQuoted = array_map(
-                        fn(string $name) : string => "\"$name\"",
-                        $duplicated
-                    );
-                    $duplicatedList = implode(
-                        ", ",
-                        $duplicatedQuoted
-                    );
-                    throw new StructureError(
-                        "Duplicated key name $duplicatedList in $debugClass->$propertyName"
-                    );
-                }
+                $names[] = $name;
             }
 
+            if ($duplicated !== []) {
+                $debugClass = $property->getDeclaringClass()->getName();
+                $duplicatedQuoted = array_map(
+                    fn(string $name) : string => "\"$name\"",
+                    $duplicated
+                );
+                $duplicatedList = implode(
+                    ", ",
+                    $duplicatedQuoted
+                );
+                throw new StructureError(
+                    "Duplicated key name $duplicatedList in $debugClass->$propertyName"
+                );
+            }
             foreach ($names ?? [
                 $propertyName
             ] as $name) {
