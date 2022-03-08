@@ -19,7 +19,7 @@ final class ListContext extends BasePropertyContext
     /**
      * @param PropertyDetails $details
      * @param ObjectContext[] $objectContexts
-     * @param ParseError[] $errors Typically {@link InvalidListTypeAttributeError}.
+     * @param array $errors
      * @param array $unhandledElements
      */
     public function __construct(

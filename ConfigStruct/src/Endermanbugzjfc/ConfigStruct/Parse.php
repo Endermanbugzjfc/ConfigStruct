@@ -8,7 +8,6 @@ use Endermanbugzjfc\ConfigStruct\ParseContext\ListContext;
 use Endermanbugzjfc\ConfigStruct\ParseContext\ObjectContext;
 use Endermanbugzjfc\ConfigStruct\ParseContext\PropertyDetails;
 use Endermanbugzjfc\ConfigStruct\ParseContext\RawContext;
-use Endermanbugzjfc\ConfigStruct\ParseError\InvalidListTypeAttributeError;
 use Endermanbugzjfc\ConfigStruct\Utils\StaticClassTrait;
 use InvalidArgumentException;
 use ReflectionClass;
@@ -148,11 +147,12 @@ final class Parse
                         $listTypeRaw
                     );
                 } catch (ReflectionException $err) {
-                    $errs[] = new InvalidListTypeAttributeError(
-                        $err,
-                        $listTypeRaw
+                    $debugClass = $property->getDeclaringClass()->getName();
+                    $propertyName = $property->getName();
+                    throw new StructureError(
+                        "List type attribute has invalid class in $debugClass->$propertyName",
+                        $err
                     );
-                    continue;
                 }
                 $listReflects[] = $listReflect;
             }
