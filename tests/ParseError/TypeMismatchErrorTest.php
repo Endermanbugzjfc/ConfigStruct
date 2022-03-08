@@ -32,10 +32,10 @@ class TypeMismatchErrorTest extends TestCase
      * @throws ParseErrorsWrapper
      */
     private static function parse(
-        mixed $value
+        mixed $value,
+        object $object
     ) : ObjectContext
     {
-        $object = self::objectProvider();
         $context = Parse::object(
             [
                 "testBool" => $value,
@@ -57,8 +57,10 @@ class TypeMismatchErrorTest extends TestCase
      */
     public function testGetMessageNull()
     {
+        $object = self::objectProvider();
         self::parse(
-            null
+            null,
+            $object
         );
         $this->expectExceptionMessage(
             <<<EOT
