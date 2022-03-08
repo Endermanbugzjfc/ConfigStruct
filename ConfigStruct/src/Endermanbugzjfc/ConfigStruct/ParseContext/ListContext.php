@@ -6,7 +6,6 @@ declare(strict_types=1);
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
 use Endermanbugzjfc\ConfigStruct\ParseError;
-use Endermanbugzjfc\ConfigStruct\Utils\ConfigStructUtils;
 use function array_merge;
 
 final class ListContext extends BasePropertyContext
@@ -65,16 +64,6 @@ final class ListContext extends BasePropertyContext
     public function getObjectContextsArray() : array
     {
         return $this->objectContexts;
-    }
-
-    /**
-     * @return bool False = indexed array (incremental numeric keys). True = associative array (disordered keys).
-     */
-    public function isAssociative() : bool
-    {
-        return !ConfigStructUtils::arrayIsList(
-            $this->getObjectContextsArray()
-        );
     }
 
     public function getErrorsTree() : array
