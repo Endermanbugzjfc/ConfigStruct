@@ -174,7 +174,7 @@ final class Parse
                 $details,
                 $elements ?? [],
                 $errs ?? [],
-                $elements ?? []
+                $value
             );
         }
 
