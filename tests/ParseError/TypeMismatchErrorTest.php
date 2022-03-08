@@ -12,7 +12,10 @@ use PHPUnit\Framework\TestCase;
 class TypeMismatchErrorTest extends TestCase
 {
 
-    private static function objectProvider() : object
+    /**
+     * @noinspection PhpMissingReturnTypeInspection No auto completion for properties. >:(
+     */
+    private static function objectProvider()
     {
         return new class () {
 
