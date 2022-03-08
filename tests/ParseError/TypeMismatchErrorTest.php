@@ -12,9 +12,49 @@ use PHPUnit\Framework\TestCase;
 class TypeMismatchErrorTest extends TestCase
 {
 
-    public function testGetMessage()
-    {
+    private static function objectProvider() : object {
+        return new class () {
 
+            public bool $testBool;
+            public int $testInt;
+            public float $testFloat;
+            public string $testString;
+
+        };
+    }
+
+    /**
+     * @throws ParseErrorsWrapper
+     */
+    public function testGetMessageNull()
+    {
+        $object = self::objectProvider();
+        $context = Parse::object(
+            [
+                "testBool" => null,
+                "testInt" => null,
+                "testFloat" => null,
+                "testString" => null
+            ],
+            $object
+        );
+        $this->expectExceptionMessage(
+            <<<EOT
+            4 errors in root object
+                1 errors in element "testBool"
+                    Element is null while it should be bool
+                1 errors in element "testInt"
+                    Element is null while it should be int
+                1 errors in element "testFloat"
+                    Element is null while it should be float
+                1 errors in element "testString"
+                    Element is null while it should be string
+            
+            EOT
+        );
+        $context->copyToNewObject(
+            "root object"
+        );
     }
 
     public function testGetExpectedTypes()
