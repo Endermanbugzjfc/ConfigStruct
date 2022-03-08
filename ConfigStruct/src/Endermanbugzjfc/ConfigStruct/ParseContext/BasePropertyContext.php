@@ -47,9 +47,11 @@ abstract class BasePropertyContext
     {
         $key = $this->getErrorsTreeKey();
         $tree = $this->getErrorsTree();
-        return [
-            $key => $tree
-        ];
+        return $tree === []
+            ? []
+            : [
+                $key => $tree
+            ];
     }
 
     public function getUnhandledElements() : array
