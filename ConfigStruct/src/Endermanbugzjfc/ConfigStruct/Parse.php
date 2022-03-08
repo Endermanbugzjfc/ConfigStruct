@@ -240,17 +240,16 @@ final class Parse
     /**
      * Find the best matching struct for the input (list element) by checking the count of handled elements. The struct which handles the most elements will be selected. The input will then be parsed into a {@link ObjectContext} with the selected struct.
      *
-     * Incompatible structs will never be used.
      * @param ReflectionProperty $property Property is needed for {@link StructureError} message.
      * @param ReflectionClass[] $listTypes Struct candidates.
      * @param array $input An array which was converted from object.
-     * @return ObjectContext|null Null = no suitable type for this input (all types are incompatible).
+     * @return ObjectContext|ParseError If all structs conflict with the input, the error of the first {@link ObjectContext} will be returned.
      */
     public static function listElement(
         ReflectionProperty $property,
         array              $listTypes,
         array              $input
-    ) : ?ObjectContext
+    ) : ObjectContext|ParseError
     {
         if ($listTypes === []) {
             throw new InvalidArgumentException(
@@ -259,6 +258,7 @@ final class Parse
         }
 
         $listTypesRaw = [];
+        $firstErr = null;
         foreach ($listTypes as $key => $listType) {
             $listTypeRaw = $listType->getName();
             if (in_array(
@@ -280,13 +280,14 @@ final class Parse
                 $output->copyToNewObject(
                     "object"
                 );
-            } catch (ParseError) {
+            } catch (ParseError $err) {
+                $firstErr ??= $err;
                 continue;
             }
             $outputs[$key] = $output;
         }
         if (!isset($outputs)) {
-            return null;
+            return $firstErr;
         }
         $leastUnhandled = null;
         foreach ($outputs as $output2) {
