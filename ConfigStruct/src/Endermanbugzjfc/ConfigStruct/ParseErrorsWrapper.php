@@ -10,6 +10,7 @@ use Endermanbugzjfc\ConfigStruct\ParseError\BaseParseError;
 use Exception;
 use function array_unshift;
 use function implode;
+use function rtrim;
 use function str_repeat;
 use const E_RECOVERABLE_ERROR;
 
@@ -89,11 +90,11 @@ final class ParseErrorsWrapper extends Exception
         $tree = $this->getErrorsTree();
         $label = $this->getRootHeaderLabel();
         return self::errorsTreeToString(
-            $tree,
-            $label,
-            $this->getIndentation(),
-            $this->getErrorFilter()
-        );
+                $tree,
+                $label,
+                $this->getIndentation(),
+                $this->getErrorFilter()
+            ) . "\n";
     }
 
     /**
@@ -184,11 +185,14 @@ final class ParseErrorsWrapper extends Exception
     }
 
     /**
+     * Trim out the trailing line break and other whitespaces.
      * @return string
      */
-    public function getMessageWithTrailingLineBreak() : string
+    public function getMessageRtrim() : string
     {
-        return $this->getMessage() . "\n";
+        return rtrim(
+            $this->getMessage()
+        );
     }
 
 }
