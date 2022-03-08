@@ -166,12 +166,17 @@ final class Parse
                 if ($element === null) {
                     continue; // TODO: Find better solution.
                 }
+
+                unset(
+                    $value[$key]
+                );
                 $elements[$key] = $element;
             }
             return new ListContext(
                 $details,
                 $elements ?? [],
-                $errs ?? []
+                $errs ?? [],
+                $elements ?? []
             );
         }
 
