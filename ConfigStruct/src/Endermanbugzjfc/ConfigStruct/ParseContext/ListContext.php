@@ -19,13 +19,13 @@ final class ListContext extends BasePropertyContext
     /**
      * @param PropertyDetails $details
      * @param ObjectContext[] $objectContexts
-     * @param array $errors
+     * @param array $baseErrorsTree
      * @param array $unhandledElements
      */
     public function __construct(
         PropertyDetails $details,
         protected array $objectContexts,
-        protected array $errors,
+        protected array $baseErrorsTree,
         protected array $unhandledElements
     )
     {
@@ -39,7 +39,7 @@ final class ListContext extends BasePropertyContext
                 $subElementKey = self::getErrorsTreeSubElementKey(
                     $key
                 );
-                $this->errors[$subElementKey][] = $err->getErrorsTree();
+                $this->baseErrorsTree[$subElementKey][] = $err->getErrorsTree();
                 continue;
             }
             $objects[$key] = $object;
@@ -73,7 +73,7 @@ final class ListContext extends BasePropertyContext
         $tree = parent::getErrorsTree();
         $tree = array_merge(
             $tree,
-            $this->errors
+            $this->baseErrorsTree
         );
 
         $contexts = $this->getObjectContextsArray();

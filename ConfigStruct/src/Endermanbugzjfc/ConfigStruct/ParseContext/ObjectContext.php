@@ -83,7 +83,7 @@ final class ObjectContext
     ) : object
     {
         $properties = $this->getPropertyContexts();
-        $errs = $this->getErrorsTree();
+        $tree = $this->getErrorsTree();
         foreach ($properties as $property) {
             if ($property->omitCopyToObject()) {
                 continue;
@@ -117,7 +117,7 @@ final class ObjectContext
                 }
 
                 $treeKey = $property->getErrorsTreeKey();
-                $errs[$treeKey][] = new TypeMismatchError(
+                $tree[$treeKey][] = new TypeMismatchError(
                     $err,
                     $expectedTypes,
                     get_debug_type($value)
@@ -125,9 +125,9 @@ final class ObjectContext
             }
         }
 
-        if ($errs !== []) {
+        if ($tree !== []) {
             throw new ParseError(
-                $errs,
+                $tree,
                 $rootHeaderLabel
             );
         }
