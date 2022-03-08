@@ -2,6 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct;
 
+use AssertionError;
 use Endermanbugzjfc\ConfigStruct\ParseContext\BasePropertyContext;
 use Endermanbugzjfc\ConfigStruct\ParseContext\ChildObjectContext;
 use Endermanbugzjfc\ConfigStruct\ParseContext\ListContext;
@@ -17,6 +18,7 @@ use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
 use function array_key_exists;
+use function array_unique;
 use function implode;
 use function in_array;
 
@@ -122,27 +124,55 @@ final class Parse
     ) : BasePropertyContext
     {
         $property = $details->getReflection();
-        $type = $property->getType();
-        if ($type instanceof ReflectionNamedType) {
+        $types = $property->getType();
+        $types = $types === null
+            ? []
+            : (
+            $types instanceof ReflectionNamedType
+                ? [$types]
+                : $types
+
+            );
+        $candidates = $raws = [];
+        foreach ($types as $type) {
             $raw = $type->getName();
             if ($raw === "self") {
                 $raw = $details->getReflection()->getDeclaringClass()->getName();
             }
+            $raws[] = $raw;
+        }
+        $raws = array_unique(
+            $raws
+        ); // Since it is possible to have both "self" and the own class name in an union-types.
+        foreach ($raws as $raw) {
             try {
-                $reflect = new ReflectionClass(
+                $candidate = new ReflectionClass(
                     $raw
                 );
             } catch (ReflectionException) {
+                continue;
             }
+            $candidates[] = $candidate;
         }
-        if (isset($reflect)) {
-            return new ChildObjectContext(
-                $details,
-                self::objectByReflection(
-                    $value,
-                    $reflect
-                )
-            );
+        if ($candidates !== []) {
+            try {
+                $found = self::findMatchingStruct(
+                    $candidates,
+                    $value
+                );
+            } catch (Exception $err) {
+                throw new AssertionError(
+                    "unreachable",
+                    -1,
+                    $err
+                );
+            }
+            if (!$found instanceof ParseErrorsWrapper) {
+                return new ChildObjectContext(
+                    $details,
+                    $found
+                );
+            }
         }
 
         $listTypes = $property->getAttributes(
@@ -263,8 +293,8 @@ final class Parse
      * @throws Exception Duplicated struct candidates.
      */
     public static function findMatchingStruct(
-        array              $candidates,
-        array              $input
+        array $candidates,
+        array $input
     ) : ObjectContext|ParseErrorsWrapper
     {
         if ($candidates === []) {
