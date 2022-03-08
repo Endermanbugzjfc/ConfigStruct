@@ -31,9 +31,7 @@ abstract class BasePropertyContext
     public function hasError() : bool
     {
         $tree = $this->getErrorsTree();
-        return !empty(
-        $tree
-        );
+        return $tree !== [];
     }
 
     final public function getErrorsTreeKey() : string
@@ -54,7 +52,8 @@ abstract class BasePropertyContext
         ];
     }
 
-    public function getUnhandledElements() : array {
+    public function getUnhandledElements() : array
+    {
         return [];
     }
 

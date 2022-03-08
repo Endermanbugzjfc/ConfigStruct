@@ -119,9 +119,7 @@ final class ObjectContext
             }
         }
 
-        if (!empty(
-        $errs
-        )) {
+        if ($errs !== []) {
             throw new ParseError(
                 $errs,
                 $rootHeaderLabel
@@ -171,9 +169,7 @@ final class ObjectContext
     public function hasError() : bool
     {
         $tree = $this->getErrorsTree();
-        return !empty(
-        $tree
-        );
+        return $tree !== [];
     }
 
 }
