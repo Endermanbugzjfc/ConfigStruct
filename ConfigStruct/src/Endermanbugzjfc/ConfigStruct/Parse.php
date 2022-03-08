@@ -56,10 +56,17 @@ final class Parse
         $properties = $reflect->getProperties(
             ReflectionProperty::IS_PUBLIC
         );
-        $map ??= self::getPropertyNameToKeyNameMap(
-            $properties,
-            $input
-        );
+        try {
+            $map ??= self::getPropertyNameToKeyNameMap(
+                $properties,
+                $input
+            );
+        } catch (Exception $err) {
+            self::invalidStructure(
+                $err,
+                $reflect
+            );
+        }
         foreach (
             $properties as $property
         ) {
@@ -199,6 +206,7 @@ final class Parse
      * @param ReflectionProperty[] $properties
      * @param array $input
      * @return array<string, string>
+     * @throws Exception Duplicated key names.
      */
     protected static function getPropertyNameToKeyNameMap(
         array $properties,
@@ -225,13 +233,12 @@ final class Parse
             }
 
             if ($duplicated !== []) {
-                $debugClass = $property->getDeclaringClass()->getName();
                 $duplicatedList = implode(
                     "\", \"",
                     $duplicated
                 );
-                throw new StructureError(
-                    "Duplicated key name \"$duplicatedList\" in $debugClass->$propertyName"
+                throw new Exception(
+                    "Duplicated key names \"$duplicatedList\""
                 );
             }
             foreach ($names ?? [
