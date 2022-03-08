@@ -9,19 +9,19 @@ use Endermanbugzjfc\ConfigStruct\ParseContext\ObjectContext;
 use Endermanbugzjfc\ConfigStruct\ParseContext\PropertyDetails;
 use Endermanbugzjfc\ConfigStruct\ParseContext\RawContext;
 use Endermanbugzjfc\ConfigStruct\Utils\StaticClassTrait;
+use Endermanbugzjfc\ConfigStruct\Utils\StructureErrorThrowerTrait;
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
-use Throwable;
 use function array_key_exists;
 use function implode;
 use function in_array;
 
 final class Parse
 {
-    use StaticClassTrait;
+    use StaticClassTrait, StructureErrorThrowerTrait;
 
     /**
      * Parse the data of an array. Base on an object's structure, which is property types and attributes provided.
@@ -305,25 +305,6 @@ final class Parse
         }
 
         return $leastUnhandled;
-    }
-
-    protected static function invalidStructure(
-        Throwable                          $previous,
-        ReflectionClass|ReflectionProperty $classOrProperty
-    ) : void
-    {
-        if ($classOrProperty instanceof ReflectionClass) {
-            $className = $classOrProperty->getName();
-            $propertyName = "";
-        } else {
-            $className = $classOrProperty->getDeclaringClass()->getName();
-            $propertyName = "->" . $classOrProperty->getName();
-        }
-
-        throw new StructureError(
-            "Invalid structure in " . $className . $propertyName,
-            $previous
-        );
     }
 
 }
