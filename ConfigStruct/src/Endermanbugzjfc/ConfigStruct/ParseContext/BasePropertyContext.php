@@ -57,4 +57,9 @@ abstract class BasePropertyContext
         return [];
     }
 
+    public function omitCopyToObject() : bool
+    {
+        return false;
+    }
+
 }

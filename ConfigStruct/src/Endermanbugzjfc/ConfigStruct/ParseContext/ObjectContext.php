@@ -83,6 +83,10 @@ final class ObjectContext
         $properties = $this->getPropertyContexts();
         $errs = $this->getErrorsTree();
         foreach ($properties as $property) {
+            if ($property->omitCopyToObject()) {
+                continue;
+            }
+
             $reflection = $property->getDetails()->getReflection();
             $value = $property->getValue();
             try {

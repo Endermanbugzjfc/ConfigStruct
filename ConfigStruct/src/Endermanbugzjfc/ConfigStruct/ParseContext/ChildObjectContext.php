@@ -61,4 +61,11 @@ final class ChildObjectContext extends BasePropertyContext
         return $this->asObjectContext()->getUnhandledElements();
     }
 
+    public function omitCopyToObject() : bool
+    {
+        return isset(
+            $this->object
+        );
+    }
+
 }
