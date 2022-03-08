@@ -183,4 +183,12 @@ final class ParseErrorsWrapper extends Exception
         ];
     }
 
+    /**
+     * @return string
+     */
+    public function getMessageWithTrailingLineBreak() : string
+    {
+        return $this->getMessage() . "\n";
+    }
+
 }
