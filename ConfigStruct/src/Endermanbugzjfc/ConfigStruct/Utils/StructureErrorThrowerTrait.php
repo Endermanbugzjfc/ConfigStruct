@@ -12,7 +12,7 @@ use Throwable;
 trait StructureErrorThrowerTrait
 {
 
-    protected static function invalidStructure(
+    private static function invalidStructure(
         Throwable                          $previous,
         ReflectionClass|ReflectionProperty $classOrProperty
     ) : void
