@@ -52,7 +52,8 @@ class TypeMismatchErrorTest extends TestCase
             
             EOT
         );
-        $context->copyToNewObject(
+        $context->copyToObject(
+            $object,
             "root object"
         );
     }
