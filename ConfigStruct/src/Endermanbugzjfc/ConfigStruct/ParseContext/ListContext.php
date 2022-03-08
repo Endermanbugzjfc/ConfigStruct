@@ -20,11 +20,13 @@ final class ListContext extends BasePropertyContext
      * @param PropertyDetails $details
      * @param ObjectContext[] $objectContexts
      * @param ParseError[] $errors Typically {@link InvalidListTypeAttributeError}.
+     * @param array $unhandledElements
      */
     public function __construct(
         PropertyDetails $details,
         protected array $objectContexts,
-        protected array $errors
+        protected array $errors,
+        protected array $unhandledElements
     )
     {
         $contexts = $this->getObjectContextsArray();
@@ -92,6 +94,14 @@ final class ListContext extends BasePropertyContext
     ) : string
     {
         return "index \"$elementKey\"";
+    }
+
+    /**
+     * @return array
+     */
+    public function getUnhandledElements() : array
+    {
+        return $this->unhandledElements;
     }
 
 }
