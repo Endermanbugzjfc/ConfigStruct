@@ -82,15 +82,15 @@ final class ObjectContext
         string $rootHeaderLabel
     ) : object
     {
-        $properties = $this->getPropertyContexts();
+        $propertyContexts = $this->getPropertyContexts();
         $tree = $this->getErrorsTree();
-        foreach ($properties as $property) {
-            if ($property->omitCopyToObject()) {
+        foreach ($propertyContexts as $propertyContext) {
+            if ($propertyContext->omitCopyToObject()) {
                 continue;
             }
 
-            $reflection = $property->getDetails()->getReflection();
-            $value = $property->getValue();
+            $reflection = $propertyContext->getDetails()->getReflection();
+            $value = $propertyContext->getValue();
             try {
                 $reflection->setValue(
                     $object,
@@ -116,7 +116,7 @@ final class ObjectContext
                     $expectedTypes[] = "null";
                 }
 
-                $treeKey = $property->getErrorsTreeKey();
+                $treeKey = $propertyContext->getErrorsTreeKey();
                 $tree[$treeKey][] = new TypeMismatchError(
                     $err,
                     $expectedTypes,
@@ -167,11 +167,11 @@ final class ObjectContext
     public function getErrorsTree() : array
     {
         $tree = [];
-        $properties = $this->getPropertyContexts();
-        foreach ($properties as $property) {
+        $propertyContexts = $this->getPropertyContexts();
+        foreach ($propertyContexts as $propertyContext) {
             $tree = array_merge(
                 $tree,
-                $property->getWrappedErrorsTree()
+                $propertyContext->getWrappedErrorsTree()
             );
         }
 
