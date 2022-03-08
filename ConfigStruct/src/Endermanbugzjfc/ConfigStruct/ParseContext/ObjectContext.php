@@ -5,6 +5,7 @@ namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 use Endermanbugzjfc\ConfigStruct\ParseError;
 use Endermanbugzjfc\ConfigStruct\ParseError\TypeMismatchError;
 use Endermanbugzjfc\ConfigStruct\StructureError;
+use Endermanbugzjfc\ConfigStruct\Utils\StructureErrorThrowerTrait;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
@@ -19,6 +20,7 @@ use function get_debug_type;
 
 final class ObjectContext
 {
+    use StructureErrorThrowerTrait;
 
     // TODO: Fix document for $errors, cannot be rendered by PHPStorm correctly.
     /**
@@ -144,9 +146,12 @@ final class ObjectContext
         try {
             $instance = $this->getReflection()->newInstance();
         } catch (ReflectionException $err) {
-            throw new StructureError(
-                "Failed to create a new object reflection when parsing $rootHeaderLabel (probably incompatible constructor)",
-                $err
+            self::invalidStructure(
+                new StructureError(
+                    "Failed to create a new object from reflection",
+                    $err
+                ),
+                $this->getReflection()
             );
         }
         $this->copyToObject(

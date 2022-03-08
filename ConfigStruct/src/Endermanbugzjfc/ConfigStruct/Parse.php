@@ -148,11 +148,12 @@ final class Parse
                         $listTypeRaw
                     );
                 } catch (ReflectionException $err) {
-                    $debugClass = $property->getDeclaringClass()->getName();
-                    $propertyName = $property->getName();
-                    throw new StructureError(
-                        "List type attribute has invalid class in $debugClass->$propertyName",
-                        $err
+                    self::invalidStructure(
+                        new StructureError(
+                            "List type attribute has invalid class",
+                            $err
+                        ),
+                        $property
                     );
                 }
                 $listReflects[] = $listReflect;
