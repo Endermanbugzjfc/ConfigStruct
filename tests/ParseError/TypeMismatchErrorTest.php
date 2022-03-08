@@ -58,6 +58,20 @@ class TypeMismatchErrorTest extends TestCase
     public function testGetMessageNull()
     {
         $object = self::objectProvider();
+        $this->expectExceptionMessage(
+            <<<EOT
+            4 errors in root object
+                1 errors in element "testBool"
+                    Element is null while it should be bool
+                1 errors in element "testInt"
+                    Element is null while it should be int
+                1 errors in element "testFloat"
+                    Element is null while it should be float
+                1 errors in element "testString"
+                    Element is null while it should be string
+            
+            EOT
+        );
         self::parse(
             null,
             $object
