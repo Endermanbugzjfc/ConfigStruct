@@ -157,7 +157,7 @@ final class Parse
                 $listReflects[] = $listReflect;
             }
             foreach ($value as $key => $input) {
-                $element = self::listElement(
+                $element = self::findMatchingStruct(
                     $property,
                     $listReflects ?? [],
                     $input
@@ -239,28 +239,28 @@ final class Parse
     }
 
     /**
-     * Find the best matching struct for the input (list element) by checking the count of handled elements. The struct which handles the most elements will be selected. The input will then be parsed into a {@link ObjectContext} with the selected struct.
+     * Find the struct with the most handled elements count. And parse the input with the selected struct.
      *
      * @param ReflectionProperty $property Property is needed for {@link StructureError} message.
-     * @param ReflectionClass[] $listTypes Struct candidates.
+     * @param ReflectionClass[] $candidates Struct candidates.
      * @param array $input An array which was converted from object.
      * @return ObjectContext|ParseError If all structs conflict with the input, the error of the first {@link ObjectContext} will be returned.
      */
-    public static function listElement(
+    public static function findMatchingStruct(
         ReflectionProperty $property,
-        array              $listTypes,
+        array              $candidates,
         array              $input
     ) : ObjectContext|ParseError
     {
-        if ($listTypes === []) {
+        if ($candidates === []) {
             throw new InvalidArgumentException(
-                "No list types were given"
+                "No struct candidates were given"
             );
         }
 
         $listTypesRaw = [];
         $firstErr = null;
-        foreach ($listTypes as $key => $listType) {
+        foreach ($candidates as $key => $listType) {
             $listTypeRaw = $listType->getName();
             if (in_array(
                 $listTypeRaw,
