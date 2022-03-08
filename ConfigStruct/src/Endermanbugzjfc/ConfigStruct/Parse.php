@@ -10,6 +10,7 @@ use Endermanbugzjfc\ConfigStruct\ParseContext\PropertyDetails;
 use Endermanbugzjfc\ConfigStruct\ParseContext\RawContext;
 use Endermanbugzjfc\ConfigStruct\Utils\StaticClassTrait;
 use Endermanbugzjfc\ConfigStruct\Utils\StructureErrorThrowerTrait;
+use Exception;
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionException;
@@ -159,11 +160,17 @@ final class Parse
                 $listReflects[] = $listReflect;
             }
             foreach ($value as $key => $input) {
-                $element = self::findMatchingStruct(
-                    $property,
-                    $listReflects ?? [],
-                    $input
-                );
+                try {
+                    $element = self::findMatchingStruct(
+                        $listReflects ?? [],
+                        $input
+                    );
+                } catch (Exception $err) {
+                    self::invalidStructure(
+                        $err,
+                        $property
+                    );
+                }
                 if ($element instanceof ParseError) {
                     $errs[$key] = $element->getErrorsTree();
                     continue;
@@ -243,13 +250,12 @@ final class Parse
     /**
      * Find the struct with the most handled elements count. And parse the input with the selected struct.
      *
-     * @param ReflectionProperty $property Property is needed for {@link StructureError} message.
      * @param ReflectionClass[] $candidates Struct candidates.
      * @param array $input An array which was converted from object.
      * @return ObjectContext|ParseError If all structs conflict with the input, the error of the first {@link ObjectContext} will be returned.
+     * @throws Exception Duplicated struct candidates.
      */
     public static function findMatchingStruct(
-        ReflectionProperty $property,
         array              $candidates,
         array              $input
     ) : ObjectContext|ParseError
@@ -260,24 +266,21 @@ final class Parse
             );
         }
 
-        $listTypesRaw = [];
+        $raws = $duplicated = [];
         $firstErr = null;
-        foreach ($candidates as $key => $listType) {
-            $listTypeRaw = $listType->getName();
+        foreach ($candidates as $key => $candidate) {
+            $raw = $candidate->getName();
             if (in_array(
-                $listTypeRaw,
-                $listTypesRaw,
+                $raw,
+                $raws,
                 true
             )) {
-                $debugClass = $property->getDeclaringClass()->getName();
-                $debugProperty = $property->getName();
-                throw new StructureError(
-                    "Duplicated list type $listTypeRaw in $debugClass->$debugProperty"
-                );
+                $duplicated[] = $raw;
+                continue;
             }
             $output = self::objectByReflection(
                 $input,
-                $listType
+                $candidate
             );
             try {
                 $output->copyToNewObject(
@@ -288,6 +291,15 @@ final class Parse
                 continue;
             }
             $outputs[$key] = $output;
+        }
+        if ($duplicated !== []) {
+            $duplicatedList = implode(
+                ", ",
+                $duplicated
+            );
+            throw new Exception(
+                "Duplicated struct candidates $duplicatedList"
+            );
         }
         if (!isset($outputs)) {
             return $firstErr;
