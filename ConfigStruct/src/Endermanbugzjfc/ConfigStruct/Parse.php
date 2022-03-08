@@ -10,6 +10,7 @@ use Endermanbugzjfc\ConfigStruct\ParseContext\PropertyDetails;
 use Endermanbugzjfc\ConfigStruct\ParseContext\RawContext;
 use Endermanbugzjfc\ConfigStruct\ParseError\InvalidListTypeAttributeError;
 use Endermanbugzjfc\ConfigStruct\Utils\StaticClassTrait;
+use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
@@ -251,6 +252,12 @@ final class Parse
         array              $input
     ) : ?ObjectContext
     {
+        if ($listTypes === []) {
+            throw new InvalidArgumentException(
+                "No list types were given"
+            );
+        }
+
         $listTypesRaw = [];
         foreach ($listTypes as $key => $listType) {
             $listTypeRaw = $listType->getName();
