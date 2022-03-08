@@ -12,7 +12,8 @@ use PHPUnit\Framework\TestCase;
 class TypeMismatchErrorTest extends TestCase
 {
 
-    private static function objectProvider() : object {
+    private static function objectProvider() : object
+    {
         return new class () {
 
             public bool $testBool;
