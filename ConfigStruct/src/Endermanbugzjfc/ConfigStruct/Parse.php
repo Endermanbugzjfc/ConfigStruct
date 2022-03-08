@@ -271,9 +271,12 @@ final class Parse
                     "Duplicated key names \"$duplicatedList\""
                 );
             }
-            foreach ($names ?? [
-                $propertyName
-            ] as $name) {
+            foreach (
+                $names === []
+                    ? [$propertyName]
+                    : $names
+                as $name
+            ) {
                 if (!array_key_exists($name, $input)) {
                     continue;
                 }
