@@ -135,7 +135,7 @@ final class ObjectContext
     /**
      * @param string $rootHeaderLabel See {@link ParseError::getRootHeaderLabel()}.
      * @return object The constructor of object should have 0 arguments.
-     * @throws StructureError|ParseError StructureError = Failed to construct a new instance (probably incompatible arguments).
+     * @throws ParseError
      */
     public function copyToNewObject(
         string $rootHeaderLabel
@@ -144,7 +144,10 @@ final class ObjectContext
         try {
             $instance = $this->getReflection()->newInstance();
         } catch (ReflectionException $err) {
-            throw new StructureError($err);
+            throw new StructureError(
+                "Failed to create a new object reflection when parsing $rootHeaderLabel (probably incompatible constructor)",
+                $err
+            );
         }
         $this->copyToObject(
             $instance,
