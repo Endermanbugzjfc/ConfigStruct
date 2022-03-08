@@ -15,7 +15,6 @@ use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
 use function array_key_exists;
-use function array_map;
 use function implode;
 use function in_array;
 
@@ -216,16 +215,12 @@ final class Parse
 
             if ($duplicated !== []) {
                 $debugClass = $property->getDeclaringClass()->getName();
-                $duplicatedQuoted = array_map(
-                    fn(string $name) : string => "\"$name\"",
+                $duplicatedList = implode(
+                    "\", \"",
                     $duplicated
                 );
-                $duplicatedList = implode(
-                    ", ",
-                    $duplicatedQuoted
-                );
                 throw new StructureError(
-                    "Duplicated key name $duplicatedList in $debugClass->$propertyName"
+                    "Duplicated key name \"$duplicatedList\" in $debugClass->$propertyName"
                 );
             }
             foreach ($names ?? [
