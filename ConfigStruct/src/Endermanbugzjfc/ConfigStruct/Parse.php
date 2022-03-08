@@ -113,7 +113,7 @@ final class Parse
     /**
      * Redirect to the correct parse function. Base on the property's type and attributes provided.
      *
-     * If the type of a property is "self", the declaring class of that property will be used. As long as the child class (who extends the declaring class) does not override the property.
+     * Property type "self" will be interpreted as the declaring class of that property. Overriding of "self" will be implemented in future versions.
      * @param PropertyDetails $details
      * @param mixed $value
      * @return BasePropertyContext A non-abstract property parse context.
