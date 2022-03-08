@@ -178,7 +178,7 @@ final class Parse
                         $property
                     );
                 }
-                if ($element instanceof ParseError) {
+                if ($element instanceof ParseErrorsWrapper) {
                     $tree[$key] = $element->getErrorsTree();
                     continue;
                 }
@@ -259,13 +259,13 @@ final class Parse
      *
      * @param ReflectionClass[] $candidates Struct candidates.
      * @param array $input An array which was converted from object.
-     * @return ObjectContext|ParseError If all structs conflict with the input, the error of the first {@link ObjectContext} will be returned.
+     * @return ObjectContext|ParseErrorsWrapper If all structs conflict with the input, the error of the first {@link ObjectContext} will be returned.
      * @throws Exception Duplicated struct candidates.
      */
     public static function findMatchingStruct(
         array              $candidates,
         array              $input
-    ) : ObjectContext|ParseError
+    ) : ObjectContext|ParseErrorsWrapper
     {
         if ($candidates === []) {
             throw new InvalidArgumentException(
@@ -293,7 +293,7 @@ final class Parse
                 $output->copyToNewObject(
                     "object"
                 );
-            } catch (ParseError $err) {
+            } catch (ParseErrorsWrapper $err) {
                 $firstErr ??= $err;
                 continue;
             }

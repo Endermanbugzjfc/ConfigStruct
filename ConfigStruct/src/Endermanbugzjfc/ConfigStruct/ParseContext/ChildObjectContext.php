@@ -2,7 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
-use Endermanbugzjfc\ConfigStruct\ParseError;
+use Endermanbugzjfc\ConfigStruct\ParseErrorsWrapper;
 
 final class ChildObjectContext extends BasePropertyContext
 {
@@ -10,9 +10,9 @@ final class ChildObjectContext extends BasePropertyContext
     protected object $object;
 
     /**
-     * @var ParseError|null If one is thrown by {@link ObjectContext::copyToNewObject()} in {@link ChildObjectContext::__construct}.
+     * @var ParseErrorsWrapper|null If one is thrown by {@link ObjectContext::copyToNewObject()} in {@link ChildObjectContext::__construct}.
      */
-    protected ?ParseError $error = null;
+    protected ?ParseErrorsWrapper $error = null;
 
     public function __construct(
         PropertyDetails         $details,
@@ -23,7 +23,7 @@ final class ChildObjectContext extends BasePropertyContext
             $this->object = $this->asObjectContext()->copyToNewObject(
                 "object array"
             );
-        } catch (ParseError $err) {
+        } catch (ParseErrorsWrapper $err) {
             $this->error = $err;
         }
 

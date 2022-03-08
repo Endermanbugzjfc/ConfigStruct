@@ -6,7 +6,7 @@ namespace Endermanbugzjfc\ConfigStruct\ParseError;
 
 use AssertionError;
 use Endermanbugzjfc\ConfigStruct\Parse;
-use Endermanbugzjfc\ConfigStruct\ParseError;
+use Endermanbugzjfc\ConfigStruct\ParseErrorsWrapper;
 use PHPUnit\Framework\TestCase;
 
 class TypeMismatchErrorTest extends TestCase
@@ -39,7 +39,7 @@ class TypeMismatchErrorTest extends TestCase
                 $object,
                 "root object"
             );
-        } catch (ParseError $parseError) {
+        } catch (ParseErrorsWrapper $parseError) {
         }
         if (empty($parseError)) {
             throw new AssertionError(

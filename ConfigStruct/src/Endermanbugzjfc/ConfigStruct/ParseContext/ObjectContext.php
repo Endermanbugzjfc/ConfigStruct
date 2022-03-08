@@ -2,8 +2,8 @@
 
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
-use Endermanbugzjfc\ConfigStruct\ParseError;
 use Endermanbugzjfc\ConfigStruct\ParseError\TypeMismatchError;
+use Endermanbugzjfc\ConfigStruct\ParseErrorsWrapper;
 use Endermanbugzjfc\ConfigStruct\StructureError;
 use Endermanbugzjfc\ConfigStruct\Utils\StructureErrorThrowerTrait;
 use ReflectionClass;
@@ -73,9 +73,9 @@ final class ObjectContext
     /**
      * Copy output data to the given object.
      * @param object $object This object will be modified.
-     * @param string $rootHeaderLabel See {@link ParseError::getRootHeaderLabel()}.
+     * @param string $rootHeaderLabel See {@link ParseErrorsWrapper::getRootHeaderLabel()}.
      * @return object The same object as the first argument. So it can be used fluently (in chain of function calls).
-     * @throws ParseError
+     * @throws ParseErrorsWrapper
      */
     public function copyToObject(
         object $object,
@@ -126,7 +126,7 @@ final class ObjectContext
         }
 
         if ($tree !== []) {
-            throw new ParseError(
+            throw new ParseErrorsWrapper(
                 $tree,
                 $rootHeaderLabel
             );
@@ -135,9 +135,9 @@ final class ObjectContext
     }
 
     /**
-     * @param string $rootHeaderLabel See {@link ParseError::getRootHeaderLabel()}.
+     * @param string $rootHeaderLabel See {@link ParseErrorsWrapper::getRootHeaderLabel()}.
      * @return object The constructor of object should have 0 arguments.
-     * @throws ParseError
+     * @throws ParseErrorsWrapper
      */
     public function copyToNewObject(
         string $rootHeaderLabel

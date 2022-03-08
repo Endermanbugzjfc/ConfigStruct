@@ -13,7 +13,7 @@ use function implode;
 use function str_repeat;
 use const E_RECOVERABLE_ERROR;
 
-final class ParseError extends Exception
+final class ParseErrorsWrapper extends Exception
 {
 
     protected ?Closure $errorFilter = null;
@@ -69,7 +69,7 @@ final class ParseError extends Exception
      * @param string $indentation
      * @param Closure|null $errorFilter
      * @return void
-     * @see ParseError::errorsTreeToString()
+     * @see ParseErrorsWrapper::errorsTreeToString()
      */
     public function regenerateErrorMessage(
         string  $rootHeaderLabel,
@@ -100,7 +100,7 @@ final class ParseError extends Exception
      * @param array $tree The errors tree.
      * @param string $label The label that will be displayed in the first line (header). File path should be given if the parsed data was from a file.
      * @param string $indentation Indentation per depth, to make the errors tree more readable for human. Four spaces by default.
-     * @param Closure|null $errorFilter See {@link ParseError::getErrorFilter()}.
+     * @param Closure|null $errorFilter See {@link ParseErrorsWrapper::getErrorFilter()}.
      * @return string
      */
     public static function errorsTreeToString(

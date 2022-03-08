@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
-use Endermanbugzjfc\ConfigStruct\ParseError;
+use Endermanbugzjfc\ConfigStruct\ParseErrorsWrapper;
 use function array_merge;
 
 final class ListContext extends BasePropertyContext
@@ -35,7 +35,7 @@ final class ListContext extends BasePropertyContext
                 $object = $context->copyToNewObject(
                     "object array"
                 );
-            } catch (ParseError $err) {
+            } catch (ParseErrorsWrapper $err) {
                 $subElementKey = self::getErrorsTreeSubElementKey(
                     $key
                 );
