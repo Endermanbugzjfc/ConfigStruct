@@ -6,6 +6,7 @@ namespace Endermanbugzjfc\ConfigStruct\ParseError;
 
 use AssertionError;
 use Endermanbugzjfc\ConfigStruct\Parse;
+use Endermanbugzjfc\ConfigStruct\ParseContext\ObjectContext;
 use Endermanbugzjfc\ConfigStruct\ParseErrorsWrapper;
 use PHPUnit\Framework\TestCase;
 
@@ -30,17 +31,34 @@ class TypeMismatchErrorTest extends TestCase
     /**
      * @throws ParseErrorsWrapper
      */
-    public function testGetMessageNull()
+    private static function parse(
+        mixed $value
+    ) : ObjectContext
     {
         $object = self::objectProvider();
         $context = Parse::object(
             [
-                "testBool" => null,
-                "testInt" => null,
-                "testFloat" => null,
-                "testString" => null
+                "testBool" => $value,
+                "testInt" => $value,
+                "testFloat" => $value,
+                "testString" => $value
             ],
             $object
+        );
+        $context->copyToObject(
+            $object,
+            "root object"
+        );
+        return $context;
+    }
+
+    /**
+     * @throws ParseErrorsWrapper
+     */
+    public function testGetMessageNull()
+    {
+        self::parse(
+            null
         );
         $this->expectExceptionMessage(
             <<<EOT
@@ -55,10 +73,6 @@ class TypeMismatchErrorTest extends TestCase
                     Element is null while it should be string
             
             EOT
-        );
-        $context->copyToObject(
-            $object,
-            "root object"
         );
     }
 
