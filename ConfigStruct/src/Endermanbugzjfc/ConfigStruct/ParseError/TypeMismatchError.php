@@ -53,6 +53,6 @@ final class TypeMismatchError extends BaseParseError
             " / ",
             $this->getExpectedTypes()
         );
-        return "Element is a {$this->getGivenType()} while it should be a $expectedTypes";
+        return "Element is {$this->getGivenType()} while it should be $expectedTypes";
     }
 }
