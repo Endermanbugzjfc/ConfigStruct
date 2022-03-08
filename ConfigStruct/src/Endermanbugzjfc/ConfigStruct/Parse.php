@@ -14,6 +14,7 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
+use Throwable;
 use function array_key_exists;
 use function implode;
 use function in_array;
@@ -304,6 +305,21 @@ final class Parse
         }
 
         return $leastUnhandled;
+    }
+
+    protected function invalidStructure(
+        Throwable $previous,
+        ReflectionClass $class,
+        ?ReflectionProperty $property
+    ) : void {
+        $className = $class->getName();
+        $propertyName = $property === null
+            ? ""
+            : "->" . $property->getDeclaringClass()->getName();
+        throw new StructureError(
+            "Invalid structure in " . $className . $propertyName,
+            $previous
+        );
     }
 
 }
