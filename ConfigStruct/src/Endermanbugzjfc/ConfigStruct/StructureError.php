@@ -18,7 +18,11 @@ final class StructureError extends RuntimeException
         int        $code = E_ERROR
     )
     {
-        parent::__construct($message, $code, $previous);
+        parent::__construct(
+            $message,
+            $code,
+            $previous
+        );
     }
 
 }
