@@ -162,8 +162,9 @@ final class Parse
                     $listReflects ?? [],
                     $input
                 );
-                if ($element === null) {
-                    continue; // TODO: Find better solution.
+                if ($element instanceof ParseError) {
+                    $errs[$key] = $element->getErrorsTree();
+                    continue;
                 }
 
                 unset(
