@@ -134,8 +134,7 @@ final class Parse
                 : (
                 $types instanceof ReflectionNamedType
                     ? [$types]
-                    : $types
-
+                    : $types->getTypes()
                 );
             $candidates = $raws = [];
             foreach ($types as $type) {
