@@ -19,6 +19,7 @@ use ReflectionNamedType;
 use ReflectionProperty;
 use function array_key_exists;
 use function array_unique;
+use function count;
 use function implode;
 use function in_array;
 use function is_array;
@@ -352,15 +353,20 @@ final class Parse
         }
         $leastUnhandled = null;
         foreach ($outputs as $output2) {
-            if ($leastUnhandled instanceof ObjectContext) {
-                $unhandled = $output2->getUnhandledElements();
-                if (
-                    $leastUnhandled->getUnhandledElements() < $unhandled
-                ) {
-                    continue;
-                }
+            if (!$leastUnhandled instanceof ObjectContext) {
                 $leastUnhandled = $output2;
+                continue;
             }
+            if (
+                count(
+                    $leastUnhandled->getUnhandledElements()
+                ) < count(
+                    $output2->getUnhandledElements()
+                )
+            ) {
+                continue;
+            }
+            $leastUnhandled = $output2;
         }
 
         return $leastUnhandled;
