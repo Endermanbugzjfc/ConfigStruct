@@ -3,7 +3,7 @@
 
 declare(strict_types=1);
 
-class A extends Base
+final class A extends Extendable
 {
 
     public mixed $a;
