@@ -57,7 +57,7 @@ final class ChildObjectContext extends BasePropertyContext
 
     public function getErrorsTree() : array
     {
-        return $this->error->getErrorsTree();
+        return $this->error?->getErrorsTree() ?? [];
     }
 
     /**
