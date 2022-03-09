@@ -8,6 +8,7 @@ use AssertionError;
 use Endermanbugzjfc\ConfigStruct\Dummy\Extending\A;
 use Endermanbugzjfc\ConfigStruct\Dummy\Extending\B;
 use Endermanbugzjfc\ConfigStruct\Dummy\Extending\Extendable;
+use Endermanbugzjfc\ConfigStruct\ListType;
 use Endermanbugzjfc\ConfigStruct\Parse;
 use Endermanbugzjfc\ConfigStruct\ParseContext\ObjectContext;
 use Endermanbugzjfc\ConfigStruct\ParseErrorsWrapper;
@@ -28,8 +29,15 @@ class TypeMismatchErrorTest extends TestCase
             public int $testInt;
             public float $testFloat;
             public string $testString;
+            public array $testArray;
+
             public A $testChildObject;
             public Extendable|A|B $testUnionTypesChildObject;
+
+            #[ListType(A::class)]
+            public array $testList;
+            #[ListType(Extendable::class)] #[ListType(A::class)] #[ListType(B::class)]
+            public array $testListMultipleTypes;
 
         };
     }
@@ -48,8 +56,13 @@ class TypeMismatchErrorTest extends TestCase
                 "testInt" => $value,
                 "testFloat" => $value,
                 "testString" => $value,
+                "testArray" => $value,
+
                 "testChildObject" => $value,
                 "testUnionTypesChildObject" => $value,
+
+                "testList" => $value,
+                "testListMultipleTypes" => $value
             ],
             $object
         );
@@ -68,7 +81,7 @@ class TypeMismatchErrorTest extends TestCase
         $object = self::objectProvider();
         $this->expectExceptionMessage(
             <<<EOT
-            6 errors in root object
+            9 errors in root object
                 1 errors in element "testBool"
                     Element is null while it should be bool
                 1 errors in element "testInt"
@@ -77,9 +90,15 @@ class TypeMismatchErrorTest extends TestCase
                     Element is null while it should be float
                 1 errors in element "testString"
                     Element is null while it should be string
+                1 errors in element "testArray"
+                    Element is null while it should be array
                 1 errors in element "testChildObject"
                     Element is null while it should be array
                 1 errors in element "testUnionTypesChildObject"
+                    Element is null while it should be array
+                1 errors in element "testList"
+                    Element is null while it should be array
+                1 errors in element "testListMultipleTypes"
                     Element is null while it should be array
             
             EOT
@@ -98,10 +117,16 @@ class TypeMismatchErrorTest extends TestCase
         $object = self::objectProvider();
         $this->expectExceptionMessage(
             <<<EOT
-            2 errors in root object
+            5 errors in root object
+                1 errors in element "testArray"
+                    Element is bool while it should be array
                 1 errors in element "testChildObject"
                     Element is bool while it should be array
                 1 errors in element "testUnionTypesChildObject"
+                    Element is bool while it should be array
+                1 errors in element "testList"
+                    Element is bool while it should be array
+                1 errors in element "testListMultipleTypes"
                     Element is bool while it should be array
             
             EOT
@@ -120,10 +145,16 @@ class TypeMismatchErrorTest extends TestCase
         $object = self::objectProvider();
         $this->expectExceptionMessage(
             <<<EOT
-            2 errors in root object
+            5 errors in root object
+                1 errors in element "testArray"
+                    Element is int while it should be array
                 1 errors in element "testChildObject"
                     Element is int while it should be array
                 1 errors in element "testUnionTypesChildObject"
+                    Element is int while it should be array
+                1 errors in element "testList"
+                    Element is int while it should be array
+                1 errors in element "testListMultipleTypes"
                     Element is int while it should be array
             
             EOT
@@ -142,10 +173,16 @@ class TypeMismatchErrorTest extends TestCase
         $object = self::objectProvider();
         $this->expectExceptionMessage(
             <<<EOT
-            2 errors in root object
+            5 errors in root object
+                1 errors in element "testArray"
+                    Element is float while it should be array
                 1 errors in element "testChildObject"
                     Element is float while it should be array
                 1 errors in element "testUnionTypesChildObject"
+                    Element is float while it should be array
+                1 errors in element "testList"
+                    Element is float while it should be array
+                1 errors in element "testListMultipleTypes"
                     Element is float while it should be array
             
             EOT
@@ -164,12 +201,18 @@ class TypeMismatchErrorTest extends TestCase
         $object = self::objectProvider();
         $this->expectExceptionMessage(
             <<<EOT
-            3 errors in root object
+            6 errors in root object
                 1 errors in element "testInt"
                     Element is float while it should be int
+                1 errors in element "testArray"
+                    Element is float while it should be array
                 1 errors in element "testChildObject"
                     Element is float while it should be array
                 1 errors in element "testUnionTypesChildObject"
+                    Element is float while it should be array
+                1 errors in element "testList"
+                    Element is float while it should be array
+                1 errors in element "testListMultipleTypes"
                     Element is float while it should be array
             
             EOT
@@ -188,14 +231,20 @@ class TypeMismatchErrorTest extends TestCase
         $object = self::objectProvider();
         $this->expectExceptionMessage(
             <<<EOT
-            4 errors in root object
+            7 errors in root object
                 1 errors in element "testInt"
                     Element is string while it should be int
                 1 errors in element "testFloat"
                     Element is string while it should be float
+                1 errors in element "testArray"
+                    Element is string while it should be array
                 1 errors in element "testChildObject"
                     Element is string while it should be array
                 1 errors in element "testUnionTypesChildObject"
+                    Element is string while it should be array
+                1 errors in element "testList"
+                    Element is string while it should be array
+                1 errors in element "testListMultipleTypes"
                     Element is string while it should be array
             
             EOT
