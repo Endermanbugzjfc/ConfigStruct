@@ -8,6 +8,6 @@ namespace Endermanbugzjfc\ConfigStruct\Dummy\Extending;
 class Extendable extends Base
 {
 
-    public mixed $extendable;
+    public int $extendable;
 
 }
