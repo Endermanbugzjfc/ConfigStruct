@@ -10,7 +10,6 @@ use Endermanbugzjfc\ConfigStruct\Dummy\Extending\B;
 use Endermanbugzjfc\ConfigStruct\Dummy\Extending\Extendable;
 use Endermanbugzjfc\ConfigStruct\ListType;
 use Endermanbugzjfc\ConfigStruct\Parse;
-use Endermanbugzjfc\ConfigStruct\ParseContext\ObjectContext;
 use Endermanbugzjfc\ConfigStruct\ParseErrorsWrapper;
 use PHPUnit\Framework\TestCase;
 use const PHP_FLOAT_MAX;
@@ -48,7 +47,7 @@ class TypeMismatchErrorTest extends TestCase
     private static function parse(
         mixed  $value,
         object $object
-    ) : ObjectContext
+    ) : void
     {
         $context = Parse::object(
             [
@@ -70,7 +69,6 @@ class TypeMismatchErrorTest extends TestCase
             $object,
             "root object"
         );
-        return $context;
     }
 
     /**
