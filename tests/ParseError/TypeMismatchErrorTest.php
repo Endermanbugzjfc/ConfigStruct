@@ -282,6 +282,38 @@ class TypeMismatchErrorTest extends TestCase
         );
     }
 
+    /**
+     * @throws ParseErrorsWrapper
+     */
+    public function testGetMessageNoMatchingStructForList()
+    {
+        $object = self::objectProvider();
+        $context = Parse::object(
+            [
+                "testListMultipleTypes" => [
+                    [
+                        "extendable" => null
+                    ]
+                ]
+            ],
+            $object
+        );
+        $this->expectExceptionMessage(
+            <<<EOT
+            1 errors in root object
+                1 errors in element "testListMultipleTypes"
+                    1 errors in index "0"
+                        1 errors in element "extendable"
+                            Element is null while it should be int
+            
+            EOT
+        );
+        $context->copyToObject(
+            $object,
+            "root object"
+        );
+    }
+
     public function testGetExpectedTypes()
     {
         $object = new class () {
