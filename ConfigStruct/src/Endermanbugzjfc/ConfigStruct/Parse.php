@@ -21,6 +21,7 @@ use function array_key_exists;
 use function array_unique;
 use function implode;
 use function in_array;
+use function is_array;
 
 final class Parse
 {
@@ -123,107 +124,112 @@ final class Parse
         mixed           $value
     ) : BasePropertyContext
     {
-        $property = $details->getReflection();
-        $types = $property->getType();
-        $types = $types === null
-            ? []
-            : (
-            $types instanceof ReflectionNamedType
-                ? [$types]
-                : $types
+        if (is_array(
+            $value
+        )) {
+            $property = $details->getReflection();
+            $types = $property->getType();
+            $types = $types === null
+                ? []
+                : (
+                $types instanceof ReflectionNamedType
+                    ? [$types]
+                    : $types
 
-            );
-        $candidates = $raws = [];
-        foreach ($types as $type) {
-            $raw = $type->getName();
-            if ($raw === "self") {
-                $raw = $details->getReflection()->getDeclaringClass()->getName();
-            }
-            $raws[] = $raw;
-        }
-        $raws = array_unique(
-            $raws
-        ); // Since it is possible to have both "self" and the own class name in an union-types.
-        foreach ($raws as $raw) {
-            try {
-                $candidate = new ReflectionClass(
-                    $raw
                 );
-            } catch (ReflectionException) {
-                continue;
-            }
-            $candidates[] = $candidate;
-        }
-        if ($candidates !== []) {
-            try {
-                $found = self::findMatchingStruct(
-                    $candidates,
-                    $value
-                );
-            } catch (Exception $err) {
-                throw new AssertionError(
-                    "unreachable",
-                    -1,
-                    $err
-                );
-            }
-            if (!$found instanceof ParseErrorsWrapper) {
-                return new ChildObjectContext(
-                    $details,
-                    $found
-                );
-            }
-        }
-
-        $listTypes = $property->getAttributes(
-            ListType::class
-        );
-        if ($listTypes !== []) {
-            foreach ($listTypes as $listType) {
-                try {
-                    $listTypeRaw = $listType->getArguments()[0];
-                    $listReflect = new ReflectionClass(
-                        $listTypeRaw
-                    );
-                } catch (ReflectionException $err) {
-                    self::invalidStructure(
-                        new StructureError(
-                            "List type attribute has invalid class",
-                            $err
-                        ),
-                        $property
-                    );
+            $candidates = $raws = [];
+            foreach ($types as $type) {
+                $raw = $type->getName();
+                if ($raw === "self") {
+                    $raw = $details->getReflection()->getDeclaringClass()->getName();
                 }
-                $listReflects[] = $listReflect;
+                $raws[] = $raw;
             }
-            foreach ($value as $key => $input) {
+            $raws = array_unique(
+                $raws
+            ); // Since it is possible to have both "self" and the own class name in an union-types.
+            foreach ($raws as $raw) {
                 try {
-                    $element = self::findMatchingStruct(
-                        $listReflects ?? [],
-                        $input
+                    $candidate = new ReflectionClass(
+                        $raw
                     );
-                } catch (Exception $err) {
-                    self::invalidStructure(
-                        $err,
-                        $property
-                    );
-                }
-                if ($element instanceof ParseErrorsWrapper) {
-                    $tree[$key] = $element->getErrorsTree();
+                } catch (ReflectionException) {
                     continue;
                 }
-
-                unset(
-                    $value[$key]
-                );
-                $elements[$key] = $element;
+                $candidates[] = $candidate;
             }
-            return new ListContext(
-                $details,
-                $elements ?? [],
-                $tree ?? [],
-                $value
+            if ($candidates !== []) {
+                try {
+                    $found = self::findMatchingStruct(
+                        $candidates,
+                        $value
+                    );
+                } catch (Exception $err) {
+                    throw new AssertionError(
+                        "unreachable",
+                        -1,
+                        $err
+                    );
+                }
+                if (!$found instanceof ParseErrorsWrapper) {
+                    return new ChildObjectContext(
+                        $details,
+                        $found
+                    );
+                }
+            }
+
+            $listTypes = $property->getAttributes(
+                ListType::class
             );
+            if ($listTypes !== []) {
+                foreach ($listTypes as $listType) {
+                    try {
+                        $listTypeRaw = $listType->getArguments()[0];
+                        $listReflect = new ReflectionClass(
+                            $listTypeRaw
+                        );
+                    } catch (ReflectionException $err) {
+                        self::invalidStructure(
+                            new StructureError(
+                                "List type attribute has invalid class",
+                                $err
+                            ),
+                            $property
+                        );
+                    }
+                    $listReflects[] = $listReflect;
+                }
+                foreach ($value as $key => $input) {
+                    try {
+                        $element = self::findMatchingStruct(
+                            $listReflects ?? [],
+                            $input
+                        );
+                    } catch (Exception $err) {
+                        self::invalidStructure(
+                            $err,
+                            $property
+                        );
+                    }
+                    if ($element instanceof ParseErrorsWrapper) {
+                        $tree[$key] = $element->getErrorsTree();
+                        continue;
+                    }
+
+                    unset(
+                        $value[$key]
+                    );
+                    $elements[$key] = $element;
+                }
+                return new ListContext(
+                    $details,
+                    $elements ?? [],
+                    $tree ?? [],
+                    $value
+                );
+            }
+
         }
 
         return new RawContext(
