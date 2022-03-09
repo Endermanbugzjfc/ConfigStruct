@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Endermanbugzjfc\ConfigStruct\ParseError;
 
 use AssertionError;
+use Endermanbugzjfc\ConfigStruct\Dummy\Extending\A;
+use Endermanbugzjfc\ConfigStruct\Dummy\Extending\B;
+use Endermanbugzjfc\ConfigStruct\Dummy\Extending\Extendable;
 use Endermanbugzjfc\ConfigStruct\Parse;
 use Endermanbugzjfc\ConfigStruct\ParseContext\ObjectContext;
 use Endermanbugzjfc\ConfigStruct\ParseErrorsWrapper;
@@ -25,6 +28,8 @@ class TypeMismatchErrorTest extends TestCase
             public int $testInt;
             public float $testFloat;
             public string $testString;
+            public A $testChildObject;
+            public Extendable|A|B $testUnionTypesChildObject;
 
         };
     }
@@ -33,7 +38,7 @@ class TypeMismatchErrorTest extends TestCase
      * @throws ParseErrorsWrapper
      */
     private static function parse(
-        mixed $value,
+        mixed  $value,
         object $object
     ) : ObjectContext
     {
@@ -42,7 +47,9 @@ class TypeMismatchErrorTest extends TestCase
                 "testBool" => $value,
                 "testInt" => $value,
                 "testFloat" => $value,
-                "testString" => $value
+                "testString" => $value,
+                "testChildObject" => $value,
+                "testUnionTypesChildObject" => $value,
             ],
             $object
         );
@@ -61,7 +68,7 @@ class TypeMismatchErrorTest extends TestCase
         $object = self::objectProvider();
         $this->expectExceptionMessage(
             <<<EOT
-            4 errors in root object
+            6 errors in root object
                 1 errors in element "testBool"
                     Element is null while it should be bool
                 1 errors in element "testInt"
@@ -70,6 +77,10 @@ class TypeMismatchErrorTest extends TestCase
                     Element is null while it should be float
                 1 errors in element "testString"
                     Element is null while it should be string
+                1 errors in element "testChildObject"
+                    Element is null while it should be array
+                1 errors in element "testUnionTypesChildObject"
+                    Element is null while it should be array
             
             EOT
         );
@@ -85,22 +96,19 @@ class TypeMismatchErrorTest extends TestCase
     public function testGetMessageBool()
     {
         $object = self::objectProvider();
+        $this->expectExceptionMessage(
+            <<<EOT
+            2 errors in root object
+                1 errors in element "testChildObject"
+                    Element is bool while it should be array
+                1 errors in element "testUnionTypesChildObject"
+                    Element is bool while it should be array
+            
+            EOT
+        );
         self::parse(
             true,
             $object
-        );
-
-        $this->assertTrue(
-            $object->testBool === true
-        );
-        $this->assertTrue(
-            $object->testInt === 1
-        );
-        $this->assertTrue(
-            $object->testFloat === 1.0
-        );
-        $this->assertTrue(
-            $object->testString === "1"
         );
     }
 
@@ -110,54 +118,59 @@ class TypeMismatchErrorTest extends TestCase
     public function testGetMessageInt()
     {
         $object = self::objectProvider();
+        $this->expectExceptionMessage(
+            <<<EOT
+            2 errors in root object
+                1 errors in element "testChildObject"
+                    Element is int while it should be array
+                1 errors in element "testUnionTypesChildObject"
+                    Element is int while it should be array
+            
+            EOT
+        );
         self::parse(
             2,
             $object
-        );
-
-        $this->assertTrue(
-            $object->testBool === true
-        );
-        $this->assertTrue(
-            $object->testInt === 2
-        );
-        $this->assertTrue(
-            $object->testFloat === 2.0
-        );
-        $this->assertTrue(
-            $object->testString === "2"
         );
     }
 
     /**
      * @throws ParseErrorsWrapper
      */
-    public function testGetMessageFloat()
+    public function testGetMessageFloatNormal()
     {
         $object = self::objectProvider();
+        $this->expectExceptionMessage(
+            <<<EOT
+            2 errors in root object
+                1 errors in element "testChildObject"
+                    Element is float while it should be array
+                1 errors in element "testUnionTypesChildObject"
+                    Element is float while it should be array
+            
+            EOT
+        );
         self::parse(
             2.5,
             $object
         );
+    }
 
-        $this->assertTrue(
-            $object->testBool === true
-        );
-        $this->assertTrue(
-            $object->testInt === 2
-        );
-        $this->assertTrue(
-            $object->testFloat === 2.5
-        );
-        $this->assertTrue(
-            $object->testString === "2.5"
-        );
-
+    /**
+     * @throws ParseErrorsWrapper
+     */
+    public function testGetMessageFloatMax()
+    {
+        $object = self::objectProvider();
         $this->expectExceptionMessage(
             <<<EOT
-            1 errors in root object
+            3 errors in root object
                 1 errors in element "testInt"
                     Element is float while it should be int
+                1 errors in element "testChildObject"
+                    Element is float while it should be array
+                1 errors in element "testUnionTypesChildObject"
+                    Element is float while it should be array
             
             EOT
         );
@@ -175,11 +188,15 @@ class TypeMismatchErrorTest extends TestCase
         $object = self::objectProvider();
         $this->expectExceptionMessage(
             <<<EOT
-            2 errors in root object
+            4 errors in root object
                 1 errors in element "testInt"
                     Element is string while it should be int
                 1 errors in element "testFloat"
                     Element is string while it should be float
+                1 errors in element "testChildObject"
+                    Element is string while it should be array
+                1 errors in element "testUnionTypesChildObject"
+                    Element is string while it should be array
             
             EOT
         );
