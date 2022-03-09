@@ -211,7 +211,7 @@ final class Parse
                         );
                     }
                     if ($element instanceof ParseErrorsWrapper) {
-                        $tree[$key] = $element->getErrorsTree();
+                        $elementsTree[$key] = $element->getErrorsTree();
                         continue;
                     }
 
@@ -223,7 +223,7 @@ final class Parse
                 return new ListContext(
                     $details,
                     $elements ?? [],
-                    $tree ?? [],
+                    $elementsTree ?? [],
                     $value
                 );
             }

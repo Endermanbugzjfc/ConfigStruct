@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
+use Endermanbugzjfc\ConfigStruct\ParseError\BaseParseError;
 use Endermanbugzjfc\ConfigStruct\ParseErrorsWrapper;
 use function array_merge;
 
@@ -17,18 +18,30 @@ final class ListContext extends BasePropertyContext
     protected array $objects;
 
     /**
+     * @var array<string, array|BaseParseError>
+     */
+    protected array $baseErrorsTree = [];
+
+    /**
      * @param PropertyDetails $details
      * @param ObjectContext[] $objectContexts
-     * @param array $baseErrorsTree
+     * @param array $elementsErrorsTree
      * @param array $unhandledElements
      */
     public function __construct(
         PropertyDetails $details,
         protected array $objectContexts,
-        protected array $baseErrorsTree,
+        array           $elementsErrorsTree,
         protected array $unhandledElements
     )
     {
+        foreach ($elementsErrorsTree as $key => $value) {
+            $subElementKey = self::getErrorsTreeSubElementKey(
+                $key
+            );
+            $this->baseErrorsTree[$subElementKey] = $value;
+        }
+
         $contexts = $this->getObjectContextsArray();
         foreach ($contexts as $key => $context) {
             try {
@@ -90,7 +103,7 @@ final class ListContext extends BasePropertyContext
     }
 
     private static function getErrorsTreeSubElementKey(
-        string $elementKey
+        string|int $elementKey
     ) : string
     {
         return "index \"$elementKey\"";
