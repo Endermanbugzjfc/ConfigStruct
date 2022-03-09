@@ -170,12 +170,10 @@ final class Parse
                         $err
                     );
                 }
-                if (!$found instanceof ParseErrorsWrapper) {
-                    return new ChildObjectContext(
-                        $details,
-                        $found
-                    );
-                }
+                return new ChildObjectContext(
+                    $details,
+                    $found
+                );
             }
 
             $listTypes = $property->getAttributes(

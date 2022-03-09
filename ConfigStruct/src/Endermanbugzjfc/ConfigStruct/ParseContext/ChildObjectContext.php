@@ -9,16 +9,27 @@ final class ChildObjectContext extends BasePropertyContext
 
     protected object $object;
 
+    protected ObjectContext $objectContext;
+
     /**
      * @var ParseErrorsWrapper|null If one is thrown by {@link ObjectContext::copyToNewObject()} in {@link ChildObjectContext::__construct}.
      */
     protected ?ParseErrorsWrapper $error = null;
 
     public function __construct(
-        PropertyDetails         $details,
-        protected ObjectContext $objectContext
+        PropertyDetails                  $details,
+        ObjectContext|ParseErrorsWrapper $objectContextOrError
     )
     {
+        parent::__construct(
+            $details
+        );
+        if ($objectContextOrError instanceof ParseErrorsWrapper) {
+            $this->error = $objectContextOrError;
+            return;
+        }
+
+        $this->objectContext = $objectContextOrError;
         try {
             $this->object = $this->asObjectContext()->copyToNewObject(
                 "object array"
@@ -26,10 +37,6 @@ final class ChildObjectContext extends BasePropertyContext
         } catch (ParseErrorsWrapper $err) {
             $this->error = $err;
         }
-
-        parent::__construct(
-            $details
-        );
     }
 
     /**
