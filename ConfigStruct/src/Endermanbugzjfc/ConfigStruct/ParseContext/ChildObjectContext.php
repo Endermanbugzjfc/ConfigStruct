@@ -70,7 +70,7 @@ final class ChildObjectContext extends BasePropertyContext
 
     public function omitCopyToObject() : bool
     {
-        return isset(
+        return !isset(
             $this->object
         );
     }
