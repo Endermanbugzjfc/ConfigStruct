@@ -309,6 +309,9 @@ final class Parse
         $raws = $duplicated = [];
         $firstErr = null;
         foreach ($candidates as $key => $candidate) {
+            if ($candidate->isAbstract()) {
+                continue;
+            }
             $raw = $candidate->getName();
             if (in_array(
                 $raw,
