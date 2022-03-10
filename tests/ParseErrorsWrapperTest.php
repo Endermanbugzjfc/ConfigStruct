@@ -19,12 +19,15 @@ class ParseErrorsWrapperTest extends TestCase
             #[ListType(A::class)]
             public array $testIndentationWithList;
 
+            public bool $testErrorFilter;
+
         };
         $context = Parse::object(
             [
                 "testIndentationWithList" => [
                     "a" => null
-                ]
+                ],
+                "testErrorFilter" => null
             ],
             $object
         );
