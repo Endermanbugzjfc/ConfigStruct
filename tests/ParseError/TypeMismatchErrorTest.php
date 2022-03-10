@@ -46,6 +46,7 @@ class TypeMismatchErrorTest extends TestCase
     ) : void
     {
         $context = Parse::object(
+            $object,
             [
                 "testBool" => $value,
                 "testInt" => $value,
@@ -55,8 +56,7 @@ class TypeMismatchErrorTest extends TestCase
 
                 "testUnionTypesChildObject" => $value,
                 "testListMultipleTypes" => $value
-            ],
-            $object
+            ]
         );
         $context->copyToObject(
             $object,
@@ -229,12 +229,12 @@ class TypeMismatchErrorTest extends TestCase
     {
         $object = self::objectProvider();
         $context = Parse::object(
+            $object,
             [
                 "testUnionTypesChildObject" => [
                     "extendable" => null
                 ]
-            ],
-            $object
+            ]
         );
         $this->expectExceptionMessage(
             <<<EOT
@@ -258,14 +258,14 @@ class TypeMismatchErrorTest extends TestCase
     {
         $object = self::objectProvider();
         $context = Parse::object(
+            $object,
             [
                 "testListMultipleTypes" => [
                     [
                         "extendable" => null
                     ]
                 ]
-            ],
-            $object
+            ]
         );
         $this->expectExceptionMessage(
             <<<EOT
@@ -294,11 +294,11 @@ class TypeMismatchErrorTest extends TestCase
         };
 
         $context = Parse::object(
+            $object,
             [
                 "testUnionTypesOfArrayAndClass" => null,
                 "testNullableString" => ""
-            ],
-            $object
+            ]
         );
         try {
             $context->copyToObject(

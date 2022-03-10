@@ -23,13 +23,13 @@ class ParseErrorsWrapperTest extends TestCase
 
         };
         $context = Parse::object(
+            $object,
             [
                 "testIndentationWithList" => [
                     "a" => null
                 ],
                 "testErrorFilter" => null
-            ],
-            $object
+            ]
         );
         try {
             $context->copyToObject(

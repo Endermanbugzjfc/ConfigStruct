@@ -25,12 +25,12 @@ class KeyNameTest extends TestCase
 
         };
         $context = Parse::object(
+            $object,
             [
                 "a" => "a",
                 "b" => "b",
                 "c" => "c"
-            ],
-            $object
+            ]
         );
         $context->copyToObject(
             $object,
@@ -45,10 +45,10 @@ class KeyNameTest extends TestCase
         );
 
         $context = Parse::object(
+            $object,
             [
                 "c" => "c"
-            ],
-            $object
+            ]
         );
         $context->copyToObject(
             $object,

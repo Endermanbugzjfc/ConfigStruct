@@ -33,27 +33,27 @@ final class Parse
 
     /**
      * Parse the data of an array. Base on an object's structure, which is property types and attributes provided.
-     * @param array $input
      * @param object $object The parsed data will not be automatically copied to the object, please use {@link ObjectContext::copyToObject()}.
+     * @param array $input
      * @return ObjectContext $object.
      */
     public static function object(
-        array  $input,
-        object $object
+        object $object,
+        array  $input
     ) : ObjectContext
     {
         $reflect = new ReflectionClass(
             $object
         );
         return self::objectByReflection(
-            $input,
-            $reflect
+            $reflect,
+            $input
         );
     }
 
     public static function objectByReflection(
-        array           $input,
-        ReflectionClass $reflect
+        ReflectionClass $reflect,
+        array           $input
     ) : ObjectContext
     {
         $properties = $reflect->getProperties(
@@ -335,8 +335,8 @@ final class Parse
             }
             $raws[] = $raw;
             $output = self::objectByReflection(
-                $input,
-                $candidate
+                $candidate,
+                $input
             );
             try {
                 $output->copyToNewObject(

@@ -27,8 +27,8 @@ class StructureErrorTest extends TestCase
     {
         try {
             $context = Parse::object(
-                $input,
-                $object
+                $object,
+                $input
             );
             $context->copyToNewObject(
                 "root object"
