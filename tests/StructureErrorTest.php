@@ -21,7 +21,12 @@ class StructureErrorTest extends TestCase
     {
         try {
             $context = Parse::object(
-                [],
+                [
+                    "testThreeDuplicatedListTypes" => [
+                    ],
+                    "testSelf" => [
+                    ]
+                ],
                 $object
             );
             $context->copyToObject(
