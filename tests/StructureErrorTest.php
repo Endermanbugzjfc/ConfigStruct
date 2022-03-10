@@ -170,9 +170,4 @@ class StructureErrorTest extends TestCase
         );
     }
 
-    public function test__constructObjectConstructorWithArguments()
-    {
-
-    }
-
 }
