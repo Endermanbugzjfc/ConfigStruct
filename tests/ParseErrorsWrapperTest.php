@@ -47,7 +47,7 @@ class ParseErrorsWrapperTest extends TestCase
     /**
      * @throws ParseErrorsWrapper
      */
-    public function testGetErrorFilter()
+    public function testRegenerateErrorMessageFilterSpecifiedError()
     {
         $err = self::parseErrorsWrapperProvider();
         $err->regenerateErrorMessage(
@@ -73,7 +73,7 @@ class ParseErrorsWrapperTest extends TestCase
         throw $err;
     }
 
-    public function testGetErrorFilterAll()
+    public function testRegenerateErrorMessageFilterAllError()
     {
         $err = self::parseErrorsWrapperProvider();
         $err->regenerateErrorMessage(
@@ -90,12 +90,7 @@ class ParseErrorsWrapperTest extends TestCase
         );
     }
 
-    public function testRegenerateErrorMessage()
-    {
-
-    }
-
-    public function testGetIndentation()
+    public function testRegenerateErrorMessageIndentation()
     {
 
     }
