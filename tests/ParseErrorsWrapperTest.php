@@ -44,6 +44,9 @@ class ParseErrorsWrapperTest extends TestCase
         );
     }
 
+    /**
+     * @throws ParseErrorsWrapper
+     */
     public function testGetErrorFilter()
     {
         $err = self::parseErrorsWrapperProvider();
@@ -58,7 +61,16 @@ class ParseErrorsWrapperTest extends TestCase
                     "element \"testErrorFilter\""
                 ]
         );
-        echo $err->getMessage();
+
+        $this->expectExceptionMessage(
+            <<<EOT
+            1 errors in root object
+                1 errors in element "testIndentationWithList"
+                    Element is null while it should be array
+            
+            EOT
+        );
+        throw $err;
     }
 
     public function testRegenerateErrorMessage()
