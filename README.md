@@ -21,6 +21,7 @@ https://github.com/Sandertv/Marshal is an alternative that supports lower versio
         Element is null while it should be bool
 
  ```
+ Notice there is a trailing line break.
 <!-- TODO: In an uncaught PHP error message and PocketMine-MP server log. -->
 # Developer guide
 ## Parsing data
