@@ -146,7 +146,7 @@ final class ObjectContext
         try {
             $instance = $this->getReflection()->newInstance();
         } catch (ReflectionException $err) {
-            self::invalidStructure(
+            self::invalidStructure( // Failed to create a new object from reflection.
                 new StructureError(
                     "Failed to create a new object from reflection",
                     $err

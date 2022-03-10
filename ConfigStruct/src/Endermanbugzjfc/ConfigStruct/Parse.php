@@ -69,7 +69,7 @@ final class Parse
                 $input
             );
         } catch (Exception $err) {
-            self::invalidStructure(
+            self::invalidStructure( // Duplicated key names.
                 $err,
                 $reflect
             );
@@ -191,7 +191,7 @@ final class Parse
                             $listTypeRaw
                         );
                     } catch (ReflectionException $err) {
-                        self::invalidStructure(
+                        self::invalidStructure( // List type attribute has invalid class.
                             new StructureError(
                                 "List type attribute has invalid class",
                                 $err
@@ -208,7 +208,7 @@ final class Parse
                             $input
                         );
                     } catch (Exception $err) {
-                        self::invalidStructure(
+                        self::invalidStructure( // Duplicated struct candidates.
                             $err,
                             $property
                         );
