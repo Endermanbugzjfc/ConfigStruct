@@ -68,7 +68,7 @@ final class ParseErrorsWrapper extends Exception
     /**
      * @param string $rootHeaderLabel
      * @param string $indentation
-     * @param Closure|null $errorFilter
+     * @param Closure|null $errorFilter See {@link ParseErrorsWrapper::getErrorFilter()}.
      * @return void
      * @see ParseErrorsWrapper::errorsTreeToString()
      */
