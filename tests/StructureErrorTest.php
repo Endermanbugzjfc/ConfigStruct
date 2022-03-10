@@ -29,8 +29,7 @@ class StructureErrorTest extends TestCase
                 $input,
                 $object
             );
-            $context->copyToObject(
-                $object,
+            $context->copyToNewObject(
                 "root object"
             );
         } catch (StructureError $err) {
