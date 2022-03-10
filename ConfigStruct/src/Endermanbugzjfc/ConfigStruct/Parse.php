@@ -9,6 +9,7 @@ use Endermanbugzjfc\ConfigStruct\ParseContext\ListContext;
 use Endermanbugzjfc\ConfigStruct\ParseContext\ObjectContext;
 use Endermanbugzjfc\ConfigStruct\ParseContext\PropertyDetails;
 use Endermanbugzjfc\ConfigStruct\ParseContext\RawContext;
+use Endermanbugzjfc\ConfigStruct\ParseError\TypeMismatchError;
 use Endermanbugzjfc\ConfigStruct\Utils\StaticClassTrait;
 use Endermanbugzjfc\ConfigStruct\Utils\StructureErrorThrowerTrait;
 use Exception;
@@ -17,9 +18,11 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
+use TypeError;
 use function array_key_exists;
 use function array_unique;
 use function count;
+use function gettype;
 use function implode;
 use function in_array;
 use function is_array;
@@ -209,6 +212,15 @@ final class Parse
                             $err,
                             $property
                         );
+                    } catch (TypeError $err) {
+                        $elementsErrorsTree[$key] = new TypeMismatchError(
+                            $err,
+                            [
+                                "array"
+                            ],
+                            gettype($input)
+                        );
+                        continue;
                     }
                     if ($element instanceof ParseErrorsWrapper) {
                         $elementsErrorsTree[$key] = $element->getErrorsTree();
