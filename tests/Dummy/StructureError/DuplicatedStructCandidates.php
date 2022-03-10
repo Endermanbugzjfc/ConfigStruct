@@ -10,10 +10,10 @@ use Endermanbugzjfc\ConfigStruct\Dummy\Extending\B;
 use Endermanbugzjfc\ConfigStruct\Dummy\Extending\Base;
 use Endermanbugzjfc\ConfigStruct\ListType;
 
-class DuplicatedListTypes
+class DuplicatedStructCandidates
 {
 
-    #[ListType(self::class)] #[ListType(DuplicatedListTypes::class)]
+    #[ListType(self::class)] #[ListType(DuplicatedStructCandidates::class)]
     #[ListType(A::class)] #[ListType(A::class)]
     #[ListType(B::class)] #[ListType(B::class)]
     // Abstract classes should be ignored.
