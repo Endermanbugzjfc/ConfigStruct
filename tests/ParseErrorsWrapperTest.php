@@ -54,7 +54,7 @@ class ParseErrorsWrapperTest extends TestCase
             $err->getRootHeaderLabel(),
             $err->getIndentation(),
             fn(
-                array $keys,
+                array          $keys,
                 BaseParseError $parseError
             ) : bool => $keys !== [
                     "root object",
@@ -80,7 +80,7 @@ class ParseErrorsWrapperTest extends TestCase
             $err->getRootHeaderLabel(),
             $err->getIndentation(),
             $filter = fn(
-                array $keys,
+                array          $keys,
                 BaseParseError $parseError
             ) : bool => false
         );
@@ -93,8 +93,31 @@ class ParseErrorsWrapperTest extends TestCase
         );
     }
 
+    /**
+     * @throws ParseErrorsWrapper
+     */
     public function testRegenerateErrorMessageIndentation()
     {
+        $err = self::parseErrorsWrapperProvider();
+        $indentation = "----";
+        $err->regenerateErrorMessage(
+            $err->getRootHeaderLabel(),
+            $indentation
+        );
 
+        $this->assertTrue(
+            $err->getIndentation() === $indentation
+        );
+        $this->expectExceptionMessage(
+            <<<EOT
+            2 errors in root object
+            ----1 errors in element "testIndentationWithList"
+            --------Element is null while it should be array
+            ----1 errors in element "testErrorFilter"
+            --------Element is null while it should be bool
+            
+            EOT
+        );
+        throw $err;
     }
 }
