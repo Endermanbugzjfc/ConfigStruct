@@ -12,7 +12,7 @@ https://github.com/Sandertv/Marshal is an alternative that supports lower versio
 # Preview
 ## Parse errors
 ```
-2 errors in root object
+2 errors in /Users/Shoghi/Documents/shog chips.yml
     1 errors in element "a"
         1 errors in index "0"
             1 errors in element "c"
