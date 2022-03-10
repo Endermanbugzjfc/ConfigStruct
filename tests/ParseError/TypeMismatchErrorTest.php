@@ -12,7 +12,6 @@ use Endermanbugzjfc\ConfigStruct\ListType;
 use Endermanbugzjfc\ConfigStruct\Parse;
 use Endermanbugzjfc\ConfigStruct\ParseErrorsWrapper;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 use const PHP_FLOAT_MAX;
 
 class TypeMismatchErrorTest extends TestCase
@@ -309,7 +308,7 @@ class TypeMismatchErrorTest extends TestCase
         } catch (ParseErrorsWrapper $parseError) {
         }
         if (!isset($parseError)) {
-            throw new RuntimeException(
+            throw new AssertionError(
                 "No errors when copy parsed data to object"
             );
         }

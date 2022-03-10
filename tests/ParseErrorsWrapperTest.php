@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\ConfigStruct;
 
+use AssertionError;
 use Endermanbugzjfc\ConfigStruct\Dummy\Extending\A;
 use Endermanbugzjfc\ConfigStruct\ParseError\BaseParseError;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 
 class ParseErrorsWrapperTest extends TestCase
 {
@@ -39,7 +39,7 @@ class ParseErrorsWrapperTest extends TestCase
         } catch (ParseErrorsWrapper $err) {
             return $err;
         }
-        throw new RuntimeException(
+        throw new AssertionError(
             "No errors when copy parsed data to object"
         );
     }
