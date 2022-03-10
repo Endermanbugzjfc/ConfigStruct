@@ -16,17 +16,13 @@ class StructureErrorTest extends TestCase
     private function expectPreviousExceptionMessage(
         string  $message,
         object  $object,
-        ?string $property
+        ?string $property,
+        array $input
     ) : void
     {
         try {
             $context = Parse::object(
-                [
-                    "testThreeDuplicatedListTypes" => [
-                    ],
-                    "testSelf" => [
-                    ]
-                ],
+                $input,
                 $object
             );
             $context->copyToObject(
@@ -70,7 +66,9 @@ class StructureErrorTest extends TestCase
         $this->expectPreviousExceptionMessage(
             'Duplicated key names "-1", "0", "kjaldf"',
             $object,
-            null
+            null,
+            [
+            ]
         );
     }
 
