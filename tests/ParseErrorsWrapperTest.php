@@ -79,7 +79,7 @@ class ParseErrorsWrapperTest extends TestCase
         $err->regenerateErrorMessage(
             $err->getRootHeaderLabel(),
             $err->getIndentation(),
-            fn(
+            $filter = fn(
                 array $keys,
                 BaseParseError $parseError
             ) : bool => false
@@ -87,6 +87,9 @@ class ParseErrorsWrapperTest extends TestCase
 
         $this->assertTrue(
             $err->getMessageRtrim() === ""
+        );
+        $this->assertTrue(
+            $err->getErrorFilter() === $filter
         );
     }
 
