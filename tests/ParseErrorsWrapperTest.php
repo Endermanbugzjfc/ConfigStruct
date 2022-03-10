@@ -16,7 +16,7 @@ class ParseErrorsWrapperTest extends TestCase
         $object = new class() {
 
             #[ListType(A::class)]
-            public $testIndentationWithList;
+            public array $testIndentationWithList;
 
         };
         $context = Parse::object(
