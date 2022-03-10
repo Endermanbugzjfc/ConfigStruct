@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Endermanbugzjfc\ConfigStruct;
 
 use AssertionError;
+use Endermanbugzjfc\ConfigStruct\Dummy\StructureError\DuplicatedStructCandidates;
 use PHPUnit\Framework\TestCase;
 
 class StructureErrorTest extends TestCase
@@ -72,9 +73,25 @@ class StructureErrorTest extends TestCase
         );
     }
 
+    /**
+     * @throws ParseErrorsWrapper
+     */
     public function test__constructDuplicatedListTypes()
     {
-
+        $object = new DuplicatedStructCandidates();
+        $keyName = "testThreeDuplicatedListTypes";
+        $this->expectPreviousExceptionMessage(
+            "Duplicated struct candidates Endermanbugzjfc\ConfigStruct\Dummy\StructureError\DuplicatedStructCandidates, Endermanbugzjfc\ConfigStruct\Dummy\Extending\A, Endermanbugzjfc\ConfigStruct\Dummy\Extending\B",
+            $object,
+            $keyName,
+            [
+                $keyName => [
+                    [
+                        null
+                    ]
+                ]
+            ]
+        );
     }
 
     public function test__constructInvalidListTypes()
