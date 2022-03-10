@@ -147,15 +147,26 @@ class StructureErrorTest extends TestCase
     /**
      * @throws ParseErrorsWrapper
      */
-    public function test__constructObjectConstructorProtected()
-    {
-        $object = ConstructorProtected::create();
+    private function failedToCreateANewObjectFromReflection(
+        object $object
+    ) : void {
         $this->expectPreviousExceptionMessage(
             "Failed to create a new object from reflection",
             $object,
             null,
             [
             ]
+        );
+    }
+
+    /**
+     * @throws ParseErrorsWrapper
+     */
+    public function test__constructObjectConstructorProtected()
+    {
+        $object = ConstructorProtected::create();
+        $this->failedToCreateANewObjectFromReflection(
+            $object
         );
     }
 
