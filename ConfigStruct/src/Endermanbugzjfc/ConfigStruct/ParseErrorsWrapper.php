@@ -9,6 +9,7 @@ use Closure;
 use Endermanbugzjfc\ConfigStruct\ParseError\BaseParseError;
 use Exception;
 use function array_unshift;
+use function count;
 use function implode;
 use function rtrim;
 use function str_repeat;
@@ -50,7 +51,7 @@ final class ParseErrorsWrapper extends Exception
     }
 
     /**
-     * @return Closure|null Should have 0 arguments and return bool. False = the error will not be displayed in the final error message.
+     * @return Closure|null Should have exactly 2 arguments and return bool. False = the error will not be displayed in the final error message. The first argument is array $keys, a list of error labels that can be used for identifying which error in the tree has just been walked. The second argument is {@link BaseParseError} $parseError, the error itself.
      */
     public function getErrorFilter() : ?Closure
     {
@@ -113,25 +114,26 @@ final class ParseErrorsWrapper extends Exception
     {
         return self::errorsTreeToStringRecursive(
             $tree,
-            $label,
+            [
+                $label
+            ],
             $indentation,
-            0,
             $errorFilter
         )[0];
     }
 
     protected static function errorsTreeToStringRecursive(
         array    $tree,
-        string   $label,
+        array    $keys,
         string   $defaultIndentation,
-        int      $depth,
         ?Closure $errorFilter
     ) : array
     {
         $lines = [];
+        $depth = count($keys);
         $indentation = str_repeat(
             $defaultIndentation,
-            $depth + 1
+            $depth
         );
 
         $count = 0;
@@ -144,7 +146,10 @@ final class ParseErrorsWrapper extends Exception
             if (
                 $errorFilter !== null
                 and
-                !$errorFilter()
+                !$errorFilter(
+                    $keys,
+                    $content
+                )
             ) {
                 continue;
             }
@@ -153,14 +158,15 @@ final class ParseErrorsWrapper extends Exception
         }
         unset($tree);
         foreach ($children ?? [] as $key => $child) {
+            $keysClone = $keys;
+            $keysClone[] = $key;
             [
                 $newLines,
                 $newCount
             ] = self::errorsTreeToStringRecursive(
                 $child,
-                $key,
+                $keysClone,
                 $defaultIndentation,
-                $depth + 1,
                 $errorFilter
             );
             $count += $newCount;
@@ -169,8 +175,9 @@ final class ParseErrorsWrapper extends Exception
 
         $indentation = str_repeat(
             $defaultIndentation,
-            $depth
+            $depth - 1
         );
+        $label = $keys[$depth - 1];
         array_unshift(
             $lines,
             $indentation . "$count errors in $label"
