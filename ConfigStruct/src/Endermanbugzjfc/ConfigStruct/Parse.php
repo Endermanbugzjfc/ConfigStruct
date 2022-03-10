@@ -22,7 +22,7 @@ use TypeError;
 use function array_key_exists;
 use function array_unique;
 use function count;
-use function gettype;
+use function get_debug_type;
 use function implode;
 use function in_array;
 use function is_array;
@@ -218,7 +218,7 @@ final class Parse
                             [
                                 "array"
                             ],
-                            gettype($input)
+                            get_debug_type($input)
                         );
                         continue;
                     }
