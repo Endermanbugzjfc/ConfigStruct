@@ -67,4 +67,4 @@ $parseErrorsWrapper->regenerateErrorMessage(
 ```
 This filters out all the [TypeMismatchError](https://github.com/Endermanbugzjfc/ConfigStruct/blob/master/ConfigStruct/src/Endermanbugzjfc/ConfigStruct/ParseError/TypeMismatchError.php). Although `$parseError->getErrorsTree()` will still have them, they will not be shown in the error message.
 ### Print the updated error message
-Simply throw the parse errors wrapper again. Or you may choose to `echo $parseErrorsWrapper->getMessage()`. By default, the error message has a trailing line break (`\n`). You cant get an error message without the trailing line break (and other whitespaces) by calling `$parseErrorsWrapper->getMessageRtrim()` instead.
+Simply throw the parse errors wrapper again. Or you may choose to `echo $parseErrorsWrapper->getMessage()`. By default, the error message has a trailing line break (`\n`). You can get an error message without the trailing line break (and other whitespaces) by calling `$parseErrorsWrapper->getMessageRtrim()` instead.
