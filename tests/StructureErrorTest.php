@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Endermanbugzjfc\ConfigStruct;
 
 use AssertionError;
+use Endermanbugzjfc\ConfigStruct\Dummy\StructureError\ConstructorProtected;
 use Endermanbugzjfc\ConfigStruct\Dummy\StructureError\DuplicatedStructCandidates;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -143,9 +144,19 @@ class StructureErrorTest extends TestCase
         );
     }
 
+    /**
+     * @throws ParseErrorsWrapper
+     */
     public function test__constructObjectConstructorProtected()
     {
-
+        $object = ConstructorProtected::create();
+        $this->expectPreviousExceptionMessage(
+            "Failed to create a new object from reflection",
+            $object,
+            null,
+            [
+            ]
+        );
     }
 
     public function test__constructObjectConstructorWithArguments()
