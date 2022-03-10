@@ -38,6 +38,7 @@ class StructureErrorTest extends TestCase
             $this->assertTrue(
                 $err->getMessage() === $expected
             );
+            echo $err->getPrevious()->getMessage() . "\n";
             $this->assertTrue(
                 $err->getPrevious()->getMessage() === $message
             );
