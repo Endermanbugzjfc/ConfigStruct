@@ -119,7 +119,7 @@ final class ParseErrorsWrapper extends Exception
             ],
             $indentation,
             $errorFilter
-        )[0];
+        )[0] ?? "";
     }
 
     protected static function errorsTreeToStringRecursive(
@@ -170,24 +170,31 @@ final class ParseErrorsWrapper extends Exception
                 $errorFilter
             );
             $count += $newCount;
-            $lines[] = $newLines;
+            if ($newLines !== null) {
+                $lines[] = $newLines;
+            }
         }
-
-        $indentation = str_repeat(
-            $defaultIndentation,
-            $depth - 1
-        );
-        $label = $keys[$depth - 1];
-        array_unshift(
-            $lines,
-            $indentation . "$count errors in $label"
-        );
+        if ($lines !== []) {
+            $indentation = str_repeat(
+                $defaultIndentation,
+                $depth - 1
+            );
+            $label = $keys[$depth - 1];
+            array_unshift(
+                $lines,
+                $indentation . "$count errors in $label"
+            );
+            return [
+                implode(
+                    "\n",
+                    $lines
+                ),
+                $count
+            ];
+        }
         return [
-            implode(
-                "\n",
-                $lines
-            ),
-            $count
+            null,
+            0
         ];
     }
 
