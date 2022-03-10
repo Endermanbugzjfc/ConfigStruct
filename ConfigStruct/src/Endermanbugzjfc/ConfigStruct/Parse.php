@@ -185,8 +185,8 @@ final class Parse
             );
             if ($listTypes !== []) {
                 foreach ($listTypes as $listType) {
+                    $listTypeRaw = $listType->getArguments()[0];
                     try {
-                        $listTypeRaw = $listType->getArguments()[0];
                         $listReflect = new ReflectionClass(
                             $listTypeRaw
                         );
