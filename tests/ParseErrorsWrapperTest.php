@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Endermanbugzjfc\ConfigStruct;
 
 use Endermanbugzjfc\ConfigStruct\Dummy\Extending\A;
+use Endermanbugzjfc\ConfigStruct\ParseError\BaseParseError;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
@@ -42,7 +43,19 @@ class ParseErrorsWrapperTest extends TestCase
 
     public function testGetErrorFilter()
     {
-
+        $err = self::parseErrorsWrapperProvider();
+        $err->regenerateErrorMessage(
+            $err->getRootHeaderLabel(),
+            $err->getIndentation(),
+            fn(
+                array $keys,
+                BaseParseError $parseError
+            ) : bool => $keys !== [
+                    "root object",
+                    "element \"testErrorFilter\""
+                ]
+        );
+        echo $err->getMessage();
     }
 
     public function testRegenerateErrorMessage()
