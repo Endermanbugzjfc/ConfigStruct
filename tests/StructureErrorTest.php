@@ -7,6 +7,9 @@ namespace Endermanbugzjfc\ConfigStruct;
 use AssertionError;
 use Endermanbugzjfc\ConfigStruct\Dummy\StructureError\DuplicatedStructCandidates;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use ReflectionException;
+use function class_exists;
 
 class StructureErrorTest extends TestCase
 {
@@ -15,8 +18,8 @@ class StructureErrorTest extends TestCase
      * @throws ParseErrorsWrapper
      */
     private function expectPreviousExceptionMessage(
-        string  $message,
-        object  $object,
+        string $message,
+        object $object,
         ?string $property,
         array $input
     ) : void
@@ -94,9 +97,51 @@ class StructureErrorTest extends TestCase
         );
     }
 
+    /**
+     * @throws ParseErrorsWrapper
+     */
     public function test__constructInvalidListTypes()
     {
+        $object = new class() {
 
+            #[ListType("ajbfl")]
+            public string $testThreeInvalidListTypes;
+
+        };
+        $reflection = new ReflectionClass(
+            $object
+        );
+        $keyName = "testThreeInvalidListTypes";
+        try {
+            $property = $reflection->getProperty(
+                $keyName
+            );
+        } catch (ReflectionException $err) {
+            throw new AssertionError(
+                "Property does not exist",
+                0,
+                $err
+            );
+        }
+        $listType = $property->getAttributes(
+            ListType::class
+        )[0];
+        $class = $listType->getArguments()[0];
+        $this->assertNotTrue(
+            class_exists(
+                $class
+            )
+        );
+
+        $this->expectPreviousExceptionMessage(
+            "List type attribute has invalid class",
+            $object,
+            $keyName,
+            [
+                $keyName => [
+                ]
+            ]
+        );
     }
 
     public function test__constructObjectConstructorProtected()
