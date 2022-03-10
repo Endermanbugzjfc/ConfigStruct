@@ -20,4 +20,6 @@ class DuplicatedStructCandidates
     #[ListType(Base::class)] #[ListType(Base::class)]
     public array $testThreeDuplicatedListTypes;
 
+    public self|DuplicatedStructCandidates $testSelf;
+
 }
