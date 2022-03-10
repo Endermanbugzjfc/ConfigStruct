@@ -12,4 +12,9 @@ final class ConstructorProtected
     {
     }
 
+    public static function create() : self
+    {
+        return new self();
+    }
+
 }
