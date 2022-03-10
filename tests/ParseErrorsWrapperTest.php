@@ -73,6 +73,23 @@ class ParseErrorsWrapperTest extends TestCase
         throw $err;
     }
 
+    public function testGetErrorFilterAll()
+    {
+        $err = self::parseErrorsWrapperProvider();
+        $err->regenerateErrorMessage(
+            $err->getRootHeaderLabel(),
+            $err->getIndentation(),
+            fn(
+                array $keys,
+                BaseParseError $parseError
+            ) : bool => false
+        );
+
+        $this->assertTrue(
+            $err->getMessageRtrim() === ""
+        );
+    }
+
     public function testRegenerateErrorMessage()
     {
 
