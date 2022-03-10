@@ -9,6 +9,18 @@ It also generates more human-readable errors when something is wrong with the da
 ![](https://i.imgflip.com/67yyc9.jpg)
 
 https://github.com/Sandertv/Marshal is an alternative that supports lower versions of PHP. However, it is not as ~~bloat~~ feature-rich as this library.
+# Preview
+## Parse errors
+```
+2 errors in root object
+    1 errors in element "a"
+        1 errors in index "0"
+            1 errors in element "c"
+                Element is array while it should be string
+    1 errors in element "b"
+        Element is null while it should be bool
+ ```
+<!-- TODO: In an uncaught PHP error message and PocketMine-MP server log. -->
 # Developer guide
 ## Parsing data
 ```php
