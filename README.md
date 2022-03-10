@@ -15,14 +15,8 @@ https://github.com/Sandertv/Marshal is an alternative that supports lower versio
 use Endermanbugzjfc\ConfigStruct\Parse;
 ```
 ```php
-$context = Parse::object(
-	$object,
-	$data
-);
-$context->copyToObject(
-	$object,
-	$dataFilePath
-);
+$context = Parse::object($object, $data);
+$context->copyToObject($object, $dataFilePath);
 ```
 `$dataFilePath` will be displayed in error messages if there is any.
 
