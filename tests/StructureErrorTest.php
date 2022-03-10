@@ -14,8 +14,8 @@ class StructureErrorTest extends TestCase
      * @throws ParseErrorsWrapper
      */
     private function expectPreviousExceptionMessage(
-        string $message,
-        object $object,
+        string  $message,
+        object  $object,
         ?string $property
     ) : void
     {
@@ -49,9 +49,24 @@ class StructureErrorTest extends TestCase
         );
     }
 
+    /**
+     * @throws ParseErrorsWrapper
+     */
     public function test__constructDuplicatedKeyNames()
     {
+        $object = new class() {
 
+            #[KeyName(-1)] #[KeyName("-1")]
+            #[KeyName(0)] #[KeyName("0")]
+            #[KeyName("kjaldf")] #[KeyName("kjaldf")]
+            public bool $testThreeDuplicatedKeyNames;
+
+        };
+        $this->expectPreviousExceptionMessage(
+            'Duplicated key names "-1", "0", "kjaldf"',
+            $object,
+            null
+        );
     }
 
     public function test__constructDuplicatedListTypes()
