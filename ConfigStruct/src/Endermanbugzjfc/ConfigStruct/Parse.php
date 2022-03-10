@@ -337,6 +337,7 @@ final class Parse
                 $duplicated[] = $raw;
                 continue;
             }
+            $raws[] = $raw;
             $output = self::objectByReflection(
                 $input,
                 $candidate
