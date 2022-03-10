@@ -270,8 +270,8 @@ final class Parse
                 $name = $keyName->getArguments()[0];
                 if (in_array(
                     $name,
-                    $names,
-                    true
+                    $names
+                    // PHP array index is not strictly typed. Classic PHP.
                 )) {
                     $duplicated[] = $name;
                 }
