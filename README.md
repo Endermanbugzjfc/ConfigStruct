@@ -5,8 +5,10 @@ composer project.
 
 It also generates more human-readable errors when something is wrong with the data. Encouraging and guiding the user (especially some PocketMine-MP server owners) to read the error and fix their mess.
 
-https://github.com/Sandertv/Marshal is an alternative that supports lower versions of PHP. However, it is not as ~~bloat~~ feature-rich as this library.
+
 ![](https://i.imgflip.com/67yyc9.jpg)
+
+https://github.com/Sandertv/Marshal is an alternative that supports lower versions of PHP. However, it is not as ~~bloat~~ feature-rich as this library.
 # Developer guide
 ## Parsing data
 ```php
