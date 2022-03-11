@@ -2,8 +2,13 @@
 
 namespace Endermanbugzjfc\ConfigStruct;
 
+use Endermanbugzjfc\ConfigStruct\Dummy\Extending\A;
+use Endermanbugzjfc\ConfigStruct\Dummy\Extending\ConflictWithA;
 use Endermanbugzjfc\ConfigStruct\Dummy\RecursiveChildObject;
+use Exception;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use function array_map;
 
 class ParseTest extends TestCase
 {
@@ -148,6 +153,46 @@ class ParseTest extends TestCase
         );
         $this->assertTrue(
             !isset($twoDeeper->testSelf)
+        );
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testFindMatchingStructSuccess()
+    {
+        $candidates = [
+            A::class,
+            ConflictWithA::class
+        ];
+        $candidates = array_map(
+            fn(string $class) : ReflectionClass => new ReflectionClass(
+                $class
+            ),
+            $candidates
+        );
+
+        $findA = Parse::findMatchingStruct(
+            $candidates,
+            [
+                "a" => ""
+            ]
+        );
+        $this->assertTrue(
+            $findA->getReflection()->getName()
+            === A::class
+        );
+
+        $findConflictWithA = Parse::findMatchingStruct(
+            $candidates,
+            [
+                "a" => [
+                ]
+            ]
+        );
+        $this->assertTrue(
+            $findConflictWithA->getReflection()->getName()
+            === ConflictWithA::class
         );
     }
 
