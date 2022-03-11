@@ -210,4 +210,29 @@ class ParseTest extends TestCase
         );
     }
 
+    /**
+     * @throws Exception
+     */
+    public function testFindMatchingStructFailure()
+    {
+        $candidates = self::classNamesToReflections(
+            [
+                A::class,
+                ConflictWithA::class
+            ]
+        );
+
+        $firstErr = Parse::findMatchingStruct(
+            $candidates,
+            [
+                "a" => [
+                    "a" => ""
+                ]
+            ]
+        );
+        $this->assertTrue(
+            $firstErr instanceof ParseErrorsWrapper
+        );
+    }
+
 }
