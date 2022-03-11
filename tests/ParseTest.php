@@ -8,6 +8,7 @@ use Endermanbugzjfc\ConfigStruct\Dummy\RecursiveChildObject;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use ReflectionException;
 use function array_map;
 
 class ParseTest extends TestCase
@@ -157,19 +158,32 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @throws Exception
+     * @param string[] $candidates
+     * @return ReflectionClass[]
+     * @throws ReflectionException
      */
-    public function testFindMatchingStructSuccess()
+    private static function classNamesToReflections(
+        array $candidates
+    ) : array
     {
-        $candidates = [
-            A::class,
-            ConflictWithA::class
-        ];
-        $candidates = array_map(
+        return array_map(
             fn(string $class) : ReflectionClass => new ReflectionClass(
                 $class
             ),
             $candidates
+        );
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testFindMatchingStructSuccess()
+    {
+        $candidates = self::classNamesToReflections(
+            [
+                A::class,
+                ConflictWithA::class
+            ]
         );
 
         $findA = Parse::findMatchingStruct(
