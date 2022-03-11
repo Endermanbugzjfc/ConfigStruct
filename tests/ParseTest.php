@@ -158,19 +158,19 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @param string[] $candidates
      * @return ReflectionClass[]
      * @throws ReflectionException
      */
-    private static function classNamesToReflections(
-        array $candidates
-    ) : array
+    private function structCandidatesSampleA() : array
     {
         return array_map(
             fn(string $class) : ReflectionClass => new ReflectionClass(
                 $class
             ),
-            $candidates
+            [
+                A::class,
+                ConflictWithA::class
+            ]
         );
     }
 
@@ -179,12 +179,7 @@ class ParseTest extends TestCase
      */
     public function testFindMatchingStructSuccess()
     {
-        $candidates = self::classNamesToReflections(
-            [
-                A::class,
-                ConflictWithA::class
-            ]
-        );
+        $candidates = self::structCandidatesSampleA();
 
         $findA = Parse::findMatchingStruct(
             $candidates,
@@ -215,12 +210,7 @@ class ParseTest extends TestCase
      */
     public function testFindMatchingStructFailure()
     {
-        $candidates = self::classNamesToReflections(
-            [
-                A::class,
-                ConflictWithA::class
-            ]
-        );
+        $candidates = self::structCandidatesSampleA();
 
         $firstErr = Parse::findMatchingStruct(
             $candidates,
