@@ -225,6 +225,30 @@ class TypeMismatchErrorTest extends TestCase
     /**
      * @throws ParseErrorsWrapper
      */
+    public function testGetMessageStringDigit()
+    {
+        $object = self::objectProvider();
+        $this->expectExceptionMessage(
+            <<<EOT
+            3 errors in root object
+                1 errors in element "testArray"
+                    Element is string while it should be array
+                1 errors in element "testUnionTypesChildObject"
+                    Element is string while it should be array
+                1 errors in element "testListMultipleTypes"
+                    Element is string while it should be array
+            
+            EOT
+        );
+        self::parse(
+            "2",
+            $object
+        );
+    }
+
+    /**
+     * @throws ParseErrorsWrapper
+     */
     public function testGetMessageNoMatchingStruct()
     {
         $object = self::objectProvider();
