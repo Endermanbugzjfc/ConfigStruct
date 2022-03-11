@@ -1,0 +1,15 @@
+<?php
+
+
+declare(strict_types=1);
+
+namespace Endermanbugzjfc\ConfigStruct\Dummy;
+
+final class RecursiveChildObject
+{
+
+    public string $testA;
+
+    public self $testSelf;
+
+}

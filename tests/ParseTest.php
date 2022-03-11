@@ -2,6 +2,7 @@
 
 namespace Endermanbugzjfc\ConfigStruct;
 
+use Endermanbugzjfc\ConfigStruct\Dummy\RecursiveChildObject;
 use PHPUnit\Framework\TestCase;
 
 class ParseTest extends TestCase
@@ -115,13 +116,7 @@ class ParseTest extends TestCase
      */
     public function testObjectChildStructRecursive()
     {
-        $object = new class() {
-
-            public string $testA;
-
-            public self $testSelf;
-
-        };
+        $object = new RecursiveChildObject();
         $class = $object::class;
         $context = Parse::object(
             $object,
