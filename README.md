@@ -9,8 +9,13 @@ It also generates more human-readable errors when something is wrong with the da
 ![](https://i.imgflip.com/67yyc9.jpg)
 
 https://github.com/Sandertv/Marshal is an alternative that supports lower versions of PHP. However, it is not as ~~bloat~~ feature-rich as this library.
-# Preview
-## Parse errors
+# The section that everyone is looking for
+## Composer command copy
+```
+composer require endermanbugzjfc/configstruct
+```
+## Preview
+### Parse errors
 ```
 2 errors in /Users/Shoghi/Documents/shog chips.yml
     1 errors in element "a"
