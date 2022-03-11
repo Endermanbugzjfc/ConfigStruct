@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 class ParseTest extends TestCase
 {
 
-    public function testParseStructPropertyAccessLevels()
+    public function testObjectPropertyAccessLevels()
     {
         $object = new class() {
 
@@ -16,7 +16,6 @@ class ParseTest extends TestCase
             protected ?bool $testProtectedProperty;
 
             public ?bool $testPublicProperty;
-
         };
         $output = Parse::parseStruct(
             $object,
@@ -50,7 +49,7 @@ class ParseTest extends TestCase
         $this->assertTrue($public->getValue($object) === null);
     }
 
-    public function testParseStructKeyNameCandidatesAndUnhandledElements()
+    public function testObjectKeyNameCandidatesAndUnhandledElements()
     {
         $testIndexKeyNameCandidate = new class() {
 
@@ -89,7 +88,7 @@ class ParseTest extends TestCase
         );
     }
 
-    public function testParseStructMissingElements()
+    public function testObjectMissingElements()
     {
         $object = new class() {
 
@@ -117,7 +116,7 @@ class ParseTest extends TestCase
         );
     }
 
-    public function testParseStructChildStructRecursive()
+    public function testObjectChildStructRecursive()
     {
         $object = new class() {
 
