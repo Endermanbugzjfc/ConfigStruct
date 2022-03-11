@@ -36,12 +36,4 @@ final class PropertyDetails
         return $this->keyName;
     }
 
-    /**
-     * @param string $keyName
-     */
-    public function setKeyName(string $keyName) : void
-    {
-        $this->keyName = $keyName;
-    }
-
 }
