@@ -19,7 +19,8 @@ final class RecursiveChildObject
             "testSelf" => [
                 "testA" => "testB",
                 "testSelf" => [
-                ]
+                ],
+                "testUnhandledElement" => null
             ]
         ];
     }
