@@ -7,6 +7,9 @@ use PHPUnit\Framework\TestCase;
 class ParseTest extends TestCase
 {
 
+    /**
+     * @throws ParseErrorsWrapper
+     */
     public function testObjectPropertyAccessLevels()
     {
         $object = new class() {
@@ -17,30 +20,30 @@ class ParseTest extends TestCase
 
             public ?bool $testPublicProperty;
         };
-        $output = Parse::parseStruct(
+
+        $keyName = "testPublicProperty";
+        $context = Parse::object(
             $object,
             [
                 "testPrivateProperty" => null,
                 "testProtectedProperty" => null,
-                "testPublicProperty" => null
+                $keyName => null
             ]
         );
-
-        $this->assertTrue(
-            count($output->getPropertiesOutput()) === 1
+        $context->copyToObject(
+            $object,
+            "root object"
         );
-
         $this->assertTrue(
-            $output->getPropertiesOutput()
-            ["testPublicProperty"]
-                ->getKeyName() === "testPublicProperty"
+            $context->getPropertyContexts()[$keyName]->getDetails()->getKeyName()
+            === $keyName
         );
 
         [
             $private,
             $protected,
             $public
-        ] = $output->getReflection()->getProperties();
+        ] = $context->getReflection()->getProperties();
         $private->setAccessible(true);
         $protected->setAccessible(true);
         $this->assertNotTrue($private->isInitialized($object));
@@ -49,42 +52,33 @@ class ParseTest extends TestCase
         $this->assertTrue($public->getValue($object) === null);
     }
 
-    public function testObjectKeyNameCandidatesAndUnhandledElements()
+    /**
+     * @throws ParseErrorsWrapper
+     */
+    public function testObjectUnhandledElements()
     {
-        $testIndexKeyNameCandidate = new class() {
-
-            #[KeyName(0)] #[KeyName("")]
-            public $testA;
+        $object = new class() {
 
         };
-        $testEmptyStringKeyNameCandidate = clone $testIndexKeyNameCandidate;
 
-        $testUnhandledElements = Parse::parseStruct(
-            $testIndexKeyNameCandidate,
+        $context = Parse::object(
+            $object,
             [
                 "testA" => "testA",
                 null => "",
                 0
             ]
         );
-        $this->assertTrue(
-            $testIndexKeyNameCandidate->testA === 0
+        $context->copyToObject(
+            $object,
+            "root object"
         );
         $this->assertTrue(
-            $testUnhandledElements->getUnhandledElements() === [
+            $context->getUnhandledElements() === [
                 "testA" => "testA",
-                null => ""
+                null => "",
+                0
             ]
-        );
-
-        Parse::parseStruct(
-            $testEmptyStringKeyNameCandidate,
-            [
-                null => ""
-            ]
-        );
-        $this->assertTrue(
-            $testEmptyStringKeyNameCandidate->testA === ""
         );
     }
 
@@ -92,12 +86,12 @@ class ParseTest extends TestCase
     {
         $object = new class() {
 
-            public $testNoDefaultValue;
+            public bool $testNoDefaultValue;
 
-            public $testDefaultValue = true;
+            public bool $testDefaultValue = true;
 
         };
-        $output = Parse::parseStruct(
+        $context = Parse::object(
             $object,
             [
 
@@ -105,28 +99,31 @@ class ParseTest extends TestCase
         );
 
         $this->assertTrue(
-            $output->getMissingElements()
+            $context->getMissingElements()
             ["testNoDefaultValue"]
                 ->getName() === "testNoDefaultValue"
         );
         $this->assertTrue(
-            $output->getMissingElements()
+            $context->getMissingElements()
             ["testDefaultValue"]
                 ->getName() === "testDefaultValue"
         );
     }
 
+    /**
+     * @throws ParseErrorsWrapper
+     */
     public function testObjectChildStructRecursive()
     {
         $object = new class() {
 
-            public $testA;
+            public string $testA;
 
             public self $testSelf;
 
         };
         $class = $object::class;
-        Parse::parseStruct(
+        $context = Parse::object(
             $object,
             [
                 "testA" => "testA",
@@ -136,6 +133,10 @@ class ParseTest extends TestCase
                     ]
                 ]
             ]
+        );
+        $context->copyToObject(
+            $object,
+            "root object"
         );
 
         $this->assertTrue(
