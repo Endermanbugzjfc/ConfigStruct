@@ -12,4 +12,16 @@ final class RecursiveChildObject
 
     public self $testSelf;
 
+    public static function dataSampleA() : array
+    {
+        return [
+            "testA" => "testA",
+            "testSelf" => [
+                "testA" => "testB",
+                "testSelf" => [
+                ]
+            ]
+        ];
+    }
+
 }

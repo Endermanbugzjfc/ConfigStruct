@@ -120,14 +120,7 @@ class ParseTest extends TestCase
         $class = $object::class;
         $context = Parse::object(
             $object,
-            [
-                "testA" => "testA",
-                "testSelf" => [
-                    "testA" => "testB",
-                    "testSelf" => [
-                    ]
-                ]
-            ]
+            $object::dataSampleA()
         );
         $context->copyToObject(
             $object,
