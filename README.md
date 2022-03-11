@@ -10,10 +10,13 @@ It also generates more human-readable errors when something is wrong with the da
 
 https://github.com/Sandertv/Marshal is an alternative that supports lower versions of PHP. However, it is not as ~~bloat~~ feature-rich as this library.
 # The section that everyone is looking for
-## Composer command copy
+## Installation
+Via Composer:
 ```
 composer require endermanbugzjfc/configstruct
 ```
+Via PocketMine-MP virion infection:
+https://poggit.pmmp.io/v.dl/Endermanbugzjfc/ConfigStruct/ConfigStruct/%5E2.0.0
 ## Preview
 ### Parse errors
 ```
