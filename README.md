@@ -34,7 +34,7 @@ $context->copyToObject($object, $dataFilePath);
 ```
 `$dataFilePath` will be displayed in error messages if there is any.
 
-The errors will be wrapped and thrown with a [ParseErrorsWrapper](https://github.com/Endermanbugzjfc/ConfigStruct/blob/master/ConfigStruct/src/Endermanbugzjfc/ConfigStruct/ParseErrorsWrapper.php) when calling `copyToObject()`. Although it is recommended to catch it, you can still ignore it. Because the errors can still be displayed well in a PHP uncaught error message.
+The errors will be wrapped and thrown with a [ParseErrorsWrapper](https://github.com/Endermanbugzjfc/ConfigStruct/blob/master/ConfigStruct/src/Endermanbugzjfc/ConfigStruct/ParseErrorsWrapper.php) when calling `copyToObject()`. Although it is recommended to catch it, you can yet ignore it. Because the errors can still be displayed well in a PHP uncaught error message.
 
 You may use `Parse::objectByReflection()` if you don't have an object but instead, its ReflectionClass instance. And use `$context->copyToNewObject()` to copy the parsed data to a new object.
 ## Customising error message
