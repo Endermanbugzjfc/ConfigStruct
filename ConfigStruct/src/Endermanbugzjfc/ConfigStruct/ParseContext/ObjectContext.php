@@ -74,13 +74,13 @@ final class ObjectContext
      * Copy output data to the given object.
      * @param object $object This object will be modified.
      * @param string $rootHeaderLabel See {@link ParseErrorsWrapper::getRootHeaderLabel()}.
-     * @return object The same object as the first argument. So it can be used fluently (in chain of function calls).
+     * @return void
      * @throws ParseErrorsWrapper
      */
     public function copyToObject(
         object $object,
         string $rootHeaderLabel
-    ) : object
+    ) : void
     {
         $propertyContexts = $this->getPropertyContexts();
         $tree = $this->getErrorsTree();
@@ -131,7 +131,6 @@ final class ObjectContext
                 $rootHeaderLabel
             );
         }
-        return $object;
     }
 
     /**
