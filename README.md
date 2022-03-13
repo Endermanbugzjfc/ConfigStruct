@@ -1,6 +1,6 @@
 # ConfigStruct
 
-Type and shape system for arrays. Help write cleaner code when implementing configs for your PocketMine-MP plugin or
+Type and shape system for arrays. Help write clearer code when implementing configs for your PocketMine-MP plugin or
 composer project.
 
 It also generates more human-readable errors when something is wrong with the data. Encouraging and guiding the user (especially some PocketMine-MP server owners) to read the error and fix their mess.
