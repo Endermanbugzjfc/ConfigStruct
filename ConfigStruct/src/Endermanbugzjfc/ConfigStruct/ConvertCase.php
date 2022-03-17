@@ -15,6 +15,14 @@ class ConvertCase
 
     public const LOWERCASE = [self::class, "lowercase"];
     public const UPPERCASE = [self::class, "uppercase"];
+    public const PASCAL_CASE = [self::class, "pascalCase"];
+    public const CAMEL_CASE = [self::class, "camelCase"];
+    public const SNAKE_CASE = [self::class, "snakeCase"];
+    public const SCREAMING_SNAKE_CASE = [self::class, "screamingSnakeCase"];
+    public const KEBAB_CASE = [self::class, "kebabCase"];
+    public const SCREAMING_KEBAB_CASE = [self::class, "screamingKebabCase"];
+    public const DOT_CASE = [self::class, "dotCase"];
+    public const SCREAMING_DOT_CASE = [self::class, "screamingDotCase"];
 
     public function __construct(
         callable $caseConverter
@@ -42,6 +50,93 @@ class ConvertCase
         string $name
     ) : string {
         return strtoupper($name);
+    }
+
+    /**
+     * PascalCase
+     * @param string $name
+     * @return string
+     */
+    public function pascalCase(
+        string $name
+    ) : string {
+    }
+
+    /**
+     * camelCase
+     * @param string $name
+     * @return string
+     */
+    public function camelCase(
+        string $name
+    ) : string {
+
+    }
+
+    /**
+     * snake_case
+     * @param string $name
+     * @return string
+     */
+    public function snakeCase(
+        string $name
+    ) : string {
+
+    }
+
+    /**
+     * SCREAMING_SNAKE_CASE
+     * @param string $name
+     * @return string
+     */
+    public function screamingSnakeCase(
+        string $name
+    ) : string {
+
+    }
+
+    /**
+     * kebab-case
+     * @param string $name
+     * @return string
+     */
+    public function kebabCase(
+        string $name
+    ) : string {
+
+    }
+
+    /**
+     * SCREAMING-KEBAB-CASE
+     * @param string $name
+     * @return string
+     */
+    public function screamingKebabCase(
+        string $name
+    ) : string {
+
+    }
+
+    /**
+     * dot.case
+     * @param string $name
+     * @return string
+     */
+    public function dotCase(
+        string $name
+    ) : string {
+
+    }
+
+    /**
+     * SCREAMING.DOT.CASE
+     * @param string $name
+     * @return string
+     */
+    public function screamingDotCase(
+        string $name
+    ) : string {
+
     }
 
 }
