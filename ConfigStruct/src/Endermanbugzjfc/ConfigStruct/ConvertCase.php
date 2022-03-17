@@ -35,7 +35,7 @@ class ConvertCase
      * @param string $name
      * @return string
      */
-    public function lowercase(
+    public static function lowercase(
         string $name
     ) : string {
         return strtolower($name);
@@ -46,7 +46,7 @@ class ConvertCase
      * @param string $name
      * @return string
      */
-    public function uppercase(
+    public static function uppercase(
         string $name
     ) : string {
         return strtoupper($name);
@@ -57,7 +57,7 @@ class ConvertCase
      * @param string $name
      * @return string
      */
-    public function pascalCase(
+    public static function pascalCase(
         string $name
     ) : string {
     }
@@ -67,7 +67,7 @@ class ConvertCase
      * @param string $name
      * @return string
      */
-    public function camelCase(
+    public static function camelCase(
         string $name
     ) : string {
 
@@ -78,7 +78,7 @@ class ConvertCase
      * @param string $name
      * @return string
      */
-    public function snakeCase(
+    public static function snakeCase(
         string $name
     ) : string {
 
@@ -89,7 +89,7 @@ class ConvertCase
      * @param string $name
      * @return string
      */
-    public function screamingSnakeCase(
+    public static function screamingSnakeCase(
         string $name
     ) : string {
 
@@ -100,7 +100,7 @@ class ConvertCase
      * @param string $name
      * @return string
      */
-    public function kebabCase(
+    public static function kebabCase(
         string $name
     ) : string {
 
@@ -111,7 +111,7 @@ class ConvertCase
      * @param string $name
      * @return string
      */
-    public function screamingKebabCase(
+    public static function screamingKebabCase(
         string $name
     ) : string {
 
@@ -122,7 +122,7 @@ class ConvertCase
      * @param string $name
      * @return string
      */
-    public function dotCase(
+    public static function dotCase(
         string $name
     ) : string {
 
@@ -133,7 +133,7 @@ class ConvertCase
      * @param string $name
      * @return string
      */
-    public function screamingDotCase(
+    public static function screamingDotCase(
         string $name
     ) : string {
 
