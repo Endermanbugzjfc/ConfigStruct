@@ -23,7 +23,7 @@ class ConvertCase
     }
 
     /**
-     * lowercase.
+     * lowercase
      * @param string $name
      * @return string
      */
@@ -34,7 +34,7 @@ class ConvertCase
     }
 
     /**
-     * UPPERCASE.
+     * UPPERCASE
      * @param string $name
      * @return string
      */
