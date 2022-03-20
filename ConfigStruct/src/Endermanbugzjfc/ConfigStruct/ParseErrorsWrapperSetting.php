@@ -23,4 +23,9 @@ class ParseErrorsWrapperSetting
         return true;
     }
 
+    public function getIndentation() : string
+    {
+        return "    ";
+    }
+
 }
