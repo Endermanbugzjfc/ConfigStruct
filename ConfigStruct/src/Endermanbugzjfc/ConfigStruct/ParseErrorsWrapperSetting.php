@@ -28,4 +28,18 @@ class ParseErrorsWrapperSetting
         return "    ";
     }
 
+    public function __construct(
+        private string $rootHeaderLabel
+    )
+    {
+    }
+
+    /**
+     * @return string
+     */
+    public function getRootHeaderLabel() : string
+    {
+        return $this->rootHeaderLabel;
+    }
+
 }
