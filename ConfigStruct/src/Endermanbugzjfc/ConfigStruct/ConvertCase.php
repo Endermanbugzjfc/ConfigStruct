@@ -37,7 +37,8 @@ class ConvertCase
      */
     public static function lowercase(
         string $name
-    ) : string {
+    ) : string
+    {
         return strtolower($name);
     }
 
@@ -48,7 +49,8 @@ class ConvertCase
      */
     public static function uppercase(
         string $name
-    ) : string {
+    ) : string
+    {
         return strtoupper($name);
     }
 
@@ -59,7 +61,8 @@ class ConvertCase
      */
     public static function pascalCase(
         string $name
-    ) : string {
+    ) : string
+    {
     }
 
     /**
@@ -69,7 +72,8 @@ class ConvertCase
      */
     public static function camelCase(
         string $name
-    ) : string {
+    ) : string
+    {
 
     }
 
@@ -80,7 +84,8 @@ class ConvertCase
      */
     public static function snakeCase(
         string $name
-    ) : string {
+    ) : string
+    {
 
     }
 
@@ -91,7 +96,8 @@ class ConvertCase
      */
     public static function screamingSnakeCase(
         string $name
-    ) : string {
+    ) : string
+    {
 
     }
 
@@ -102,7 +108,8 @@ class ConvertCase
      */
     public static function kebabCase(
         string $name
-    ) : string {
+    ) : string
+    {
 
     }
 
@@ -113,7 +120,8 @@ class ConvertCase
      */
     public static function screamingKebabCase(
         string $name
-    ) : string {
+    ) : string
+    {
 
     }
 
@@ -124,7 +132,8 @@ class ConvertCase
      */
     public static function dotCase(
         string $name
-    ) : string {
+    ) : string
+    {
 
     }
 
@@ -135,7 +144,10 @@ class ConvertCase
      */
     public static function screamingDotCase(
         string $name
-    ) : string {
+    ) : string
+    {
+
+    }
 
     }
 
