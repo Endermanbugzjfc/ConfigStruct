@@ -7,7 +7,5 @@ namespace Endermanbugzjfc\ConfigStruct\Dummy\Extending;
 
 class Extendable extends Base
 {
-
     public int $extendable;
-
 }

@@ -7,7 +7,5 @@ namespace Endermanbugzjfc\ConfigStruct\Dummy\Extending;
 
 final class ConflictWithA extends Extendable
 {
-
     public self $a;
-
 }

@@ -1,16 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Endermanbugzjfc\ConfigStruct;
 
 use PHPUnit\Framework\TestCase;
 
 class EmitTest extends TestCase
 {
-
     public function testObjectPropertySkipping()
     {
         $object = new class() {
-
             private bool $testPrivateProperty = true;
             protected bool $testProtectedProperty = true;
 
@@ -19,7 +19,6 @@ class EmitTest extends TestCase
             public $testNoType;
             public bool $testDefaultValue = true;
             public ?bool $testNull = null;
-
         };
         $output = Emit::object($object);
         $this->assertTrue(
@@ -34,13 +33,11 @@ class EmitTest extends TestCase
     public function testObjectCustomKeyName()
     {
         $object = new class() {
-
             #[KeyName(1)]
             public int $testA = 3;
 
             #[KeyName(0)]
             public int $testB = 2;
-
         };
         $output = Emit::object(
             $object
@@ -64,11 +61,9 @@ class EmitTest extends TestCase
     public function testObjectRecursiveChildren()
     {
         $root = new class() {
-
             public string $testA;
 
             public self $testSelf;
-
         };
         $oneDeep = clone $root;
         $twoDeep = clone $root;
@@ -94,5 +89,4 @@ class EmitTest extends TestCase
             ]
         );
     }
-
 }

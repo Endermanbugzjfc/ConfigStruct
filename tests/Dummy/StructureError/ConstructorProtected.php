@@ -7,7 +7,6 @@ namespace Endermanbugzjfc\ConfigStruct\Dummy\StructureError;
 
 final class ConstructorProtected
 {
-
     protected function __construct()
     {
     }
@@ -16,5 +15,4 @@ final class ConstructorProtected
     {
         return new self();
     }
-
 }

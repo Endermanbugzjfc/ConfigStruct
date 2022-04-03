@@ -12,12 +12,10 @@ use Endermanbugzjfc\ConfigStruct\ListType;
 
 class DuplicatedStructCandidates
 {
-
     #[ListType(self::class)] #[ListType(DuplicatedStructCandidates::class)]
     #[ListType(A::class)] #[ListType(A::class)]
     #[ListType(B::class)] #[ListType(B::class)]
     // Abstract classes should be ignored.
     #[ListType(Base::class)] #[ListType(Base::class)]
     public array $testThreeDuplicatedListTypes;
-
 }

@@ -11,16 +11,13 @@ use PHPUnit\Framework\TestCase;
 
 class ParseErrorsWrapperTest extends TestCase
 {
-
     private static function parseErrorsWrapperProvider() : ParseErrorsWrapper
     {
         $object = new class() {
-
             #[ListType(A::class)]
             public array $testIndentationWithList;
 
             public bool $testErrorFilter;
-
         };
         $context = Parse::object(
             $object,
@@ -57,9 +54,9 @@ class ParseErrorsWrapperTest extends TestCase
                 array          $keys,
                 BaseParseError $parseError
             ) : bool => $keys !== [
-                    "root object",
-                    "element \"testErrorFilter\""
-                ]
+                "root object",
+                "element \"testErrorFilter\""
+            ]
         );
 
         $this->expectExceptionMessage(

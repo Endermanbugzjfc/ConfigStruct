@@ -16,13 +16,11 @@ class KeyNameTest extends TestCase
     {
         // TODO: Test for emit.
         $object = new class () {
-
             #[KeyName("a")]
             public mixed $testOneKeyName;
 
             #[KeyName("b")] #[KeyName("c")]
             public mixed $testMultipleKeyNames;
-
         };
         $context = Parse::object(
             $object,
