@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
 use Endermanbugzjfc\ConfigStruct\ParseError\TypeMismatchError;
@@ -34,13 +36,10 @@ final class ObjectContext
         protected array           $propertyContexts,
         protected array           $unhandledElements,
         protected array           $missingElements
-    )
-    {
+    ) {
     }
 
-    /**
-     * @return ReflectionClass
-     */
+
     public function getReflection() : ReflectionClass
     {
         return $this->reflection;
@@ -74,14 +73,12 @@ final class ObjectContext
      * Copy output data to the given object.
      * @param object $object This object will be modified.
      * @param string $rootHeaderLabel See {@link ParseErrorsWrapper::getRootHeaderLabel()}.
-     * @return void
      * @throws ParseErrorsWrapper
      */
     public function copyToObject(
         object $object,
         string $rootHeaderLabel
-    ) : void
-    {
+    ) : void {
         $propertyContexts = $this->getPropertyContexts();
         $tree = $this->getErrorsTree();
         foreach ($propertyContexts as $propertyContext) {
@@ -140,8 +137,7 @@ final class ObjectContext
      */
     public function copyToNewObject(
         string $rootHeaderLabel
-    ) : object
-    {
+    ) : object {
         try {
             $instance = $this->getReflection()->newInstance();
         } catch (ReflectionException $err) {
@@ -160,9 +156,7 @@ final class ObjectContext
         return $instance;
     }
 
-    /**
-     * @return array
-     */
+
     public function getErrorsTree() : array
     {
         $tree = [];
@@ -182,5 +176,4 @@ final class ObjectContext
         $tree = $this->getErrorsTree();
         return $tree !== [];
     }
-
 }

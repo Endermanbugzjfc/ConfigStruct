@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Endermanbugzjfc\ConfigStruct;
 
 use Endermanbugzjfc\ConfigStruct\Utils\StaticClassTrait;
@@ -20,13 +22,11 @@ final class Emit
      *
      * This function is recursive. Child objects and arrays will also be emitted. However, this function will not handle recursive objects properly. Your application will slowly suffer and die from segmentation fault once there is a recursive object. So, it is your job to prevent this from happening!
      *
-     * @param object $object
      * @return array Array key = property name or key name from the fist {@link KeyName} attribute if there is any.
      */
     public static function object(
         object $object
-    ) : array
-    {
+    ) : array {
         $reflect = new ReflectionClass(
             $object
         );
@@ -61,12 +61,10 @@ final class Emit
     /**
      * Redirect to the correct emit function. Base on the value's type and attributes provided.
      * @param mixed $value Value of the property.
-     * @return string|int|bool|array|float|null
      */
     public static function value(
         mixed $value
-    ) : string|int|bool|array|float|null
-    {
+    ) : string|int|bool|array|float|null {
         if (is_object(
             $value
         )) {
@@ -98,5 +96,4 @@ final class Emit
 
         return $value;
     }
-
 }

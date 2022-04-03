@@ -16,7 +16,6 @@ final class TypeMismatchError extends BaseParseError
 {
 
     /**
-     * @param TypeError $previous
      * @param string[] $expectedTypes
      * @param string $givenType
      */
@@ -24,8 +23,7 @@ final class TypeMismatchError extends BaseParseError
         TypeError        $previous,
         protected array  $expectedTypes,
         protected string $givenType
-    )
-    {
+    ) {
         parent::__construct(
             $previous
         );
@@ -39,9 +37,7 @@ final class TypeMismatchError extends BaseParseError
         return $this->expectedTypes;
     }
 
-    /**
-     * @return string
-     */
+
     public function getGivenType() : string
     {
         return $this->givenType;
