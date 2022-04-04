@@ -12,28 +12,21 @@ use ReflectionProperty;
  */
 final class PropertyDetails
 {
-
     public function __construct(
         protected string $keyName,
         protected ReflectionProperty $reflection
-    )
-    {
+    ) {
     }
 
-    /**
-     * @return ReflectionProperty
-     */
+
     public function getReflection() : ReflectionProperty
     {
         return $this->reflection;
     }
 
-    /**
-     * @return string
-     */
+
     public function getKeyName() : string
     {
         return $this->keyName;
     }
-
 }

@@ -23,7 +23,6 @@ class TypeMismatchErrorTest extends TestCase
     private static function objectProvider()
     {
         return new class () {
-
             public bool $testBool;
             public int $testInt;
             public float $testFloat;
@@ -33,7 +32,6 @@ class TypeMismatchErrorTest extends TestCase
             public Extendable|A|B $testUnionTypesChildObject;
             #[ListType(Extendable::class)] #[ListType(A::class)] #[ListType(B::class)]
             public array $testListMultipleTypes;
-
         };
     }
 
@@ -43,8 +41,7 @@ class TypeMismatchErrorTest extends TestCase
     private static function parse(
         mixed  $value,
         object $object
-    ) : void
-    {
+    ) : void {
         $context = Parse::object(
             $object,
             [
@@ -310,11 +307,9 @@ class TypeMismatchErrorTest extends TestCase
     public function testGetExpectedTypes()
     {
         $object = new class () {
-
             public array|self $testUnionTypesOfArrayAndClass;
 
             public ?bool $testNullableBool;
-
         };
 
         $context = Parse::object(

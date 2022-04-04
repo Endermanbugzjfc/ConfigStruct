@@ -13,5 +13,4 @@ trait StaticClassTrait
     private function __construct()
     {
     }
-
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Endermanbugzjfc\ConfigStruct;
 
 use Endermanbugzjfc\ConfigStruct\Dummy\Extending\A;
@@ -20,7 +22,6 @@ class ParseTest extends TestCase
     public function testObjectPropertyAccessLevels()
     {
         $object = new class() {
-
             private ?bool $testPrivateProperty;
 
             protected ?bool $testProtectedProperty;
@@ -65,7 +66,6 @@ class ParseTest extends TestCase
     public function testObjectUnhandledElements()
     {
         $object = new class() {
-
         };
 
         $context = Parse::object(
@@ -92,11 +92,9 @@ class ParseTest extends TestCase
     public function testObjectMissingElements()
     {
         $object = new class() {
-
             public bool $testNoDefaultValue;
 
             public bool $testDefaultValue = true;
-
         };
         $context = Parse::object(
             $object,
@@ -224,5 +222,4 @@ class ParseTest extends TestCase
             $firstErr instanceof ParseErrorsWrapper
         );
     }
-
 }

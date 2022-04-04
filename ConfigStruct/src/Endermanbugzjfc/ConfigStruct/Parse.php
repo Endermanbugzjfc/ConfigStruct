@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Endermanbugzjfc\ConfigStruct;
 
 use AssertionError;
@@ -34,14 +36,12 @@ final class Parse
     /**
      * Parse the data of an array. Base on an object's structure, which is property types and attributes provided.
      * @param object $object The parsed data will not be automatically copied to the object, please use {@link ObjectContext::copyToObject()}.
-     * @param array $input
      * @return ObjectContext $object.
      */
     public static function object(
         object $object,
         array  $input
-    ) : ObjectContext
-    {
+    ) : ObjectContext {
         $reflect = new ReflectionClass(
             $object
         );
@@ -54,8 +54,7 @@ final class Parse
     public static function objectByReflection(
         ReflectionClass $reflect,
         array           $input
-    ) : ObjectContext
-    {
+    ) : ObjectContext {
         $properties = $reflect->getProperties(
             ReflectionProperty::IS_PUBLIC
         );
@@ -103,8 +102,7 @@ final class Parse
     protected static function createPropertyDetails(
         mixed              $name,
         ReflectionProperty $property
-    ) : PropertyDetails
-    {
+    ) : PropertyDetails {
         return new PropertyDetails(
             $name,
             $property
@@ -115,15 +113,12 @@ final class Parse
      * Redirect to the correct parse function. Base on the property's type and attributes provided.
      *
      * Property type "self" will be interpreted as the declaring class of that property. Overriding of "self" will be implemented in future versions.
-     * @param PropertyDetails $details
-     * @param mixed $value
      * @return BasePropertyContext A non-abstract property parse context.
      */
     public static function property(
         PropertyDetails $details,
         mixed           $value
-    ) : BasePropertyContext
-    {
+    ) : BasePropertyContext {
         if (is_array(
             $value
         )) {
@@ -235,7 +230,6 @@ final class Parse
                     $value
                 );
             }
-
         }
 
         return new RawContext(
@@ -246,15 +240,13 @@ final class Parse
 
     /**
      * @param ReflectionProperty[] $properties
-     * @param array $input
      * @return array<string, string>
      * @throws Exception Duplicated key names.
      */
     protected static function getPropertyNameToKeyNameMap(
         array $properties,
         array $input
-    ) : array
-    {
+    ) : array {
         foreach ($properties as $property) {
             $propertyName = $property->getName();
 
@@ -266,7 +258,7 @@ final class Parse
                 $name = $keyName->getArguments()[0];
                 if (in_array(
                     $name,
-                    $names
+                    $names, true
                     // PHP array index is not strictly typed. Classic PHP.
                 )) {
                     $duplicated[] = $name;
@@ -310,8 +302,7 @@ final class Parse
     public static function findMatchingStruct(
         array $candidates,
         array $input
-    ) : ObjectContext|ParseErrorsWrapper
-    {
+    ) : ObjectContext|ParseErrorsWrapper {
         if ($candidates === []) {
             throw new InvalidArgumentException(
                 "No struct candidates were given"
@@ -380,5 +371,4 @@ final class Parse
 
         return $leastUnhandled;
     }
-
 }

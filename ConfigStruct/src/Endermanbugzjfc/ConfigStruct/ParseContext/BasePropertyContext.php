@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
 abstract class BasePropertyContext
@@ -8,21 +10,16 @@ abstract class BasePropertyContext
 
     public function __construct(
         private PropertyDetails $details
-    )
-    {
+    ) {
     }
 
-    /**
-     * @return PropertyDetails
-     */
+
     final public function getDetails() : PropertyDetails
     {
         return $this->details;
     }
 
-    /**
-     * @return array
-     */
+
     public function getErrorsTree() : array
     {
         return [];
@@ -63,5 +60,4 @@ abstract class BasePropertyContext
     {
         return false;
     }
-
 }

@@ -11,12 +11,10 @@ use Throwable;
 
 trait StructureErrorThrowerTrait
 {
-
     private static function invalidStructure(
         Throwable                          $previous,
         ReflectionClass|ReflectionProperty $classOrProperty
-    ) : void
-    {
+    ) : void {
         if ($classOrProperty instanceof ReflectionClass) {
             $className = $classOrProperty->getName();
             $propertyName = "";
@@ -30,5 +28,4 @@ trait StructureErrorThrowerTrait
             $previous
         );
     }
-
 }

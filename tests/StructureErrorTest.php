@@ -23,8 +23,7 @@ class StructureErrorTest extends TestCase
         object $object,
         ?string $property,
         array $input
-    ) : void
-    {
+    ) : void {
         try {
             $context = Parse::object(
                 $object,
@@ -60,12 +59,10 @@ class StructureErrorTest extends TestCase
     public function test__constructDuplicatedKeyNames()
     {
         $object = new class() {
-
             #[KeyName(-1)] #[KeyName("-1")]
             #[KeyName(0)] #[KeyName("0")]
             #[KeyName("kjaldf")] #[KeyName("kjaldf")]
             public bool $testThreeDuplicatedKeyNames;
-
         };
         $this->expectPreviousExceptionMessage(
             'Duplicated key names "-1", "0", "kjaldf"',
@@ -103,10 +100,8 @@ class StructureErrorTest extends TestCase
     public function test__constructInvalidListTypes()
     {
         $object = new class() {
-
             #[ListType("ajbfl")]
             public string $testThreeInvalidListTypes;
-
         };
         $reflection = new ReflectionClass(
             $object
@@ -169,5 +164,4 @@ class StructureErrorTest extends TestCase
             $object
         );
     }
-
 }

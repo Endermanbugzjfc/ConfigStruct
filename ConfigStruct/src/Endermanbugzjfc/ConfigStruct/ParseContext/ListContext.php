@@ -23,9 +23,7 @@ final class ListContext extends BasePropertyContext
     protected array $baseErrorsTree = [];
 
     /**
-     * @param PropertyDetails $details
      * @param ObjectContext[] $objectContexts
-     * @param array $elementsErrorsTree
      * @param array $unhandledElements
      */
     public function __construct(
@@ -33,8 +31,7 @@ final class ListContext extends BasePropertyContext
         protected array $objectContexts,
         array           $elementsErrorsTree,
         protected array $unhandledElements
-    )
-    {
+    ) {
         foreach ($elementsErrorsTree as $key => $value) {
             $subElementKey = self::getErrorsTreeSubElementKey(
                 $key
@@ -104,17 +101,13 @@ final class ListContext extends BasePropertyContext
 
     private static function getErrorsTreeSubElementKey(
         string|int $elementKey
-    ) : string
-    {
+    ) : string {
         return "index \"$elementKey\"";
     }
 
-    /**
-     * @return array
-     */
+
     public function getUnhandledElements() : array
     {
         return $this->unhandledElements;
     }
-
 }

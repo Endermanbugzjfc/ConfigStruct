@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Endermanbugzjfc\ConfigStruct;
 
 use RuntimeException;
@@ -11,18 +13,15 @@ use const E_ERROR;
  */
 final class StructureError extends RuntimeException
 {
-
     public function __construct(
         string     $message = "",
         ?Throwable $previous = null,
         int        $code = E_ERROR
-    )
-    {
+    ) {
         parent::__construct(
             $message,
             $code,
             $previous
         );
     }
-
 }

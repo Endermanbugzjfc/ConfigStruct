@@ -14,7 +14,6 @@ use Throwable;
  */
 abstract class BaseParseError implements Stringable
 {
-
     abstract public function getMessage() : string;
 
     public function __toString() : string
@@ -24,8 +23,7 @@ abstract class BaseParseError implements Stringable
 
     public function __construct(
         protected ?Throwable $previous = null
-    )
-    {
+    ) {
     }
 
     public function getPrevious() : ?Throwable
@@ -49,5 +47,4 @@ abstract class BaseParseError implements Stringable
 
         return $return;
     }
-
 }

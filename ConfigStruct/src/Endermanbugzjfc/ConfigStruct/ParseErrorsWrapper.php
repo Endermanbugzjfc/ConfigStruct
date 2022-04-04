@@ -17,7 +17,6 @@ use const E_RECOVERABLE_ERROR;
 
 final class ParseErrorsWrapper extends Exception
 {
-
     protected ?Closure $errorFilter = null;
 
     protected string $indentation = "    ";
@@ -25,8 +24,7 @@ final class ParseErrorsWrapper extends Exception
     public function __construct(
         protected array  $errorsTree,
         protected string $rootHeaderLabel
-    )
-    {
+    ) {
         $message = $this->generateErrorMessage();
         parent::__construct(
             $message,
@@ -34,9 +32,7 @@ final class ParseErrorsWrapper extends Exception
         );
     }
 
-    /**
-     * @return array
-     */
+
     public function getErrorsTree() : array
     {
         return $this->errorsTree;
@@ -58,27 +54,21 @@ final class ParseErrorsWrapper extends Exception
         return $this->errorFilter;
     }
 
-    /**
-     * @return string
-     */
+
     public function getIndentation() : string
     {
         return $this->indentation;
     }
 
     /**
-     * @param string $rootHeaderLabel
-     * @param string $indentation
      * @param Closure|null $errorFilter See {@link ParseErrorsWrapper::getErrorFilter()}.
-     * @return void
      * @see ParseErrorsWrapper::errorsTreeToString()
      */
     public function regenerateErrorMessage(
         string  $rootHeaderLabel,
         string  $indentation = "    ",
         Closure $errorFilter = null
-    ) : void
-    {
+    ) : void {
         $this->rootHeaderLabel = $rootHeaderLabel;
         $this->errorFilter = $errorFilter;
         $this->indentation = $indentation;
@@ -103,15 +93,13 @@ final class ParseErrorsWrapper extends Exception
      * @param string $label The label that will be displayed in the first line (header). File path should be given if the parsed data was from a file.
      * @param string $indentation Indentation per depth, to make the errors tree more readable for human. Four spaces by default.
      * @param Closure|null $errorFilter See {@link ParseErrorsWrapper::getErrorFilter()}.
-     * @return string
      */
     public static function errorsTreeToString(
         array    $tree,
         string   $label,
         string   $indentation = "    ",
         ?Closure $errorFilter = null
-    ) : string
-    {
+    ) : string {
         return self::errorsTreeToStringRecursive(
             $tree,
             [
@@ -127,8 +115,7 @@ final class ParseErrorsWrapper extends Exception
         array    $keys,
         string   $defaultIndentation,
         ?Closure $errorFilter
-    ) : array
-    {
+    ) : array {
         $lines = [];
         $depth = count($keys);
         $indentation = str_repeat(
@@ -200,7 +187,6 @@ final class ParseErrorsWrapper extends Exception
 
     /**
      * Trim out the trailing line break and other whitespaces.
-     * @return string
      */
     public function getMessageRtrim() : string
     {
@@ -208,5 +194,4 @@ final class ParseErrorsWrapper extends Exception
             $this->getMessage()
         );
     }
-
 }
