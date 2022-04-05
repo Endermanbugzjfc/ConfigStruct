@@ -1,10 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Endermanbugzjfc\ConfigStruct;
 
+use AssertionError;
 use Attribute;
+use function implode;
+use function preg_split;
 use function strtolower;
 use function strtoupper;
+use function ucwords;
 
 /**
  * Walk selected key names in a class with the case converter when emitting or parsing.
@@ -12,7 +18,6 @@ use function strtoupper;
 #[Attribute(Attribute::TARGET_CLASS)]
 class ConvertCase
 {
-
     public const LOWERCASE = [self::class, "lowercase"];
     public const UPPERCASE = [self::class, "uppercase"];
     public const PASCAL_CASE = [self::class, "pascalCase"];
@@ -24,131 +29,128 @@ class ConvertCase
     public const DOT_CASE = [self::class, "dotCase"];
     public const SCREAMING_DOT_CASE = [self::class, "screamingDotCase"];
 
+    private const UCWORDS_SEPARATORS = "_ \t\r\n\f\v";
+
     public function __construct(
         callable $caseConverter
-    )
-    {
+    ) {
     }
 
     /**
      * lowercase
-     * @param string $name
-     * @return string
      */
     public static function lowercase(
         string $name
-    ) : string
-    {
+    ) : string {
         return strtolower($name);
     }
 
     /**
      * UPPERCASE
-     * @param string $name
-     * @return string
      */
     public static function uppercase(
         string $name
-    ) : string
-    {
+    ) : string {
         return strtoupper($name);
     }
 
     /**
      * PascalCase
-     * @param string $name
-     * @return string
      */
     public static function pascalCase(
         string $name
-    ) : string
-    {
+    ) : string {
+        return ucwords($name, self::UCWORDS_SEPARATORS);
     }
 
     /**
      * camelCase
-     * @param string $name
-     * @return string
      */
     public static function camelCase(
         string $name
-    ) : string
-    {
+    ) : string {
+        $name = self::pascalCase($name);
+        $name[-1] = strtolower($name[-1]);
 
+        return $name;
     }
 
     /**
      * snake_case
-     * @param string $name
-     * @return string
      */
     public static function snakeCase(
         string $name
-    ) : string
-    {
-
+    ) : string {
+        $words = self::splitWordsByUppercaseAndUnderscore($name);
+        return implode("_", $words);
     }
 
     /**
      * SCREAMING_SNAKE_CASE
-     * @param string $name
-     * @return string
      */
     public static function screamingSnakeCase(
         string $name
-    ) : string
-    {
+    ) : string {
+        $name = self::snakeCase($name);
 
+        return strtoupper($name);
     }
 
     /**
      * kebab-case
-     * @param string $name
-     * @return string
      */
     public static function kebabCase(
         string $name
-    ) : string
-    {
+    ) : string {
+        $words = self::splitWordsByUppercaseAndUnderscore($name);
 
+        return implode("-", $words);
     }
 
     /**
      * SCREAMING-KEBAB-CASE
-     * @param string $name
-     * @return string
      */
     public static function screamingKebabCase(
         string $name
-    ) : string
-    {
+    ) : string {
+        $name = self::kebabCase($name);
 
+        return strtoupper($name);
     }
 
     /**
      * dot.case
-     * @param string $name
-     * @return string
      */
     public static function dotCase(
         string $name
-    ) : string
-    {
+    ) : string {
+        $words = self::splitWordsByUppercaseAndUnderscore($name);
 
+        return implode(".", $words);
     }
 
     /**
      * SCREAMING.DOT.CASE
-     * @param string $name
-     * @return string
      */
     public static function screamingDotCase(
         string $name
-    ) : string
-    {
+    ) : string {
+        $name = self::dotCase($name);
 
+        return strtoupper($name);
     }
 
-    }
+    /**
+     * @return string[]
+     */
+    private static function splitWordsByUppercaseAndUnderscore(
+        string $words
+    ) : array {
+        $split = preg_split('/(?=[A-Z_])/', $words);
+        if ($split === false) {
+            throw new AssertionError("unreachable");
+        }
 
+        return $split;
+    }
 }
