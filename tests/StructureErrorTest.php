@@ -62,10 +62,10 @@ class StructureErrorTest extends TestCase
             #[KeyName(-1)] #[KeyName("-1")]
             #[KeyName(0)] #[KeyName("0")]
             #[KeyName("kjaldf")] #[KeyName("kjaldf")]
-            public bool $testThreeDuplicatedKeyNames;
+            public bool $testOneDuplicatedKeyNames;
         };
         $this->expectPreviousExceptionMessage(
-            'Duplicated key names "-1", "0", "kjaldf"',
+            'Duplicated key names "kjaldf"',
             $object,
             null,
             [
