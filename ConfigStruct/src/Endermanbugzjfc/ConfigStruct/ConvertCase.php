@@ -6,10 +6,11 @@ namespace Endermanbugzjfc\ConfigStruct;
 
 use AssertionError;
 use Attribute;
-use ReflectionAttribute;
+use Exception;
 use ReflectionProperty;
 use function array_map;
 use function implode;
+use function in_array;
 use function preg_split;
 use function strtolower;
 use function strtoupper;
@@ -159,23 +160,51 @@ class ConvertCase
 
     /**
      * @return string[]|array{string} Ordered in the same way as {@link KeyName} attributes. Return only the property name if property has no {@link KeyName} attributes.
+     * @throws Exception Duplicated key names.
      */
     public static function getKeyNamesByPropertyAndConvertCase(
-        ReflectionProperty $property
+        ReflectionProperty $property,
+        bool $checkDuplicatedKeyNames = true
     ) : array {
-        $names = array_map(
-            static fn(ReflectionAttribute $keyName) : string => $keyName->getArguments()[0],
+        $names = $duplicated = [];
+        foreach (
             $property->getAttributes(KeyName::class)
-        );
+            as $keyName
+        ) {
+            $name = $keyName->getArguments()[0];
+            if (in_array(
+                $name,
+                $names,
+                true
+            )) {
+                $duplicated[] = $name;
+            }
+            $names[] = $name;
+        }
+
+        if (
+            $checkDuplicatedKeyNames
+            and
+            $duplicated !== []
+        ) {
+            $duplicatedList = implode(
+                "\", \"",
+                $duplicated
+            );
+            throw new Exception(
+                "Duplicated key names \"$duplicatedList\""
+            );
+        }
+
         if ($names === []) {
             $names = [
                 $property->getName()
             ];
         }
-        
+
         $convertCase = $property->getAttributes(self::class)[0] ?? null;
         $caseConverter = $convertCase?->getArguments()[0]
-            ?? static fn(string $name) : string => $name;
+            ?? static fn (string $name) : string => $name;
 
         return array_map($caseConverter, $names);
     }
