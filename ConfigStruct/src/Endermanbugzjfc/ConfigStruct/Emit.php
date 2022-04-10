@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\ConfigStruct;
 
+use Endermanbugzjfc\ConfigStruct\ConvertCase;
 use Endermanbugzjfc\ConfigStruct\Utils\StaticClassTrait;
 use ReflectionClass;
 use ReflectionProperty;
@@ -40,11 +41,7 @@ final class Emit
             )) {
                 continue;
             }
-            $keyName = $property->getAttributes(
-                    KeyName::class
-                )[0] ?? null;
-            $name = $keyName?->getArguments()[0]
-                ?? $property->getName();
+            $name = ConvertCase::getKeyNamesByPropertyAndConvertCase($property)[0];
 
             $value = $property->getValue(
                 $object
