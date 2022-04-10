@@ -6,6 +6,9 @@ namespace Endermanbugzjfc\ConfigStruct;
 
 use AssertionError;
 use Attribute;
+use ReflectionAttribute;
+use ReflectionProperty;
+use function array_map;
 use function implode;
 use function preg_split;
 use function strtolower;
@@ -152,5 +155,28 @@ class ConvertCase
         }
 
         return $split;
+    }
+
+    /**
+     * @return string[]|array{string} Ordered in the same way as {@link KeyName} attributes. Return only the property name if property has no {@link KeyName} attributes.
+     */
+    public static function getKeyNamesByPropertyAndConvertCase(
+        ReflectionProperty $property
+    ) : array {
+        $names = array_map(
+            static fn(ReflectionAttribute $keyName) : string => $keyName->getArguments()[0],
+            $property->getAttributes(KeyName::class)
+        );
+        if ($names === []) {
+            $names = [
+                $property->getName()
+            ];
+        }
+        
+        $convertCase = $property->getAttributes(self::class)[0] ?? null;
+        $caseConverter = $convertCase?->getArguments()[0]
+            ?? static fn(string $name) : string => $name;
+
+        return array_map($caseConverter, $names);
     }
 }
