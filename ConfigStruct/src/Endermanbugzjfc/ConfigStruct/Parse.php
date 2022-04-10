@@ -22,6 +22,7 @@ use ReflectionNamedType;
 use ReflectionProperty;
 use TypeError;
 use function array_key_exists;
+use function array_keys;
 use function array_unique;
 use function count;
 use function get_debug_type;
@@ -250,37 +251,9 @@ final class Parse
         foreach ($properties as $property) {
             $propertyName = $property->getName();
 
-            $names = $duplicated = [];
-            foreach (
-                $property->getAttributes(KeyName::class)
-                as $keyName
-            ) {
-                $name = $keyName->getArguments()[0];
-                if (in_array(
-                    $name,
-                    $names, true
-                    // PHP array index is not strictly typed. Classic PHP.
-                )) {
-                    $duplicated[] = $name;
-                }
-                $names[] = $name;
-            }
-
-            if ($duplicated !== []) {
-                $duplicatedList = implode(
-                    "\", \"",
-                    $duplicated
-                );
-                throw new Exception(
-                    "Duplicated key names \"$duplicatedList\""
-                );
-            }
-            foreach (
-                $names === []
-                    ? [$propertyName]
-                    : $names
-                as $name
-            ) {
+            $names = ConvertCase::getKeyNamesByPropertyAndConvertCase($property);
+            $inputNames = array_keys($input);
+            foreach ($names as $name) {
                 if (!array_key_exists($name, $input)) {
                     continue;
                 }
