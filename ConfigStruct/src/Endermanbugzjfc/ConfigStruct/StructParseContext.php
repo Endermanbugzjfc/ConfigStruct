@@ -7,6 +7,7 @@ namespace Endermanbugzjfc\ConfigStruct;
 use Exception;
 use ReflectionClass;
 use ReflectionProperty;
+use RuntimeException;
 use TypeError;
 
 /**
@@ -23,7 +24,7 @@ final class StructParseContext
     public function finalize() : void
     {
         if ($this->finalized) {
-            throw new \RuntimeException("Finalization of " . self::class . " which had already been finalized");
+            throw new RuntimeException("Finalization of " . self::class . " which had already been finalized");
         }
         $this->finalized = true;
     }
