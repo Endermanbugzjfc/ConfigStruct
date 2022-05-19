@@ -10,10 +10,10 @@ class Basic
 {
     use StructTrait;
 
-    private $private;
-    protected $protected;
+    private mixed $private; // @phpstan-ignore-line
+    protected mixed $protected;
 
-    public $untyped;
+    public $untyped; // @phpstan-ignore-line
     public mixed $mixed;
 
     public bool $bool;
@@ -38,6 +38,5 @@ class Basic
     public float $inf = INF;
     public float $nan = NAN;
     public string $empty = "";
-    public string $notEmpty = "bmV2ZXIgZ29ubmEgZ2l2ZSB5b3UgdXA=
-";
+    public string $notEmpty = "bmV2ZXIgZ29ubmEgZ2l2ZSB5b3UgdXA=";
 }
