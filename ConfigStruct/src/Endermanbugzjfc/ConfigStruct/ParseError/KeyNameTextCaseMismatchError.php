@@ -7,7 +7,7 @@ namespace Endermanbugzjfc\ConfigStruct\ParseError;
 use function implode;
 
 /**
- * Parse time error. When an element has one or more corresponding properties but its key name has the wrong text case.
+ * When an element has one or more corresponding properties but its key name has the wrong text case.
  */
 final class KeyNameTextCaseMismatchError extends BaseParseError
 {
