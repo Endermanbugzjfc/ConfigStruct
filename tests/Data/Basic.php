@@ -19,10 +19,10 @@ class Basic
     public float $float;
     public string $string;
 
-    public ?bool $bool;
-    public ?int $int;
-    public ?float $float;
-    public ?string $string;
+    public ?bool $boolNullable;
+    public ?int $intNullable;
+    public ?float $floatNullable;
+    public ?string $stringNullable;
 
     public bool $false = false;
     public bool $true = true;
