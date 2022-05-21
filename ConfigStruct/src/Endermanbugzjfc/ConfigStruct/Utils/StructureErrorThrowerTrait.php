@@ -11,6 +11,11 @@ use Throwable;
 
 trait StructureErrorThrowerTrait
 {
+    /**
+     * @phpstan-ignore-next-line PHPDoc tag @template T for method Endermanbugzjfc\ConfigStruct\ParseContext\ObjectContext::invalidStructure() shadows @template T of object for class Endermanbugzjfc\ConfigStruct\ParseContext\ObjectContext.
+     * @template T of object
+     * @param ReflectionClass<T>|ReflectionProperty $classOrProperty
+     */
     private static function invalidStructure(
         Throwable                          $previous,
         ReflectionClass|ReflectionProperty $classOrProperty

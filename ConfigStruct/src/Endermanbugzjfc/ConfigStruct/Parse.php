@@ -143,14 +143,13 @@ final class Parse
             $raws = array_unique(
                 $raws
             ); // Since it is possible to have both "self" and the own class name in an union-types.
+            /**
+             * @var class-string[] $raws
+             */
             foreach ($raws as $raw) {
-                try {
-                    $candidate = new ReflectionClass(
+                $candidate = new ReflectionClass(
                         $raw
                     );
-                } catch (ReflectionException) {
-                    continue;
-                }
                 $candidates[] = $candidate;
             }
             if ($candidates !== []) {

@@ -6,10 +6,16 @@ namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
 use Endermanbugzjfc\ConfigStruct\ParseErrorsWrapper;
 
+/**
+ * @template T of object
+ */
 final class ChildObjectContext extends BasePropertyContext
 {
     protected object $object;
 
+    /**
+     * @var ObjectContext<T>
+     */
     protected ObjectContext $objectContext;
 
     /**
@@ -17,6 +23,9 @@ final class ChildObjectContext extends BasePropertyContext
      */
     protected ?ParseErrorsWrapper $error = null;
 
+    /**
+     * @param ObjectContext<T>|ParseErrorsWrapper $objectContextOrError
+     */
     public function __construct(
         PropertyDetails                  $details,
         ObjectContext|ParseErrorsWrapper $objectContextOrError
@@ -47,7 +56,9 @@ final class ChildObjectContext extends BasePropertyContext
         return $this->object;
     }
 
-
+    /**
+     * @return ObjectContext<T>
+     */
     public function asObjectContext() : ObjectContext
     {
         return $this->objectContext;
