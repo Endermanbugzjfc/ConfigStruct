@@ -34,9 +34,11 @@ final class Parse
     use StaticClassTrait, StructureErrorThrowerTrait;
 
     /**
+     * @template T of object
      * Parse the data of an array. Base on an object's structure, which is property types and attributes provided.
-     * @param object $object The parsed data will not be automatically copied to the object, please use {@link ObjectContext::copyToObject()}.
-     * @return ObjectContext $object.
+     * @param T $object The parsed data will not be automatically copied to the object, please use {@link ObjectContext::copyToObject()}.
+     * @param mixed[] $input
+     * @return ObjectContext<T> $object.
      */
     public static function object(
         object $object,
@@ -51,6 +53,12 @@ final class Parse
         );
     }
 
+    /**
+     * @template T of object
+     * @param ReflectionClass<T> $reflect
+     * @param mixed[] $input
+     * @return ObjectContext<T>
+     */
     public static function objectByReflection(
         ReflectionClass $reflect,
         array           $input
@@ -100,7 +108,7 @@ final class Parse
     }
 
     protected static function createPropertyDetails(
-        mixed              $name,
+        string $name,
         ReflectionProperty $property
     ) : PropertyDetails {
         return new PropertyDetails(
@@ -129,7 +137,7 @@ final class Parse
                 : (
                 $types instanceof ReflectionNamedType
                     ? [$types]
-                    : $types->getTypes()
+                    : $types->getTypes() // @phpstan-ignore-line TODO: phpstan: error: Call to an undefined method ReflectionType::getTypes().
                 );
             $candidates = $raws = [];
             foreach ($types as $type) {
@@ -189,13 +197,15 @@ final class Parse
                             ),
                             $property
                         );
+
+                        throw new AssertionError("unreachable");
                     }
                     $listReflects[] = $listReflect;
                 }
                 foreach ($value as $key => $input) {
                     try {
                         $element = self::findMatchingStruct(
-                            $listReflects ?? [],
+                            $listReflects,
                             $input
                         );
                     } catch (Exception $err) {
@@ -203,7 +213,9 @@ final class Parse
                             $err,
                             $property
                         );
-                    } catch (TypeError $err) {
+
+                        throw new AssertionError("unreachable");
+                    } catch (TypeError $err) { // @phpstan-ignore-line TODO: phpstan: error: Dead catch - TypeError is never thrown in the try block.
                         $elementsErrorsTree[$key] = new TypeMismatchError(
                             $err,
                             [
@@ -240,6 +252,7 @@ final class Parse
 
     /**
      * @param ReflectionProperty[] $properties
+     * @param mixed[] $input
      * @return array<string, string>
      * @throws Exception Duplicated key names.
      */
@@ -294,9 +307,10 @@ final class Parse
     /**
      * Find the struct with the most handled elements count. And parse the input with the selected struct.
      *
-     * @param ReflectionClass[] $candidates Struct candidates.
-     * @param array $input An array which was converted from object.
-     * @return ObjectContext|ParseErrorsWrapper If all structs conflict with the input, the error of the first {@link ObjectContext} will be returned.
+     * @template T of object
+     * @param ReflectionClass<T>[] $candidates Struct candidates.
+     * @param mixed[] $input An array which was converted from object.
+     * @return ObjectContext<T>|ParseErrorsWrapper If all structs conflict with the input, the error of the first {@link ObjectContext} will be returned.
      * @throws Exception Duplicated struct candidates.
      */
     public static function findMatchingStruct(
@@ -309,7 +323,7 @@ final class Parse
             );
         }
 
-        $raws = $duplicated = [];
+        $raws = $duplicated = $outputs = [];
         $firstErr = null;
         foreach ($candidates as $key => $candidate) {
             if ($candidate->isAbstract()) {
@@ -324,6 +338,9 @@ final class Parse
                 $duplicated[] = $raw;
                 continue;
             }
+            if ($firstErr !== null) {
+                continue;
+            }
             $raws[] = $raw;
             $output = self::objectByReflection(
                 $candidate,
@@ -334,10 +351,10 @@ final class Parse
                     "object"
                 );
             } catch (ParseErrorsWrapper $err) {
-                $firstErr ??= $err;
+                $firstErr = $err;
                 continue;
             }
-            $outputs[$key] = $output;
+            $outputs[] = $output;
         }
         if ($duplicated !== []) {
             $duplicatedList = implode(
@@ -348,15 +365,11 @@ final class Parse
                 "Duplicated struct candidates $duplicatedList"
             );
         }
-        if (!isset($outputs)) {
+        if (isset($firstErr)) {
             return $firstErr;
         }
-        $leastUnhandled = null;
+        $leastUnhandled = $outputs[0];
         foreach ($outputs as $output2) {
-            if (!$leastUnhandled instanceof ObjectContext) {
-                $leastUnhandled = $output2;
-                continue;
-            }
             if (
                 count(
                     $leastUnhandled->getUnhandledElements()

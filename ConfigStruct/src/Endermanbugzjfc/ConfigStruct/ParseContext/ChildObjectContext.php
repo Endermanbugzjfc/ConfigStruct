@@ -59,7 +59,7 @@ final class ChildObjectContext extends BasePropertyContext
     }
 
     /**
-     * @return array Unhandled elements in the object context.
+     * @return mixed[] Unhandled elements in the object context.
      */
     public function getUnhandledElements() : array
     {

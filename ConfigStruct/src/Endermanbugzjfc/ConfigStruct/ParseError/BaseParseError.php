@@ -31,7 +31,7 @@ abstract class BaseParseError implements Stringable
         return $this->previous;
     }
 
-    public function __debugInfo() : ?array
+    public function __debugInfo() : ?array // @phpstan-ignore-line: TODO: Delete.
     {
         $return = [
             "message" => $this->getMessage()

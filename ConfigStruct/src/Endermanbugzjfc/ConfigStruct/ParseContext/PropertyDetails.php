@@ -13,7 +13,7 @@ use ReflectionProperty;
 final class PropertyDetails
 {
     public function __construct(
-        protected string $keyName,
+        protected string $keyName, // TODO: Support int key.
         protected ReflectionProperty $reflection
     ) {
     }

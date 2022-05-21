@@ -19,7 +19,9 @@ abstract class BasePropertyContext
         return $this->details;
     }
 
-
+    /**
+     * @return array<string, mixed> Key = header label.
+     */
     public function getErrorsTree() : array
     {
         return [];
@@ -38,7 +40,7 @@ abstract class BasePropertyContext
 
     /**
      * Get the errors tree and put it in an array using the key name ({@link BasePropertyContext::getErrorsTreeKey()}) as key.
-     * @return array array<string, array> Can be array_merge() with the wrapped errors tree of other properties.
+     * @return array<string, mixed>}|array{} Can be array_merge() with the wrapped errors tree of other properties.
      */
     final public function getWrappedErrorsTree() : array
     {
@@ -51,6 +53,9 @@ abstract class BasePropertyContext
             ];
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getUnhandledElements() : array
     {
         return [];

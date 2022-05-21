@@ -14,7 +14,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::IS_REPEATABLE)]
 class KeyName
 {
-    public function __construct(
+    public function __construct( // @phpstan-ignore-line TODO: Make it property public.
         int|string $name,
     ) {
     }

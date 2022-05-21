@@ -5,26 +5,29 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
-use Endermanbugzjfc\ConfigStruct\ParseError\BaseParseError;
 use Endermanbugzjfc\ConfigStruct\ParseErrorsWrapper;
 use function array_merge;
 
+/**
+ * @template T of object
+ */
 final class ListContext extends BasePropertyContext
 {
 
     /**
-     * @var object[] Keys are reserved.
+     * @var T[] Keys are reserved.
      */
     protected array $objects;
 
     /**
-     * @var array<string, array|BaseParseError>
+     * @var array<string, mixed[]>
      */
     protected array $baseErrorsTree = [];
 
     /**
-     * @param ObjectContext[] $objectContexts
-     * @param array $unhandledElements
+     * @param ObjectContext<T>[] $objectContexts
+     * @param array<string, mixed[]> $elementsErrorsTree
+     * @param mixed[] $unhandledElements
      */
     public function __construct(
         PropertyDetails $details,
@@ -71,7 +74,7 @@ final class ListContext extends BasePropertyContext
     }
 
     /**
-     * @return ObjectContext[] Keys are reserved.
+     * @return ObjectContext<T>[] Keys are reserved.
      */
     public function getObjectContextsArray() : array
     {
