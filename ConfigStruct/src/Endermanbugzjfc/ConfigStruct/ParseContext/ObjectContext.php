@@ -111,7 +111,8 @@ final class ObjectContext
                             ReflectionUtils::getPropertyTypes($reflection)
                     )
                 );
-                if ($types->allowsNull()) { // @phpstan-ignore-line
+                $types = $reflection->getType();
+                if ($types?->allowsNull() ?? true) {
                     $expectedTypes[] = "null";
                 }
 
