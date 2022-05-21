@@ -211,7 +211,7 @@ final class Parse
                         );
 
                         throw new AssertionError("unreachable");
-                    } catch (TypeError $err) { // @phpstan-ignore-line TODO: phpstan: error: Dead catch - TypeError is never thrown in the try block.
+                    } catch (TypeError $err) { // @phpstan-ignore-line $input might not be an array.
                         $elementsErrorsTree[$key] = new TypeMismatchError(
                             $err,
                             [
