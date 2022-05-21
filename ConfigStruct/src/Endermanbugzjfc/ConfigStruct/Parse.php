@@ -23,6 +23,7 @@ use ReflectionProperty;
 use TypeError;
 use function array_key_exists;
 use function array_unique;
+use function assert;
 use function class_exists;
 use function count;
 use function get_debug_type;
@@ -333,9 +334,6 @@ final class Parse
                 $duplicated[] = $raw;
                 continue;
             }
-            if ($firstErr !== null) {
-                continue;
-            }
             $raws[] = $raw;
             $output = self::objectByReflection(
                 $candidate,
@@ -360,7 +358,8 @@ final class Parse
                 "Duplicated struct candidates $duplicatedList"
             );
         }
-        if (isset($firstErr)) {
+        if ($outputs === []) {
+            assert(isset($firstErr));
             return $firstErr;
         }
         $leastUnhandled = $outputs[0];
