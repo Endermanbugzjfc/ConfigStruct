@@ -17,7 +17,7 @@ final class ReflectionUtils
     /**
      * @return ReflectionNamedType[]
      */
-    public static function getPropertyTypes( // TODO: Unit test.
+    public static function getPropertyTypes(
         ReflectionProperty $property
     ) : array {
         $type = $property->getType();
