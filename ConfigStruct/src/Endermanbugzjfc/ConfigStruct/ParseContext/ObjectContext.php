@@ -115,6 +115,9 @@ final class ObjectContext
                 if ($types?->allowsNull() ?? true) {
                     $expectedTypes[] = "null";
                 }
+                $expectedTypes = array_unique(
+                    $expectedTypes // There might be multiple "null"s.
+                );
 
                 $treeKey = $propertyContext->getErrorsTreeKey();
                 $tree[$treeKey][] = new TypeMismatchError(
