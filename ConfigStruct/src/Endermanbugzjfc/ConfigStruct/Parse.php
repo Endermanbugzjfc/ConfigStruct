@@ -12,13 +12,13 @@ use Endermanbugzjfc\ConfigStruct\ParseContext\ObjectContext;
 use Endermanbugzjfc\ConfigStruct\ParseContext\PropertyDetails;
 use Endermanbugzjfc\ConfigStruct\ParseContext\RawContext;
 use Endermanbugzjfc\ConfigStruct\ParseError\TypeMismatchError;
+use Endermanbugzjfc\ConfigStruct\Utils\ReflectionUtils;
 use Endermanbugzjfc\ConfigStruct\Utils\StaticClassTrait;
 use Endermanbugzjfc\ConfigStruct\Utils\StructureErrorThrowerTrait;
 use Exception;
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionException;
-use ReflectionNamedType;
 use ReflectionProperty;
 use TypeError;
 use function array_key_exists;
@@ -131,14 +131,7 @@ final class Parse
             $value
         )) {
             $property = $details->getReflection();
-            $types = $property->getType();
-            $types = $types === null
-                ? []
-                : (
-                $types instanceof ReflectionNamedType
-                    ? [$types]
-                    : $types->getTypes() // @phpstan-ignore-line TODO: phpstan: error: Call to an undefined method ReflectionType::getTypes().
-                );
+            $types = ReflectionUtils::getPropertyTypes($property);
             $candidates = $raws = [];
             foreach ($types as $type) {
                 $raw = $type->getName();

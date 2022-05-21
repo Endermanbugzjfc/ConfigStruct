@@ -8,12 +8,12 @@ use AssertionError;
 use Endermanbugzjfc\ConfigStruct\ParseError\TypeMismatchError;
 use Endermanbugzjfc\ConfigStruct\ParseErrorsWrapper;
 use Endermanbugzjfc\ConfigStruct\StructureError;
+use Endermanbugzjfc\ConfigStruct\Utils\ReflectionUtils;
 use Endermanbugzjfc\ConfigStruct\Utils\StructureErrorThrowerTrait;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
-use ReflectionType;
 use TypeError;
 use function array_map;
 use function array_merge;
@@ -99,19 +99,16 @@ final class ObjectContext
                     $value
                 );
             } catch (TypeError $err) {
-                $types = $reflection->getType();
                 $expectedTypes = array_unique(
                     array_map(
-                        static fn(ReflectionType $type) : string => (
-                            class_exists($raw = $type->getName()) // @phpstan-ignore-line
+                        static fn(ReflectionNamedType $type) : string => (
+                            class_exists($raw = $type->getName())
                             or
                             $raw === "self"
                         )
                             ? "array"
                             : $raw,
-                        $types instanceof ReflectionNamedType
-                            ? [$types]
-                            : ($types?->getTypes() ?? []) // @phpstan-ignore-line TODO: phpstan: error: Call to an undefined method ReflectionType::getTypes().
+                            ReflectionUtils::getPropertyTypes($reflection)
                     )
                 );
                 if ($types->allowsNull()) { // @phpstan-ignore-line

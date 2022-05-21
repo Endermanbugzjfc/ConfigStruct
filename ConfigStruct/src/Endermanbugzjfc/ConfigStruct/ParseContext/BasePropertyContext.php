@@ -40,7 +40,7 @@ abstract class BasePropertyContext
 
     /**
      * Get the errors tree and put it in an array using the key name ({@link BasePropertyContext::getErrorsTreeKey()}) as key.
-     * @return array<string, mixed>}|array{} Can be array_merge() with the wrapped errors tree of other properties.
+     * @return array<string, mixed[]> Can be array_merge() with the wrapped errors tree of other properties.
      */
     final public function getWrappedErrorsTree() : array
     {
