@@ -23,6 +23,7 @@ use ReflectionProperty;
 use TypeError;
 use function array_key_exists;
 use function array_unique;
+use function class_exists;
 use function count;
 use function get_debug_type;
 use function implode;
@@ -137,6 +138,8 @@ final class Parse
                 $raw = $type->getName();
                 if ($raw === "self") {
                     $raw = $details->getReflection()->getDeclaringClass()->getName();
+                } elseif (!class_exists($raw)) {
+                    continue;
                 }
                 $raws[] = $raw;
             }
