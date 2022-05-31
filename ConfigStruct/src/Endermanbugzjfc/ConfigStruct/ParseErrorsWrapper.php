@@ -17,10 +17,16 @@ use const E_RECOVERABLE_ERROR;
 
 final class ParseErrorsWrapper extends Exception
 {
+    /**
+     * @var Closure(string[], BaseParseError) : bool
+     */
     protected ?Closure $errorFilter = null;
 
     protected string $indentation = "    ";
 
+    /**
+     * @param array<string, BaseParseError|mixed[]> $errorsTree
+     */
     public function __construct(
         protected array  $errorsTree,
         protected string $rootHeaderLabel
@@ -32,7 +38,9 @@ final class ParseErrorsWrapper extends Exception
         );
     }
 
-
+    /**
+     * @return array<string, BaseParseError|mixed[]>
+     */
     public function getErrorsTree() : array
     {
         return $this->errorsTree;
@@ -47,7 +55,7 @@ final class ParseErrorsWrapper extends Exception
     }
 
     /**
-     * @return Closure|null Should have exactly 2 arguments and return bool. False = the error will not be displayed in the final error message. The first argument is array $keys, a list of error labels that can be used for identifying which error in the tree has just been walked. The second argument is {@link BaseParseError} $parseError, the error itself.
+     * @return Closure(string[], BaseParseError) : bool|null Should have exactly 2 arguments and return bool. False = the error will not be displayed in the final error message. The first argument is array $keys, a list of error labels that can be used for identifying which error in the tree has just been walked. The second argument is {@link BaseParseError} $parseError, the error itself.
      */
     public function getErrorFilter() : ?Closure
     {
@@ -89,7 +97,7 @@ final class ParseErrorsWrapper extends Exception
     }
 
     /**
-     * @param array $tree The errors tree.
+     * @param array<string, BaseParseError|mixed[]> $tree The errors tree.
      * @param string $label The label that will be displayed in the first line (header). File path should be given if the parsed data was from a file.
      * @param string $indentation Indentation per depth, to make the errors tree more readable for human. Four spaces by default.
      * @param Closure|null $errorFilter See {@link ParseErrorsWrapper::getErrorFilter()}.
@@ -110,6 +118,11 @@ final class ParseErrorsWrapper extends Exception
         )[0] ?? "";
     }
 
+    /**
+     * @param array<string, BaseParseError|mixed[]> $tree
+     * @param string[] $keys
+     * @return array{string|null, int} Lines and errors count.
+     */
     protected static function errorsTreeToStringRecursive(
         array    $tree,
         array    $keys,
@@ -147,6 +160,9 @@ final class ParseErrorsWrapper extends Exception
         foreach ($children ?? [] as $key => $child) {
             $keysClone = $keys;
             $keysClone[] = $key;
+            /**
+             * @var array<string, BaseParseError|mixed[]> $child
+             */
             [
                 $newLines,
                 $newCount

@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Endermanbugzjfc\ConfigStruct\ParseContext;
 
+use AssertionError;
 use Endermanbugzjfc\ConfigStruct\ParseError\TypeMismatchError;
 use Endermanbugzjfc\ConfigStruct\ParseErrorsWrapper;
 use Endermanbugzjfc\ConfigStruct\StructureError;
+use Endermanbugzjfc\ConfigStruct\Utils\ReflectionUtils;
 use Endermanbugzjfc\ConfigStruct\Utils\StructureErrorThrowerTrait;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
-use ReflectionType;
 use TypeError;
 use function array_map;
 use function array_merge;
@@ -20,15 +21,17 @@ use function array_unique;
 use function class_exists;
 use function get_debug_type;
 
+/**
+ * @template T of object
+ */
 final class ObjectContext
 {
     use StructureErrorThrowerTrait;
 
-    // TODO: Fix document for $errors, cannot be rendered by PHPStorm correctly.
     /**
-     * @param ReflectionClass $reflection
+     * @param ReflectionClass<T> $reflection
      * @param BasePropertyContext[] $propertyContexts Key = property name.
-     * @param array $unhandledElements Raw value of elements in the input which do not have the corresponding property.
+     * @param mixed[] $unhandledElements Raw value of elements in the input which do not have the corresponding property.
      * @param ReflectionProperty[] $missingElements Key = property name.
      */
     public function __construct(
@@ -39,14 +42,16 @@ final class ObjectContext
     ) {
     }
 
-
+    /**
+     * @return ReflectionClass<T>
+     */
     public function getReflection() : ReflectionClass
     {
         return $this->reflection;
     }
 
     /**
-     * @return array Raw value of elements in the input which do not have the corresponding property. Please notice that some properties might also have their unhandled elements, see {@link BasePropertyContext::getUnhandledElements()}.
+     * @return mixed[] Raw value of elements in the input which do not have the corresponding property. Please notice that some properties might also have their unhandled elements, see {@link BasePropertyContext::getUnhandledElements()}.
      */
     public function getUnhandledElements() : array
     {
@@ -94,24 +99,25 @@ final class ObjectContext
                     $value
                 );
             } catch (TypeError $err) {
-                $types = $reflection->getType();
                 $expectedTypes = array_unique(
                     array_map(
-                        static fn(ReflectionType $type) : string => (
+                        static fn(ReflectionNamedType $type) : string => (
                             class_exists($raw = $type->getName())
                             or
                             $raw === "self"
                         )
                             ? "array"
                             : $raw,
-                        $types instanceof ReflectionNamedType
-                            ? [$types]
-                            : $types->getTypes()
+                            ReflectionUtils::getPropertyTypes($reflection)
                     )
                 );
-                if ($types->allowsNull()) {
+                $types = $reflection->getType();
+                if ($types?->allowsNull() ?? true) {
                     $expectedTypes[] = "null";
                 }
+                $expectedTypes = array_unique(
+                    $expectedTypes // There might be multiple "null"s.
+                );
 
                 $treeKey = $propertyContext->getErrorsTreeKey();
                 $tree[$treeKey][] = new TypeMismatchError(
@@ -132,7 +138,7 @@ final class ObjectContext
 
     /**
      * @param string $rootHeaderLabel See {@link ParseErrorsWrapper::getRootHeaderLabel()}.
-     * @return object The constructor of object should have 0 arguments.
+     * @return T The constructor of object should have 0 arguments.
      * @throws ParseErrorsWrapper
      */
     public function copyToNewObject(
@@ -148,6 +154,8 @@ final class ObjectContext
                 ),
                 $this->getReflection()
             );
+
+            throw new AssertionError("unreachable"); // Blame PHPStan.
         }
         $this->copyToObject(
             $instance,
@@ -156,7 +164,9 @@ final class ObjectContext
         return $instance;
     }
 
-
+    /**
+     * @return array<string, mixed[]>
+     */
     public function getErrorsTree() : array
     {
         $tree = [];
