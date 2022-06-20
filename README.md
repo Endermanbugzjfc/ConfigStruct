@@ -1,3 +1,5 @@
+# Gave up maintenance （不羈放縱愛自由）
+Use https://github.com/sylvrs/libMarshal instead.
 # ConfigStruct
 
 Type and shape system for arrays. Help write clearer code when implementing configs for your PocketMine-MP plugin or
